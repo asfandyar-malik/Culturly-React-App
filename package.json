@@ -1,0 +1,52 @@
+{
+  "name": "culturly-react-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.7.0",
+    "antd": "^4.12.3",
+    "axios": "^0.21.1",
+    "babel-plugin-import": "^1.13.3",
+    "babel-plugin-jsx-control-statements": "^4.1.0",
+    "customize-cra": "^1.0.0",
+    "eslint-plugin-jsx-control-statements": "^2.2.1",
+    "jsx-control-statements": "^3.2.8",
+    "node-sass": "^4.14.1",
+    "react": "^17.0.1",
+    "react-app-rewired": "^2.1.8",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.2",
+    "web-vitals": "^1.1.0"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "less": "^4.1.0",
+    "less-loader": "^7.2.1"
+  }
+}
