@@ -15,6 +15,7 @@ const SurveyEditModal = ({ visible, survey, onClose, onSave }) => {
   useEffect(() => {
     if (visible && !isEmpty(survey)) {
       survey.survey_time = moment(survey.survey_time, "HH:mm:ss");
+      survey.email_report_time = moment(survey.email_report_time, "HH:mm:ss");
       form.setFieldsValue(survey);
     }
   }, [visible]);
@@ -23,6 +24,7 @@ const SurveyEditModal = ({ visible, survey, onClose, onSave }) => {
     setSaving(true);
     values.survey = survey.id;
     values.survey_time = values.survey_time.format("HH:mm:ss");
+    values.email_report_time = values.email_report_time.format("HH:mm:ss");
     updateSurveyForWorkspace(values, survey.workspace_survey_id)
       .then((response) => {
         let { data } = response;
@@ -70,6 +72,16 @@ const SurveyEditModal = ({ visible, survey, onClose, onSave }) => {
           )}
           <Col span={12}>
             <Form.Item label="Schedule" name="survey_time">
+              <TimePicker
+                format="HH:mm"
+                minuteStep={30}
+                allowClear={false}
+                showSecond={false}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Email Report time" name="email_report_time">
               <TimePicker
                 format="HH:mm"
                 minuteStep={30}

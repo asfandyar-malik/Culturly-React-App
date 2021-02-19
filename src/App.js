@@ -54,7 +54,6 @@ const AppRouter = ({ accountData, setAccountData }) => {
           component={UserLoginAuthComplete}
           path={routes.SLACK_OAUTH_COMPLETE_ROUTE}
         />
-        {/* <Route component={NotFound} /> */}
       </Switch>
     </Router>
   );

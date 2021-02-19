@@ -21,14 +21,6 @@ export const SURVEY_DAY_OPTIONS = [
     label: "Friday",
     value: "5",
   },
-  {
-    label: "Saturday",
-    value: "6",
-  },
-  {
-    label: "Sunday",
-    value: "7",
-  },
 ];
 
 export const SURVEY_WEEKLY_INTERVAL = "weekly";
