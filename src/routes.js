@@ -2,7 +2,8 @@ export const INDEX_ROUTE = "/";
 export const MEMBERS_ROUTE = "/members/";
 export const SETTINGS_ROUTE = "/settings/";
 
-export const SLACK_OAUTH_COMPLETE_ROUTE = "/complete/slack/";
+export const SLACK_OAUTH_COMPLETE_ROUTE = "/auth-user/complete/";
+export const SLACK_WORKSPACE_OAUTH_COMPLETE_ROUTE = "/auth-workspace/complete/";
 
 export const ROUTES = [
   {
@@ -14,5 +15,10 @@ export const ROUTES = [
     key: "members",
     path: MEMBERS_ROUTE,
     title: "Members management",
-  }
+  },
+  {
+    key: "settings",
+    path: SETTINGS_ROUTE,
+    title: "Settings",
+  },
 ];

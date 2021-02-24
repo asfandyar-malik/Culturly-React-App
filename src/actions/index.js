@@ -38,11 +38,29 @@ export const updateSurveyForWorkspace = (payload, objectId = null) => {
   });
 };
 
-export const loginUserUsingOAuth = (payload) => {
+export const authenticateWorkspaceUsingAuth = (payload) => {
   delete instance.defaults.headers.common["Authorization"];
   return new Promise((resolve, reject) => {
     instance
-      .post(endpoints.COMPLETE_SLACK_USER_OAUTH_API_PATH, payload)
+      .post(endpoints.WORKSPACE_AUTH_API_PATH, payload)
+      .then((response) => {
+        const { data } = response;
+        instance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${data.token}`;
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export const authenticateUserUsingAuth = (payload) => {
+  delete instance.defaults.headers.common["Authorization"];
+  return new Promise((resolve, reject) => {
+    instance
+      .post(endpoints.USER_AUTH_API_PATH, payload)
       .then((response) => {
         const { data } = response;
         instance.defaults.headers.common[
@@ -77,4 +95,13 @@ export const getUserDetail = () => {
 
 export const userLogout = () => {
   return instance.post(endpoints.USER_LOGOUT_API_PATH);
+};
+
+export const getTimezones = () => {
+  return instance.get(endpoints.TIMEZONES_API_PATH);
+};
+
+export const updateWorkspace = (workspaceId, payload) => {
+  let path = endpoints.SLACK_WORKSPACE_UPDATE_API_PATH;
+  return instance.patch(path.replace("{}", workspaceId), payload);
 };

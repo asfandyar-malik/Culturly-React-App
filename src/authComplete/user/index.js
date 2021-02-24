@@ -2,14 +2,14 @@ import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import { AUTHORIZATION_KEY } from "../constants";
-import { loginUserUsingOAuth, getUserDetail } from "../actions";
+import { AUTHORIZATION_KEY } from "../../constants";
+import { authenticateUserUsingAuth, getUserDetail } from "../../actions";
 
-import AccountHook from "../hooks/account";
-import connectedImg from "../images/connected.svg";
-import notConnectedImg from "../images/not_connected.svg";
+import AccountHook from "../../hooks/account";
+import connectedImg from "../../images/connected.svg";
+import notConnectedImg from "../../images/not_connected.svg";
 
-import "./style.scss";
+import "../style.scss";
 
 const UserLoginAuthComplete = ({ setAccountData }) => {
   const history = useHistory();
@@ -22,7 +22,7 @@ const UserLoginAuthComplete = ({ setAccountData }) => {
 
   useEffect(() => {
     if (code) {
-      loginUserUsingOAuth({ code })
+      authenticateUserUsingAuth({ code })
         .then((response) => {
           localStorage.setItem(AUTHORIZATION_KEY, response.token);
           getUserDetail().then((response) => {

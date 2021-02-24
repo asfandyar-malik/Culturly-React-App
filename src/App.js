@@ -7,10 +7,12 @@ import { isEmpty } from "./_dash";
 import { getUserDetail } from "./actions";
 import { IndexRoute, LoggedInRoute, NonLoggedInRoute } from "./utils/appRouter";
 
+import Settings from "./settings";
 import LandingPage from "./landingPage";
 import AccountHook from "./hooks/account";
-import UserLoginAuthComplete from "./login";
 import MemberManagement from "./memberManagement";
+import UserLoginAuthComplete from "./authComplete/user";
+import WorkspaceAuthComplete from "./authComplete/workspace";
 
 import "./styles/App.scss";
 
@@ -48,11 +50,23 @@ const AppRouter = ({ accountData, setAccountData }) => {
           component={MemberManagement}
           path={routes.MEMBERS_ROUTE}
         />
+        <LoggedInRoute
+          exact
+          component={Settings}
+          isLoggedIn={isLoggedIn}
+          path={routes.SETTINGS_ROUTE}
+        />
         <NonLoggedInRoute
           exact
           isLoggedIn={isLoggedIn}
           component={UserLoginAuthComplete}
           path={routes.SLACK_OAUTH_COMPLETE_ROUTE}
+        />
+        <NonLoggedInRoute
+          exact
+          isLoggedIn={isLoggedIn}
+          component={WorkspaceAuthComplete}
+          path={routes.SLACK_WORKSPACE_OAUTH_COMPLETE_ROUTE}
         />
       </Switch>
     </Router>
