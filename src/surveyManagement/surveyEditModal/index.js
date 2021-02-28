@@ -1,30 +1,46 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Modal, TimePicker, Form, Select, Switch, Row, Col } from "antd";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import { isEmpty } from "../../_dash";
+import { getTimezoneTime } from "../../utils";
 import { updateSurveyForWorkspace } from "../../actions";
 import { SURVEY_DAY_OPTIONS, SURVEY_WEEKLY_INTERVAL } from "../../constants";
 
 import "./style.scss";
 
-const SurveyEditModal = ({ visible, survey, onClose, onSave }) => {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
+
+const SurveyEditModal = ({ visible, timezone, survey, onClose, onSave }) => {
   const [form] = Form.useForm();
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (visible && !isEmpty(survey)) {
-      survey.survey_time = moment(survey.survey_time, "HH:mm:ss");
-      survey.email_report_time = moment(survey.email_report_time, "HH:mm:ss");
+      const surveyTime = getTimezoneTime(survey.survey_time, timezone);
+      const emailReportTime = getTimezoneTime(
+        survey.email_report_time,
+        timezone
+      );
+      survey.survey_time = moment(surveyTime, "HH:mm:ss");
+      survey.email_report_time = moment(emailReportTime, "HH:mm:ss");
       form.setFieldsValue(survey);
     }
   }, [visible]);
 
   function onFormSubmit(values) {
     setSaving(true);
+    const surveyTime = moment.utc(values.survey_time);
+    const emailReportTime = moment.utc(values.email_report_time);
     values.survey = survey.id;
-    values.survey_time = values.survey_time.format("HH:mm:ss");
-    values.email_report_time = values.email_report_time.format("HH:mm:ss");
+    values.survey_time = surveyTime.format("HH:mm:ss");
+    values.email_report_time = emailReportTime.format("HH:mm:ss");
     updateSurveyForWorkspace(values, survey.workspace_survey_id)
       .then((response) => {
         let { data } = response;
@@ -71,7 +87,11 @@ const SurveyEditModal = ({ visible, survey, onClose, onSave }) => {
             ""
           )}
           <Col span={12}>
-            <Form.Item label="Schedule" name="survey_time">
+            <Form.Item
+              label="Schedule"
+              name="survey_time"
+              extra={`Timezone: ${timezone}`}
+            >
               <TimePicker
                 format="HH:mm"
                 minuteStep={30}
@@ -81,7 +101,11 @@ const SurveyEditModal = ({ visible, survey, onClose, onSave }) => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Email Report time" name="email_report_time">
+            <Form.Item
+              name="email_report_time"
+              label="Email Report time"
+              extra={`Timezone: ${timezone}`}
+            >
               <TimePicker
                 format="HH:mm"
                 minuteStep={30}

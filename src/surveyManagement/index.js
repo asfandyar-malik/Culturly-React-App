@@ -1,15 +1,25 @@
-import moment from "moment";
 import { useEffect, useState } from "react";
 import { Table, Form } from "antd";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import { getSurveys } from "../actions";
+import { getTimezoneTime } from "../utils";
 import { SURVEY_DAY_OPTIONS } from "../constants";
 
+import AccountHook from "../hooks/account";
 import SurveyEditModal from "./surveyEditModal";
 import SurveyDetailModal from "./surveyDetailModal";
 
-const SurveyManagement = () => {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
+
+const SurveyManagement = ({ accountData }) => {
   const [form] = Form.useForm();
+  const tz = accountData.workspace.timezone;
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [surveysCount, setSurveysCount] = useState(0);
@@ -73,21 +83,19 @@ const SurveyManagement = () => {
     {
       key: "schedule_on",
       title: "Schedule on",
-      render: (record) => (
-        <p>
-          {record.interval === "daily" ? (
-            <span>
-              Every day on{" "}
-              {moment(record.survey_time, "HH:mm::ss").format("HH:mm")}
-            </span>
-          ) : (
-            <span>
-              Every {getSurveyDayDisplay(record.survey_day)} on{" "}
-              {moment(record.survey_time, "HH:mm::ss").format("HH:mm")}
-            </span>
-          )}
-        </p>
-      ),
+      render: (record) => {
+        return (
+          <p>
+            {record.interval === "daily" ? (
+              <span>Every day on </span>
+            ) : (
+              <span>Every {getSurveyDayDisplay(record.survey_day)} on </span>
+            )}
+            <span>{getTimezoneTime(record.survey_time, tz)}</span>
+            <span> ({tz})</span>
+          </p>
+        );
+      },
     },
     {
       key: "no_of_questions",
@@ -95,7 +103,7 @@ const SurveyManagement = () => {
       render: (record) => (
         <p>
           {record.no_of_questions}{" "}
-          <span onClick={() => onViewQuesions(record)}>View questions</span>
+          {/* <span onClick={() => onViewQuesions(record)}>View questions</span> */}
         </p>
       ),
     },
@@ -125,6 +133,7 @@ const SurveyManagement = () => {
         onClose={() => setSurveyDetailModalVisible(false)}
       />
       <SurveyEditModal
+        timezone={tz}
         survey={{ ...selectedSurvey }}
         visible={surveyEditModalVisible}
         onSave={(data) => onSurveyEdit(data)}
@@ -134,4 +143,4 @@ const SurveyManagement = () => {
   );
 };
 
-export default SurveyManagement;
+export default AccountHook(SurveyManagement);

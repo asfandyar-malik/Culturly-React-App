@@ -1,4 +1,4 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -26,6 +26,9 @@ const WorkspaceAuthComplete = ({ setAccountData }) => {
         .then((response) => {
           localStorage.setItem(AUTHORIZATION_KEY, response.token);
           getUserDetail().then((response) => {
+            message.success(
+              "Congratulations!! Your workspace has been succesfully connected"
+            );
             setAccountData(response);
             setLoading(false);
           });

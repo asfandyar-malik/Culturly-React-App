@@ -11,6 +11,7 @@
     "babel-plugin-import": "^1.13.3",
     "babel-plugin-jsx-control-statements": "^4.1.0",
     "customize-cra": "^1.0.0",
+    "dayjs": "^1.10.4",
     "eslint-plugin-jsx-control-statements": "^2.2.1",
     "jsx-control-statements": "^3.2.8",
     "node-sass": "^4.14.1",
