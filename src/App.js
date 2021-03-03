@@ -50,12 +50,6 @@ const AppRouter = ({ accountData, setAccountData }) => {
           component={MemberManagement}
           path={routes.MEMBERS_ROUTE}
         />
-        <LoggedInRoute
-          exact
-          component={Settings}
-          isLoggedIn={isLoggedIn}
-          path={routes.SETTINGS_ROUTE}
-        />
         <NonLoggedInRoute
           exact
           isLoggedIn={isLoggedIn}
@@ -67,6 +61,12 @@ const AppRouter = ({ accountData, setAccountData }) => {
           isLoggedIn={isLoggedIn}
           component={WorkspaceAuthComplete}
           path={routes.SLACK_WORKSPACE_OAUTH_COMPLETE_ROUTE}
+        />
+        <LoggedInRoute
+          exact
+          component={Settings}
+          isLoggedIn={isLoggedIn}
+          path={routes.SETTINGS_ROUTE}
         />
       </Switch>
     </Router>

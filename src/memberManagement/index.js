@@ -7,6 +7,8 @@ import AccountHook from "../hooks/account";
 
 const MemberManagement = ({ accountData }) => {
   const { member } = accountData;
+  const isManager = accountData.member.is_manager;
+
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [membersCount, setMembersCount] = useState(0);
@@ -65,26 +67,28 @@ const MemberManagement = ({ accountData }) => {
       title: "Is Active",
       render: (record) => (record.is_active ? "Yes" : "No"),
     },
-    {
-      key: "actions",
-      title: "Actions",
-      render: (record) => {
-        return (
-          <Space size="middle">
-            {member.is_admin && member.email !== record.email ? (
-              <a onClick={() => onToggleManager(record)}>
-                {record.is_manager ? "Remove as manager" : "Set as manager"}
-              </a>
-            ) : (
-              ""
-            )}
-            <a onClick={() => onToggleActive(record)}>
-              {record.is_active ? "Make inactive" : "Set active"}
-            </a>
-          </Space>
-        );
-      },
-    },
+    isManager
+      ? {
+          key: "actions",
+          title: "Actions",
+          render: (record) => {
+            return (
+              <Space size="middle">
+                {member.is_admin && member.email !== record.email ? (
+                  <a onClick={() => onToggleManager(record)}>
+                    {record.is_manager ? "Remove as manager" : "Set as manager"}
+                  </a>
+                ) : (
+                  ""
+                )}
+                <a onClick={() => onToggleActive(record)}>
+                  {record.is_active ? "Make inactive" : "Set active"}
+                </a>
+              </Space>
+            );
+          },
+        }
+      : {},
   ];
 
   return (

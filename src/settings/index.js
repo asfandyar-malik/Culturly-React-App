@@ -10,6 +10,8 @@ import "./style.scss";
 const Settings = ({ accountData, setAccountData }) => {
   const [form] = Form.useForm();
   const { workspace } = accountData;
+  const isManager = accountData.member.is_manager;
+
   const [saving, setSaving] = useState(false);
   const [timezones, setTimezones] = useState([]);
 
@@ -44,6 +46,7 @@ const Settings = ({ accountData, setAccountData }) => {
       <Form.Item label="Timezone" name="timezone">
         <Select
           showSearch
+          disabled={!isManager}
           filterOption={(input, option) =>
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
@@ -57,11 +60,13 @@ const Settings = ({ accountData, setAccountData }) => {
           })}
         </Select>
       </Form.Item>
-      <Form.Item noStyle>
-        <Button type="primary" htmlType="submit" loading={saving}>
-          Save
-        </Button>
-      </Form.Item>
+      <If condition={isManager}>
+        <Form.Item noStyle>
+          <Button type="primary" htmlType="submit" loading={saving}>
+            Save
+          </Button>
+        </Form.Item>
+      </If>
     </Form>
   );
 };

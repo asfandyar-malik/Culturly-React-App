@@ -20,6 +20,8 @@ dayjs.extend(customParseFormat);
 const SurveyManagement = ({ accountData }) => {
   const [form] = Form.useForm();
   const tz = accountData.workspace.timezone;
+  const isManager = accountData.member.is_manager;
+
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [surveysCount, setSurveysCount] = useState(0);
@@ -100,20 +102,17 @@ const SurveyManagement = ({ accountData }) => {
     {
       key: "no_of_questions",
       title: "No of questions",
-      render: (record) => (
-        <p>
-          {record.no_of_questions}{" "}
-          {/* <span onClick={() => onViewQuesions(record)}>View questions</span> */}
-        </p>
-      ),
+      render: (record) => <p>{record.no_of_questions}</p>,
     },
-    {
-      key: "actions",
-      title: "Actions",
-      render: (record) => {
-        return <a onClick={() => onEditSurvey(record)}>Edit survey</a>;
-      },
-    },
+    isManager
+      ? {
+          key: "actions",
+          title: "Actions",
+          render: (record) => {
+            return <a onClick={() => onEditSurvey(record)}>Edit survey</a>;
+          },
+        }
+      : {},
   ];
 
   return (
@@ -127,18 +126,20 @@ const SurveyManagement = ({ accountData }) => {
           pagination={{ total: surveysCount }}
         />
       </Form>
-      <SurveyDetailModal
-        survey={selectedSurvey}
-        visible={surveyDetailModalVisible}
-        onClose={() => setSurveyDetailModalVisible(false)}
-      />
-      <SurveyEditModal
-        timezone={tz}
-        survey={{ ...selectedSurvey }}
-        visible={surveyEditModalVisible}
-        onSave={(data) => onSurveyEdit(data)}
-        onClose={() => setSurveyEditModalVisible(false)}
-      />
+      <If condition={isManager}>
+        <SurveyDetailModal
+          survey={selectedSurvey}
+          visible={surveyDetailModalVisible}
+          onClose={() => setSurveyDetailModalVisible(false)}
+        />
+        <SurveyEditModal
+          timezone={tz}
+          survey={{ ...selectedSurvey }}
+          visible={surveyEditModalVisible}
+          onSave={(data) => onSurveyEdit(data)}
+          onClose={() => setSurveyEditModalVisible(false)}
+        />
+      </If>
     </>
   );
 };

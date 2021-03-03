@@ -10,11 +10,9 @@ import {
 import { AccountDataProvider } from "./context/accountData";
 
 ReactDOM.render(
-  // <React.StrictMode>
   <AccountDataProvider initialState={accountData} reducer={accountDataReducer}>
     <AppRouter />
   </AccountDataProvider>,
-  // </React.StrictMode>,
   document.getElementById("root")
 );
 

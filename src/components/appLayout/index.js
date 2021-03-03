@@ -1,6 +1,6 @@
-import { Layout, Menu, Avatar, Dropdown } from "antd";
 import { useState, useEffect } from "react";
 import { matchPath, useHistory } from "react-router-dom";
+import { Layout, Menu, Avatar, Dropdown, Alert } from "antd";
 
 import { ROUTES } from "../../routes";
 import { userLogout } from "../../actions";
@@ -44,6 +44,10 @@ const AppLayout = ({ children, accountData, setAccountData }) => {
 
   return (
     <Layout>
+      <Alert
+        banner
+        message="You only have read access to the dashboard. If you need write access, please contact workspace administrator or manager."
+      />
       <Header className="header">
         <div className="logo" style={{ backgroundImage: `url(${logo})` }} />
         <Dropdown
