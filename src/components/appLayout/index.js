@@ -44,10 +44,12 @@ const AppLayout = ({ children, accountData, setAccountData }) => {
 
   return (
     <Layout>
-      <Alert
-        banner
-        message="You only have read access to the dashboard. If you need write access, please contact workspace administrator or manager."
-      />
+      <If condition={!accountData.member.is_manager}>
+        <Alert
+          banner
+          message="You only have read access to the dashboard. If you need write access, please contact workspace administrator or manager."
+        />
+      </If>
       <Header className="header">
         <div className="logo" style={{ backgroundImage: `url(${logo})` }} />
         <Dropdown
