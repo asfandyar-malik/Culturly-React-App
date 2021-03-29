@@ -10,6 +10,7 @@ import { IndexRoute, LoggedInRoute, NonLoggedInRoute } from "./utils/appRouter";
 import Settings from "./settings";
 import LandingPage from "./landingPage";
 import AccountHook from "./hooks/account";
+import TeamManagement from './teamManagement';
 import MemberManagement from "./memberManagement";
 import UserLoginAuthComplete from "./authComplete/user";
 import WorkspaceAuthComplete from "./authComplete/workspace";
@@ -67,6 +68,12 @@ const AppRouter = ({ accountData, setAccountData }) => {
           component={Settings}
           isLoggedIn={isLoggedIn}
           path={routes.SETTINGS_ROUTE}
+        />
+        <LoggedInRoute
+          exact
+          component={TeamManagement}
+          isLoggedIn={isLoggedIn}
+          path={routes.TEAMS_ROUTE}
         />
       </Switch>
     </Router>

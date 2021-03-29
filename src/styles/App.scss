@@ -69,7 +69,35 @@ label {
   font-size: 1.6rem;
 }
 
+.text-xl {
+  font-size: 2rem;
+}
+
+.font-bold {
+  font-weight: 600;
+}
+
+.text-center {
+  text-align: center;
+}
+
 @include list-loop(".pad-t-", "padding-top");
 @include list-loop(".mar-t-", "margin-top");
 @include list-loop(".pad-b-", "padding-bottom");
 @include list-loop(".mar-b-", "margin-bottom");
+
+.member-list-item {
+  padding: 1rem;
+  min-width: 20rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eceff1;
+  img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+  }
+  .anticon {
+    font-size: 2rem;
+    cursor: pointer;
+  }
+}

@@ -105,3 +105,25 @@ export const updateWorkspace = (workspaceId, payload) => {
   let path = endpoints.SLACK_WORKSPACE_UPDATE_API_PATH;
   return instance.patch(path.replace("{}", workspaceId), payload);
 };
+
+export const getWorkspaceRemainingTeamMembers = () => {
+  return instance.get(endpoints.WORKSPACE_REMAINING_TEAM_MEMBERS_API_PATH);
+};
+
+export const getWorkspaceTeams = () => {
+  return instance.get(endpoints.WORKSPACE_TEAMS_BASE_API_PATH);
+};
+
+export const createWorkspaceTeam = (payload) => {
+  return instance.post(endpoints.WORKSPACE_TEAMS_BASE_API_PATH, payload);
+};
+
+export const updateWorkspaceTeam = (teamId, payload) => {
+  let path = endpoints.WORKSPACE_TEAM_UPDATE_API_PATH.replace("{}", teamId);
+  return instance.patch(path, payload);
+};
+
+export const deleteWorkspaceTeam = (teamId) => {
+  let path = endpoints.WORKSPACE_TEAM_UPDATE_API_PATH.replace("{}", teamId);
+  return instance.delete(path);
+};

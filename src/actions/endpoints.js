@@ -6,6 +6,10 @@ export const SLACK_MEMBER_DETAIL_API_PATH = `${SLACK_MEMBERS_BASE_API_PATH}{}/`;
 export const WORKSPACE_SURVEY_BASE_API_PATH = "slack_bot/workspace_surveys/";
 export const WORKSPACE_SURVEY_DETAIL_API_PATH = `${WORKSPACE_SURVEY_BASE_API_PATH}{}/`;
 
+export const WORKSPACE_TEAMS_BASE_API_PATH = "slack_bot/teams/";
+export const WORKSPACE_TEAM_UPDATE_API_PATH = "slack_bot/teams/{}/";
+export const WORKSPACE_REMAINING_TEAM_MEMBERS_API_PATH = 'slack_bot/members/remaining_team_members'
+
 export const USER_DETAIL_API_PATH = "user/";
 export const USER_LOGOUT_API_PATH = "logout/";
 

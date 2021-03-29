@@ -1,6 +1,7 @@
 export const INDEX_ROUTE = "/";
 export const MEMBERS_ROUTE = "/members/";
 export const SETTINGS_ROUTE = "/settings/";
+export const TEAMS_ROUTE = "/teams/";
 
 export const SLACK_OAUTH_COMPLETE_ROUTE = "/auth-user/complete/";
 export const SLACK_WORKSPACE_OAUTH_COMPLETE_ROUTE = "/auth-workspace/complete/";
@@ -20,5 +21,10 @@ export const ROUTES = [
     key: "settings",
     path: SETTINGS_ROUTE,
     title: "Settings",
+  },
+  {
+    key: "teams",
+    title: "Teams",
+    path: TEAMS_ROUTE,
   },
 ];
