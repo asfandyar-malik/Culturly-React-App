@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { Col, Row, Space, Button } from "antd";
-import {
-  DeleteOutlined,
-  UserAddOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 
 const TeamMemberSelectionStep = ({
   saving,
   members,
+  managers,
   teamDetail,
   onBack,
   onProceed,
 }) => {
   const [allMembers, setAllMembers] = useState([]);
+  const [allManagers, setAllManagers] = useState([]);
   const [filterMembers, setFilterMembers] = useState([]);
+  const [filterManagers, setFilterManagers] = useState([]);
+
   const [isInitalLoaded, setIsInitalLoaded] = useState(false);
 
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -22,40 +22,38 @@ const TeamMemberSelectionStep = ({
 
   useEffect(() => {
     setAllMembers(members);
+    setAllManagers(managers);
     setFilterMembers(members);
-    const teamMembers = teamDetail.members;
-    teamMembers.filter((item) => {
-      if (item.is_manager) {
-        selectedManagers.push(item.member);
-      } else {
-        selectedMembers.push(item.member);
-      }
-    });
-    setSelectedMembers(selectedMembers);
-    setSelectedManagers(selectedManagers);
+    setFilterManagers(managers);
+    setSelectedMembers(teamDetail.members.map((item) => item.member));
+    setSelectedManagers(teamDetail.managers.map((item) => item.member));
     setIsInitalLoaded(true);
   }, [members, teamDetail]);
 
   useEffect(() => {
     if (isInitalLoaded) {
       let newMembers = [...allMembers];
+      let newManagers = [...allManagers];
       newMembers = newMembers.filter(
         (item) => !selectedMembers.map((i) => i.id).includes(item.id)
       );
-      newMembers = newMembers.filter(
+      newManagers = newManagers.filter(
         (item) => !selectedManagers.map((i) => i.id).includes(item.id)
       );
       setFilterMembers([...newMembers]);
+      setFilterManagers([...newManagers]);
     }
   }, [selectedMembers, selectedManagers]);
 
   const onDeselectManager = (member) => {
     const index = selectedManagers.findIndex((item) => item.id === member.id);
     if (index > -1) {
-      const memberIndex = allMembers.findIndex((item) => item.id === member.id);
+      const memberIndex = allManagers.findIndex(
+        (item) => item.id === member.id
+      );
       if (memberIndex === -1) {
-        allMembers.push(member);
-        setAllMembers(allMembers);
+        allManagers.push(member);
+        setAllManagers(allManagers);
       }
       selectedManagers.splice(index, 1);
       setSelectedManagers([...selectedManagers]);
@@ -81,6 +79,12 @@ const TeamMemberSelectionStep = ({
     return member ? member.id : null;
   }
 
+  function getExistingManagerId(memberId) {
+    const teamMembers = teamDetail.managers;
+    const member = teamMembers.find((item) => item.member.id === memberId);
+    return member ? member.id : null;
+  }
+
   function onSubmit() {
     const memberArrary = selectedMembers.map((item) => {
       return {
@@ -88,20 +92,19 @@ const TeamMemberSelectionStep = ({
         member: {
           id: item.id,
         },
-        member_type: "member",
       };
     });
     const managerArrary = selectedManagers.map((item) => {
       return {
-        id: getExistingMemberId(item.id),
+        id: getExistingManagerId(item.id),
         member: {
           id: item.id,
         },
-        member_type: "manager",
       };
     });
     const payload = {
-      members: [...memberArrary, ...managerArrary],
+      members: memberArrary,
+      managers: managerArrary,
     };
     onProceed(payload);
   }
@@ -109,38 +112,58 @@ const TeamMemberSelectionStep = ({
   return (
     <Row className="mar-t-24" gutter={24}>
       <Col span={8}>
-        {filterMembers.length ? (
-          filterMembers.map((item) => {
-            return (
-              <Space className="member-list-item" key={item.id}>
-                <div>
-                  <Space>
-                    <img src={item.avatar} />
-                    <p>{item.display_name || item.name}</p>
-                  </Space>
-                </div>
-                <div>
-                  <Space>
+        <div className="mar-b-12">
+          <p className="text-xl">Select managers</p>
+          {filterManagers.length ? (
+            filterManagers.map((item) => {
+              return (
+                <Space className="member-list-item" key={item.id}>
+                  <div>
+                    <Space>
+                      <img src={item.avatar} />
+                      <p>{item.display_name || item.name}</p>
+                    </Space>
+                  </div>
+                  <div>
+                    <PlusCircleOutlined
+                      onClick={() =>
+                        setSelectedManagers([...selectedManagers, item])
+                      }
+                    />
+                  </div>
+                </Space>
+              );
+            })
+          ) : (
+            <p>No members</p>
+          )}
+        </div>
+        <div>
+          <p className="text-xl">Select members</p>
+          {filterMembers.length ? (
+            filterMembers.map((item) => {
+              return (
+                <Space className="member-list-item" key={item.id}>
+                  <div>
+                    <Space>
+                      <img src={item.avatar} />
+                      <p>{item.display_name || item.name}</p>
+                    </Space>
+                  </div>
+                  <div>
                     <PlusCircleOutlined
                       onClick={() =>
                         setSelectedMembers([...selectedMembers, item])
                       }
                     />
-                    <If condition={item.is_manager}>
-                      <UserAddOutlined
-                        onClick={() =>
-                          setSelectedManagers([...selectedManagers, item])
-                        }
-                      />
-                    </If>
-                  </Space>
-                </div>
-              </Space>
-            );
-          })
-        ) : (
-          <p>No members</p>
-        )}
+                  </div>
+                </Space>
+              );
+            })
+          ) : (
+            <p>No members</p>
+          )}
+        </div>
       </Col>
       <Col span={16}>
         <div>

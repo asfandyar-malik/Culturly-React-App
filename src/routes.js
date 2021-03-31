@@ -8,6 +8,11 @@ export const SLACK_WORKSPACE_OAUTH_COMPLETE_ROUTE = "/auth-workspace/complete/";
 
 export const ROUTES = [
   {
+    key: "teams",
+    title: "Teams",
+    path: TEAMS_ROUTE,
+  },
+  {
     key: "dashboard",
     path: INDEX_ROUTE,
     title: "Dashboard",
@@ -21,10 +26,5 @@ export const ROUTES = [
     key: "settings",
     path: SETTINGS_ROUTE,
     title: "Settings",
-  },
-  {
-    key: "teams",
-    title: "Teams",
-    path: TEAMS_ROUTE,
   },
 ];

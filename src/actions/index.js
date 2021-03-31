@@ -110,6 +110,10 @@ export const getWorkspaceRemainingTeamMembers = () => {
   return instance.get(endpoints.WORKSPACE_REMAINING_TEAM_MEMBERS_API_PATH);
 };
 
+export const getWorkspaceRemainingTeamManagers = () => {
+  return instance.get(endpoints.WORKSPACE_REMAINING_TEAM_MANAGERS_API_PATH);
+};
+
 export const getWorkspaceTeams = () => {
   return instance.get(endpoints.WORKSPACE_TEAMS_BASE_API_PATH);
 };

@@ -71,6 +71,25 @@ const TeamManagement = () => {
       ),
     },
     {
+      key: "managers",
+      title: "Managers",
+      render: (record) => (
+        <Avatar.Group maxCount={5}>
+          {record.managers.map((item) => {
+            const { member } = item;
+            return (
+              <Tooltip
+                key={member.id}
+                title={member.display_name || member.name}
+              >
+                <Avatar src={member.avatar} />
+              </Tooltip>
+            );
+          })}
+        </Avatar.Group>
+      ),
+    },
+    {
       key: "actions",
       title: "Actions",
       render: (record) => {
