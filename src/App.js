@@ -10,10 +10,14 @@ import { IndexRoute, LoggedInRoute, NonLoggedInRoute } from "./utils/appRouter";
 import Settings from "./settings";
 import LandingPage from "./landingPage";
 import AccountHook from "./hooks/account";
-import TeamManagement from './teamManagement';
+import TeamManagement from "./teamManagement";
 import MemberManagement from "./memberManagement";
 import UserLoginAuthComplete from "./authComplete/user";
 import WorkspaceAuthComplete from "./authComplete/workspace";
+
+import EventFeedback from "./events/feedback";
+import EventRequests from "./events/requests";
+import EventRecommendations from "./events/recommendation";
 
 import "./styles/App.scss";
 
@@ -74,6 +78,24 @@ const AppRouter = ({ accountData, setAccountData }) => {
           component={TeamManagement}
           isLoggedIn={isLoggedIn}
           path={routes.TEAMS_ROUTE}
+        />
+        <LoggedInRoute
+          exact
+          component={EventFeedback}
+          isLoggedIn={isLoggedIn}
+          path={routes.EVENT_FEEDBACK_ROUTE}
+        />
+        <LoggedInRoute
+          exact
+          component={EventRequests}
+          isLoggedIn={isLoggedIn}
+          path={routes.EVENT_REQUESTS_ROUTE}
+        />
+        <LoggedInRoute
+          exact
+          component={EventRecommendations}
+          isLoggedIn={isLoggedIn}
+          path={routes.EVENT_RECOMMENDATION_ROUTE}
         />
       </Switch>
     </Router>

@@ -131,3 +131,15 @@ export const deleteWorkspaceTeam = (teamId) => {
   let path = endpoints.WORKSPACE_TEAM_UPDATE_API_PATH.replace("{}", teamId);
   return instance.delete(path);
 };
+
+export const getEventFeedback = () => {
+  return instance.get(endpoints.WORKSPACE_EVENT_FEEDBACK_API_PATH);
+};
+
+export const getEventRequests = () => {
+  return instance.get(endpoints.WORKSPACE_EVENT_REQUESTS_API_PATH);
+};
+
+export const getEventRecommendations = () => {
+  return instance.get(endpoints.EVENT_RECOMMENDATION_API_PATH);
+};
