@@ -3,25 +3,65 @@
 .ant-layout {
   height: 100%;
   background-color: #ffffff;
+
   .ant-layout-header {
     height: auto;
     line-height: 1;
     padding: 2.8rem 3rem;
     background-color: #ffffff;
     border-bottom: 1px solid $BORDER_COLOR;
+    box-shadow: 0px 2px 8px rgba(96, 125, 139, 0.05);
+    position: relative;
+
+    .header-img {
+      position: absolute;
+      width: 400px;
+      top: 0;
+      left: 300px;
+    }
   }
+
   .ant-layout-sider {
     border-right: 1px solid $BORDER_COLOR;
+    box-shadow: 0px 2px 8px rgba(96, 125, 139, 0.05);
+    background: #f9feff !important;
+
+    .inner-sider {
+      height: 100%;
+    }
+
+    .company-logo {
+      width: 100%;
+      display: flex;
+      height: 100px;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 140px;
+        object-fit: contain;
+      }
+    }
+
+    .sider-img {
+      width: 170px;
+      position: absolute;
+      bottom: 50px;
+      object-fit: contain;
+    }
+
     .logo-block {
       padding: 3.2rem 2rem;
     }
     .ant-menu {
       border: 0;
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       color: $SECONDARY_TEXT_COLOR;
+      background: #f9feff !important;
     }
   }
   .ant-layout-content {
     padding: 3rem;
+    background: #fff;
   }
 }

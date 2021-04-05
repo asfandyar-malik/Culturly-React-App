@@ -7,6 +7,10 @@ import { userLogout } from "actions";
 import { AUTHORIZATION_KEY } from "../../constants";
 
 import logo from "assets/images/logo.svg";
+import culturlyLogo from "../../images/culturly.jpeg";
+import siderImage from "../../images/sider.png";
+import headerImage from "../../images/header.png";
+
 import AccountHook from "hooks/account";
 
 const { Header, Content, Sider } = Layout;
@@ -52,6 +56,7 @@ const AppLayout = ({ children, accountData, setAccountData }) => {
       </If>
       <Header className="header">
         <div className="logo" style={{ backgroundImage: `url(${logo})` }} />
+        <img className="header-img" src={headerImage} alt="logo" />
         <Dropdown
           trigger={["click"]}
           overlay={
@@ -67,20 +72,29 @@ const AppLayout = ({ children, accountData, setAccountData }) => {
         </Dropdown>
       </Header>
       <Layout>
-        <Sider width={200}>
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedMenu.key]}
-            style={{ height: "100%", borderRight: 0 }}
-          >
-            {ROUTES.map((item) => {
-              return (
-                <Menu.Item key={item.key} onClick={() => onMenuItemClick(item)}>
-                  {item.title}
-                </Menu.Item>
-              );
-            })}
-          </Menu>
+        <Sider width={240}>
+          <div className="sider-inner">
+            <div className="company-logo">
+              <img src={culturlyLogo} alt="logo" />
+            </div>
+            <Menu
+              mode="inline"
+              selectedKeys={[selectedMenu.key]}
+              style={{ borderRight: 0, background: "#f9feff" }}
+            >
+              {ROUTES.map((item) => {
+                return (
+                  <Menu.Item
+                    key={item.key}
+                    onClick={() => onMenuItemClick(item)}
+                  >
+                    {item.title}
+                  </Menu.Item>
+                );
+              })}
+            </Menu>
+            <img className="sider-img" src={siderImage} alt="logo" />
+          </div>
         </Sider>
         <Layout>
           <Content>{children}</Content>
