@@ -1,0 +1,19 @@
+@import "../../styles//variable.scss";
+
+.event-recommendations {
+  .item {
+    border-radius: 6px;
+    border: 1px solid $BORDER_COLOR;
+    .image {
+      height: 16rem;
+      background-size: cover;
+      border-radius: 6px 6px 0 0;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .detail {
+      padding: 1.2rem;
+      text-align: center;
+    }
+  }
+}

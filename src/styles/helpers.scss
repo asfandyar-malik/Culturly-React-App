@@ -1,0 +1,72 @@
+@import "./variable.scss";
+
+.text-center {
+    text-align: center;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.text-base {
+    font-size: 1.2rem;
+    &.secondary {
+        color: $SECONDARY_TEXT_COLOR;
+    }
+}
+
+.text-xl {
+    font-size: 1.4rem;
+    line-height: 1.75;
+    &.medium {
+        font-weight: 600;
+    }
+    &.secondary {
+        color: $SECONDARY_TEXT_COLOR;
+    }
+}
+
+.text-2xl {
+    font-size: 1.6rem;
+    line-height: 2;
+}
+
+.text-3xl {
+    font-size: 1.8rem;
+    line-height: 2;
+    &.medium {
+        font-weight: 600;
+    }
+    &.bold {
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+}
+
+.text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+    &.medium {
+        font-weight: 600;
+    }
+    &.bold {
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+}
+
+.vertical-center {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.font-medium {
+    font-weight: 600;
+}
+
+@include list-loop(".pt-", "padding-top");
+@include list-loop(".mt-", "margin-top");
+@include list-loop(".pb-", "padding-bottom");
+@include list-loop(".mb-", "margin-bottom");

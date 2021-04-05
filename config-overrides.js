@@ -14,12 +14,9 @@ module.exports = override(
   addLessLoader({
     lessOptions: {
       javascriptEnabled: true,
-      // modifyVars: {
-      //   "@text-color": "#263238",
-      //   "@heading-color": "#263238",
-      //   "@primary-color": "#0F5EF7",
-      //   "@item-hover-bg": "#eceff1"
-      // },
+      modifyVars: {
+        "@primary-color": "#30CAEC",
+      },
     },
   }),
   addBabelPlugin(["jsx-control-statements"])

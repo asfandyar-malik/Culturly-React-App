@@ -1,4 +1,4 @@
-@mixin list-loop($className, $styleName, $offset: 4, $start: 0, $max: 32, $divider: 1) {
+@mixin list-loop($className, $styleName, $offset: 4, $start: 0, $max: 60, $divider: 1) {
     $i: $start;
     @while $i <= $max {
         #{$className + $i} {

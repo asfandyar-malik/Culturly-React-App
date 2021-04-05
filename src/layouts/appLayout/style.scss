@@ -1,0 +1,27 @@
+@import "../../styles/variable.scss";
+
+.ant-layout {
+  height: 100%;
+  background-color: #ffffff;
+  .ant-layout-header {
+    height: auto;
+    line-height: 1;
+    padding: 2.8rem 3rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid $BORDER_COLOR;
+  }
+  .ant-layout-sider {
+    border-right: 1px solid $BORDER_COLOR;
+    .logo-block {
+      padding: 3.2rem 2rem;
+    }
+    .ant-menu {
+      border: 0;
+      font-size: 1.6rem;
+      color: $SECONDARY_TEXT_COLOR;
+    }
+  }
+  .ant-layout-content {
+    padding: 3rem;
+  }
+}

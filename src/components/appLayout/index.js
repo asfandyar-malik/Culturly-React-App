@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { matchPath, useHistory } from "react-router-dom";
 import { Layout, Menu, Avatar, Dropdown, Alert } from "antd";
 
-import { ROUTES } from "../../routes";
-import { userLogout } from "../../actions";
+import { ROUTES } from "routes";
+import { userLogout } from "actions";
 import { AUTHORIZATION_KEY } from "../../constants";
 
-import logo from "../../images/logo.png";
-import AccountHook from "../../hooks/account";
+import logo from "assets/images/logo.svg";
+import AccountHook from "hooks/account";
 
 const { Header, Content, Sider } = Layout;
 

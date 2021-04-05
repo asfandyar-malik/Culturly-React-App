@@ -1,0 +1,55 @@
+@import "./mixins.scss";
+@import "./helpers.scss";
+
+#root {
+  height: 100%;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  margin: 0;
+  color: #000000;
+  font-family: "Montserrat", sans-serif;
+}
+
+p,
+span,
+label {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+.common-list {
+  .ant-list-header {
+    padding: 1.8rem 0;
+    border-bottom: 0 !important;
+    color: $SECONDARY_TEXT_COLOR;
+    .ant-row {
+      margin: 0 !important;
+    }
+  }
+  .ant-list-item {
+    padding: 1.8rem 0;
+    border-bottom: 0 !important;
+    .ant-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: 0 !important;
+    }
+    &:nth-child(even) {
+      border-radius: 10px;
+      background: rgba(179, 179, 179, 0.1);
+    }
+  }
+}
+
+.ant-card.no-padding {
+  .ant-card-body {
+    padding: 0;
+  }
+}
