@@ -7,9 +7,9 @@ import { ROUTES, INDEX_ROUTE } from "routes";
 import { AUTHORIZATION_KEY } from "../../constants";
 
 import AccountHook from "hooks/account";
-import culturlyLogo from "../../images/culturly.jpeg";
-import siderImage from "../../images/sider.png";
-import headerImage from "../../images/header.png";
+import siderImage from "images/sider.png";
+import headerImage from "images/header.png";
+import culturlyLogo from "images/culturly.jpeg";
 
 import RenderRoutes from "components/renderRoutes";
 
@@ -54,24 +54,22 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
   return (
     <Layout className="app-layout">
       <Sider theme="light" width={240}>
-        <div className="sider-inner">
-          <div className="company-logo">
-            <img src={culturlyLogo} alt="logo" />
-          </div>
-          <Menu theme="light" mode="inline" selectedKeys={[selectedMenu.key]}>
-            {ROUTES.map((item) => {
-              return (
-                <Menu.Item key={item.key} onClick={onMenuItemClick}>
-                  <Space>
-                    {item.icon}
-                    {item.title}
-                  </Space>
-                </Menu.Item>
-              );
-            })}
-          </Menu>
-          <img className="sider-img" src={siderImage} alt="logo" />
+        <div className="company-logo">
+          <img src={culturlyLogo} alt="logo" />
         </div>
+        <Menu theme="light" mode="inline" selectedKeys={[selectedMenu.key]}>
+          {ROUTES.map((item) => {
+            return (
+              <Menu.Item key={item.key} onClick={onMenuItemClick}>
+                <Space>
+                  {item.icon}
+                  {item.title}
+                </Space>
+              </Menu.Item>
+            );
+          })}
+        </Menu>
+        <img className="sider-img" src={siderImage} alt="logo" />
       </Sider>
       <Layout>
         <Header>
@@ -95,7 +93,7 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
               </Dropdown>
             </Col>
           </Row>
-          <img className="header-img" src={headerImage} alt="logo" />
+          <img className="header-img" src={headerImage} alt="header" />
         </Header>
         <Content>
           <RenderRoutes routes={routes} />
