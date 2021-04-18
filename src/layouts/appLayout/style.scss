@@ -2,6 +2,7 @@
 
 .ant-layout {
   height: 100%;
+  overflow: hidden;
   background-color: #ffffff;
 
   .ant-layout-header {
@@ -58,6 +59,7 @@
   }
   .ant-layout-content {
     padding: 3rem;
+    overflow-y: auto;
     background: #fff;
   }
 }

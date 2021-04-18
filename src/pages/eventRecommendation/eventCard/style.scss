@@ -1,0 +1,40 @@
+@import "../../../styles/variable.scss";
+
+.event-recommendation-event-card {
+  width: 24rem;
+  height: 35rem;
+  overflow: hidden;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  border-radius: 1.6rem;
+  box-shadow: 0 4px 8px rgba(191, 183, 204, 0.8);
+
+  .ant-card-cover img {
+    height: 22rem;
+    object-fit: cover;
+    border-radius: 1.6rem 1.6rem 0 0;
+  }
+
+  .ant-card-body {
+    padding: 1.6rem;
+  }
+
+  .title {
+    height: 100%;
+    color: #808080;
+  }
+
+  .ant-tag {
+    border: none;
+    height: 3rem;
+    color: #000000;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 1.6rem;
+    align-items: center;
+    border-radius: 0.6rem;
+    display: inline-flex;
+    width: fit-content;
+    background-color: $BORDER_COLOR;
+  }
+}

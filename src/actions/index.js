@@ -143,3 +143,11 @@ export const getEventRequests = () => {
 export const getEventRecommendations = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_API_PATH);
 };
+
+export const getEventRecommendationSections = () => {
+  return instance.get(endpoints.EVENT_RECOMMENDATION_SECTIONS_API_PATH);
+};
+
+export const getEventRecommendationCateogries = () => {
+  return instance.get(endpoints.EVENT_RECOMMENDATION_CATEGORIES_API_PATH);
+};

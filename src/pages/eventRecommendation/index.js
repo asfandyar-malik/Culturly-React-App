@@ -1,47 +1,58 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Badge, Row, Tag } from "antd";
+import { Card, Col, Row, Space } from "antd";
 
-import { getEventRecommendations } from "actions";
+import { LeftCircleFilled, RightCircleFilled } from "@ant-design/icons";
+
+import {
+  getEventRecommendationSections,
+  getEventRecommendationCateogries,
+} from "actions";
+
+import EventRecommendationEventCard from "./eventCard";
+import EventRecommendationCategoryCard from "./categoryCard";
 
 import "./style.scss";
 
-const RecommendationItem = ({ item }) => {
-  return (
-    <div className="item">
-      <div
-        className="image"
-        style={{ backgroundImage: `url(${item.picture_url})` }}
-      />
-      <div className="detail">
-        <p className="text-xl secondary title mb-8">{item.title}</p>
-        {item.tags.map((tag) => {
-          return (
-            <Tag color="red" key={tag.slug}>
-              {tag.name}
-            </Tag>
-          );
-        })}
-        <div>
-          <Button type="ghost" className="mt-12">
-            <a href={item.external_link} target="_blank">
-              View more
-            </a>
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const EventRecommendation = () => {
   const [loading, setLoading] = useState(true);
-  const [eventRecommendations, setEventRecommendations] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [
+    eventRecommendationSections,
+    setEventRecommendationSections,
+  ] = useState([]);
+  const [sectionPagination, setSectionPagination] = useState({});
+
   useEffect(() => {
-    getEventRecommendations().then((response) => {
+    getEventRecommendationSections().then((response) => {
+      let pagination = {};
+      const { data } = response;
+      data.forEach((item) => {
+        pagination[item.slug] = 0;
+      });
       setLoading(false);
-      setEventRecommendations(response.data);
+      setSectionPagination(pagination);
+      setEventRecommendationSections(data);
+    });
+
+    getEventRecommendationCateogries().then((response) => {
+      setCategories(response.data);
     });
   }, []);
+
+  function onPrevious(slug) {
+    if (sectionPagination[slug] !== 0) {
+      sectionPagination[slug] -= 1;
+      setSectionPagination({ ...sectionPagination });
+    }
+  }
+
+  function onNext(slug, count) {
+    const hasMore = (sectionPagination[slug] + 1) * 4 < count;
+    if (hasMore) {
+      sectionPagination[slug] += 1;
+      setSectionPagination({ ...sectionPagination });
+    }
+  }
 
   return (
     <Card
@@ -49,28 +60,46 @@ const EventRecommendation = () => {
       loading={loading}
       className="no-padding event-recommendations"
     >
-      <Row gutter={16}>
-        {eventRecommendations.map((item, index) => {
+      <Space size={20} wrap align="center">
+        {categories.map((item, index) => {
           return (
-            <Col span={8} key={index}>
-              <Choose>
-                <When condition={item.is_premium}>
-                  <Badge.Ribbon
-                    text="PREMIUM"
-                    color="#30CAEC"
-                    placement="start"
-                  >
-                    <RecommendationItem item={item} />
-                  </Badge.Ribbon>
-                </When>
-                <Otherwise>
-                  <RecommendationItem item={item} />
-                </Otherwise>
-              </Choose>
-            </Col>
+            <EventRecommendationCategoryCard category={item} key={index} />
           );
         })}
-      </Row>
+      </Space>
+      {eventRecommendationSections.map((section, index) => {
+        const { slug } = section;
+        const page = sectionPagination[slug];
+        const start = page * 4;
+        const end = start + 4;
+        const events = [...section.events];
+        return (
+          <div key={slug} className="event-recommendation-section">
+            <Row justify="space-between" className="header">
+              <Col>
+                <p className="text-3xl medium">{section.title}</p>
+              </Col>
+              <Col>
+                <Space>
+                  <LeftCircleFilled onClick={() => onPrevious(slug)} />
+                  <RightCircleFilled
+                    onClick={() => onNext(slug, events.length)}
+                  />
+                </Space>
+              </Col>
+            </Row>
+            <Row className="mt-12 events-section">
+              {events.slice(start, end).map((item, index) => {
+                return (
+                  <Col span={6} key={index}>
+                    <EventRecommendationEventCard event={item} />
+                  </Col>
+                );
+              })}
+            </Row>
+          </div>
+        );
+      })}
     </Card>
   );
 };

@@ -49,7 +49,7 @@ label {
 }
 
 .ant-card.no-padding {
-  .ant-card-body {
+  .ant-card-body:first-child {
     padding: 0;
   }
 }
