@@ -1,12 +1,26 @@
-import { Button, Form, Input, Space } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Button, Form, Input, Space, Select, Divider } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
+import { DFFAULT_TEAM_NAMES } from "../../../../constants";
+
+const { Option } = Select;
 
 const TeamBasicInformationStep = ({ saving, teamDetail, onProceed }) => {
   const [form] = Form.useForm();
+  const [teamItems, setTeamItems] = useState(DFFAULT_TEAM_NAMES);
+  const [customItemValue, setCustomItemValue] = useState("");
 
   useEffect(() => {
     form.setFieldsValue(teamDetail);
   }, [teamDetail]);
+
+  function addItem() {
+    if (teamItems.indexOf(customItemValue) === -1) {
+      setTeamItems([...teamItems, customItemValue]);
+      setCustomItemValue("");
+    }
+  }
 
   return (
     <Form
@@ -21,11 +35,32 @@ const TeamBasicInformationStep = ({ saving, teamDetail, onProceed }) => {
         rules={[
           {
             required: true,
-            message: "Please enter team name",
+            message: "Please select team name",
           },
         ]}
       >
-        <Input placeholder="Enter name" />
+        <Select
+          dropdownClassName="team-selection-dropdown"
+          dropdownRender={(menu) => (
+            <div>
+              {menu}
+              <Divider />
+              <div className="add-new">
+                <Input
+                  value={customItemValue}
+                  onChange={(e) => setCustomItemValue(e.target.value)}
+                />
+                <a onClick={() => addItem()}>
+                  <PlusOutlined /> Add item
+                </a>
+              </div>
+            </div>
+          )}
+        >
+          {teamItems.map((item) => (
+            <Option key={item}>{item}</Option>
+          ))}
+        </Select>
       </Form.Item>
       <Form.Item noStyle>
         <Space size={20}>

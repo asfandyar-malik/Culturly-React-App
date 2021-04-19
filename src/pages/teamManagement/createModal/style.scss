@@ -1,0 +1,24 @@
+.team-create-modal {
+}
+
+.team-selection-dropdown {
+  > div {
+  }
+  .ant-divider {
+    width: 96%;
+    min-width: 96%;
+    display: block;
+    margin: 1.2rem auto 2rem auto;
+  }
+  .add-new {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem 1.6rem 1rem;
+    .ant-input {
+      flex: 1;
+    }
+    a {
+      margin-left: 1.2rem;
+    }
+  }
+}

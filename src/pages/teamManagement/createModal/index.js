@@ -13,6 +13,8 @@ import TeamMemberSelectionStep from "./memberSelection";
 import TeamSurveySelectionStep from "./surveySelection";
 import TeamBasicInformationStep from "./basicInformation";
 
+import "./style.scss";
+
 const { Step } = Steps;
 
 const CreateTeamModal = ({
@@ -73,6 +75,7 @@ const CreateTeamModal = ({
       visible={visible}
       title="Create new team"
       onCancel={() => onClose()}
+      className="team-create-modal"
     >
       <Steps current={currentStep}>
         <Step title="Basic information" />

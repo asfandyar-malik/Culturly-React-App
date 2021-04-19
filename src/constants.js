@@ -24,3 +24,12 @@ export const SURVEY_DAY_OPTIONS = [
 ];
 
 export const SURVEY_WEEKLY_INTERVAL = "weekly";
+
+export const DFFAULT_TEAM_NAMES = [
+  "Sales",
+  "Marketing",
+  "Product",
+  "Engineering",
+  "IT",
+  "Operations",
+];
