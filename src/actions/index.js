@@ -114,8 +114,12 @@ export const getWorkspaceRemainingTeamManagers = () => {
   return instance.get(endpoints.WORKSPACE_REMAINING_TEAM_MANAGERS_API_PATH);
 };
 
-export const getWorkspaceTeams = () => {
-  return instance.get(endpoints.WORKSPACE_TEAMS_BASE_API_PATH);
+export const getWorkspaceTeams = (fields) => {
+  let path = endpoints.WORKSPACE_TEAMS_BASE_API_PATH;
+  if (fields) {
+    path = path.concat("?fields=", fields);
+  }
+  return instance.get(path);
 };
 
 export const createWorkspaceTeam = (payload) => {
@@ -130,6 +134,20 @@ export const updateWorkspaceTeam = (teamId, payload) => {
 export const deleteWorkspaceTeam = (teamId) => {
   let path = endpoints.WORKSPACE_TEAM_UPDATE_API_PATH.replace("{}", teamId);
   return instance.delete(path);
+};
+
+export const getHappinessScore = (teamId) => {
+  let path = endpoints.WORKPSACE_TEAM_HAPPINESS_SCORE_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  return instance.get(path);
+};
+
+export const getEngagementScore = (teamId, startTs, endTs) => {
+  let path = endpoints.WORKPSACE_TEAM_ENGAGEMENT_SCORE_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  path = path.concat("&start_date=", startTs);
+  path = path.concat("&end_date=", endTs);
+  return instance.get(path);
 };
 
 export const getEventFeedback = () => {

@@ -8,6 +8,10 @@ export const WORKSPACE_SURVEY_DETAIL_API_PATH = `${WORKSPACE_SURVEY_BASE_API_PAT
 
 export const WORKSPACE_TEAMS_BASE_API_PATH = "slack_bot/teams/";
 export const WORKSPACE_TEAM_UPDATE_API_PATH = "slack_bot/teams/{}/";
+export const WORKPSACE_TEAM_HAPPINESS_SCORE_API_PATH =
+  "slack_bot/teams/happiness_score/";
+export const WORKPSACE_TEAM_ENGAGEMENT_SCORE_API_PATH =
+  "slack_bot/teams/engagement_score/";
 export const WORKSPACE_REMAINING_TEAM_MEMBERS_API_PATH =
   "slack_bot/members/remaining_team_members";
 export const WORKSPACE_REMAINING_TEAM_MANAGERS_API_PATH =
