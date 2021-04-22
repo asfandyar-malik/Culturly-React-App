@@ -13,6 +13,8 @@ import EventRecommendationCategoryCard from "./categoryCard";
 
 import "./style.scss";
 
+const PAGE_SIZE = 4;
+
 const EventRecommendation = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -47,7 +49,7 @@ const EventRecommendation = () => {
   }
 
   function onNext(slug, count) {
-    const hasMore = (sectionPagination[slug] + 1) * 4 < count;
+    const hasMore = (sectionPagination[slug] + 1) * PAGE_SIZE < count;
     if (hasMore) {
       sectionPagination[slug] += 1;
       setSectionPagination({ ...sectionPagination });
@@ -70,8 +72,8 @@ const EventRecommendation = () => {
       {eventRecommendationSections.map((section, index) => {
         const { slug } = section;
         const page = sectionPagination[slug];
-        const start = page * 4;
-        const end = start + 4;
+        const start = page * PAGE_SIZE;
+        const end = start + PAGE_SIZE;
         const events = [...section.events];
         return (
           <div key={slug} className="event-recommendation-section">
@@ -79,14 +81,16 @@ const EventRecommendation = () => {
               <Col>
                 <p className="text-3xl medium">{section.title}</p>
               </Col>
-              <Col>
-                <Space>
-                  <LeftCircleFilled onClick={() => onPrevious(slug)} />
-                  <RightCircleFilled
-                    onClick={() => onNext(slug, events.length)}
-                  />
-                </Space>
-              </Col>
+              <If condition={events.length > PAGE_SIZE}>
+                <Col>
+                  <Space>
+                    <LeftCircleFilled onClick={() => onPrevious(slug)} />
+                    <RightCircleFilled
+                      onClick={() => onNext(slug, events.length)}
+                    />
+                  </Space>
+                </Col>
+              </If>
             </Row>
             <Row className="mt-12 events-section">
               {events.slice(start, end).map((item, index) => {

@@ -37,14 +37,9 @@ const TeamSurveySelectionStep = ({
         surveyItem.survey_time || item.survey_time,
         timezone
       );
-      const emailTime = getTimezoneTime(
-        surveyItem.email_report_time || item.email_report_time,
-        timezone
-      );
       initalValues[item.id] = {
         id: surveyItem.id,
         survey_time: moment(surveyTime, "HH:mm:ss"),
-        email_report_time: moment(emailTime, "HH:mm:ss"),
         survey_day: surveyItem.survey_day || item.survey_day,
         is_active: isEmpty(surveyItem) ? item.is_active : surveyItem.is_active,
       };
@@ -57,7 +52,6 @@ const TeamSurveySelectionStep = ({
     Object.keys(values).map((key) => {
       const item = values[key];
       const surveyTime = moment.utc(item.survey_time).format("HH:mm:ss");
-      const reportTime = moment.utc(item.email_report_time).format("HH:mm:ss");
       surveyArray.push({
         survey: {
           id: key,
@@ -66,7 +60,6 @@ const TeamSurveySelectionStep = ({
         survey_time: surveyTime,
         is_active: item.is_active,
         survey_day: item.survey_day,
-        email_report_time: reportTime,
       });
     });
     const payload = { surveys: surveyArray };
@@ -111,18 +104,6 @@ const TeamSurveySelectionStep = ({
                 <Form.Item
                   label="Schedule"
                   name={[item.id, "survey_time"]}
-                  extra={`Timezone: ${timezone}`}
-                >
-                  <TimePicker
-                    format="HH:mm"
-                    minuteStep={30}
-                    allowClear={false}
-                    showSecond={false}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="Email Report time"
-                  name={[item.id, "email_report_time"]}
                   extra={`Timezone: ${timezone}`}
                 >
                   <TimePicker

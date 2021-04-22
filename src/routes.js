@@ -140,10 +140,10 @@ export const ROUTES = [
     path: ANALYTICS_ROUTE,
   },
   {
-    key: "settings",
-    title: "Settings",
-    icon: <SettingOutlined />,
-    path: SETTINGS_ROUTE,
+    key: "online-events",
+    title: "Online Events",
+    icon: <MacCommandOutlined />,
+    path: EVENT_RECOMMENDATION_ROUTE,
   },
   {
     key: "event-feedback",
@@ -156,11 +156,5 @@ export const ROUTES = [
     title: "Event requests",
     icon: <AimOutlined />,
     path: EVENT_REQUESTS_ROUTE,
-  },
-  {
-    key: "event-recommendation",
-    title: "Event recommendation",
-    icon: <MacCommandOutlined />,
-    path: EVENT_RECOMMENDATION_ROUTE,
   },
 ];
