@@ -36,11 +36,8 @@ const Analytics = () => {
     const startTs = selectedWeekDay.startOf("week").format("X");
     getEngagementScore(selectedTeam, startTs, endTs).then((response) => {
       const { data } = response;
-      const responesCount = data.reduce((acc, obj) => {
-        return acc + obj.total_responses;
-      }, 0);
-      setEngagementItems(data);
-      setTotalEngagementResponses(responesCount);
+      setEngagementItems(data.questions);
+      setTotalEngagementResponses(data.total_responses);
     });
   }, [selectedWeekDay, selectedTeam]);
 
