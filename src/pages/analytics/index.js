@@ -27,6 +27,8 @@ const Analytics = () => {
   const [engagementItems, setEngagementItems] = useState([]);
   const [selectedWeekDay, setSelectedWeekDay] = useState(moment());
   const [totalEngagementResponses, setTotalEngagementResponses] = useState(0);
+  const [totalTeamMembers, setTotalTeamMembers] = useState(0);
+  const [totalResponseMembers, setTotalResponseMembers] = useState(0);
 
   useEffect(() => {
     getWorkspaceTeams("name,id").then((response) => {
@@ -46,7 +48,9 @@ const Analytics = () => {
     getEngagementScore(selectedTeam, startTs, endTs).then((response) => {
       const { data } = response;
       setEngagementItems(data.questions);
+      setTotalTeamMembers(data.total_team_members);
       setTotalEngagementResponses(data.total_responses);
+      setTotalResponseMembers(data.total_response_members);
     });
   }, [selectedWeekDay, selectedTeam]);
 
@@ -126,6 +130,7 @@ const Analytics = () => {
             extra={
               <DatePicker
                 picker="week"
+                allowClear={false}
                 style={{ width: 200 }}
                 value={selectedWeekDay}
                 placeholder="Select a week"
@@ -136,6 +141,10 @@ const Analytics = () => {
             <Row justify="space-between" className="text-2xl">
               <Col>No of responses</Col>
               <Col className="font-medium">{totalEngagementResponses}</Col>
+            </Row>
+            <Row justify="space-between" className="text-2xl">
+              <Col>Number of people engaging</Col>
+              <Col className="font-medium">{`${totalResponseMembers}/${totalTeamMembers}`}</Col>
             </Row>
             {engagementItems.map((item, index) => {
               return (
