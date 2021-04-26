@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { Card, Col, Row, Space } from "antd";
+import { Card, Col, Row, Space, Tooltip } from "antd";
 
-import { LeftCircleFilled, RightCircleFilled } from "@ant-design/icons";
+import {
+  LeftCircleFilled,
+  RightCircleFilled,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 import {
   getEventRecommendationSections,
@@ -62,13 +66,21 @@ const EventRecommendation = () => {
       loading={loading}
       className="no-padding event-recommendations"
     >
-      <Space size={20} wrap align="center">
+      <div className="mb-8">
+        <Tooltip title="Event categories">
+          <Space size={6}>
+            <span className="text-3xl medium">Event categories</span>
+            <QuestionCircleOutlined />
+          </Space>
+        </Tooltip>
+      </div>
+      <div className="event-recommendation-categories mb-16">
         {categories.map((item, index) => {
           return (
             <EventRecommendationCategoryCard category={item} key={index} />
           );
         })}
-      </Space>
+      </div>
       {eventRecommendationSections.map((section, index) => {
         const { slug } = section;
         const page = sectionPagination[slug];
@@ -92,15 +104,13 @@ const EventRecommendation = () => {
                 </Col>
               </If>
             </Row>
-            <Row className="mt-12 events-section">
+            <div className="mt-12 event-sections">
               {events.slice(start, end).map((item, index) => {
                 return (
-                  <Col span={6} key={index}>
-                    <EventRecommendationEventCard event={item} />
-                  </Col>
+                  <EventRecommendationEventCard event={item} key={index} />
                 );
               })}
-            </Row>
+            </div>
           </div>
         );
       })}

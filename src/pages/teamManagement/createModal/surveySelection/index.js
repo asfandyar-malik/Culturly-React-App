@@ -12,7 +12,10 @@ import {
   Tag,
   Select,
   Input,
+  Tooltip,
 } from "antd";
+
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import { isEmpty } from "_dash";
 import { getTimezoneTime } from "utils";
@@ -80,7 +83,14 @@ const TeamSurveySelectionStep = ({
               <Card
                 title={
                   <div>
-                    <p>{item.name}</p>
+                    <div>
+                      <Tooltip title={item.name}>
+                        <Space size={6}>
+                          <span>{item.name}</span>
+                          <QuestionCircleOutlined />
+                        </Space>
+                      </Tooltip>
+                    </div>
                     <Space>
                       <p>{item.no_of_questions} questions</p>
                       <Tag color="green">{item.interval_display}</Tag>

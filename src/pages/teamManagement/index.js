@@ -9,8 +9,9 @@ import {
   Dropdown,
   message,
   Button,
+  Space,
 } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { getWorkspaceTeams, deleteWorkspaceTeam, getSurveys } from "actions";
 
@@ -83,8 +84,22 @@ const TeamManagement = () => {
         header={
           <Row gutter={32}>
             <Col span={6}>Team name</Col>
-            <Col span={4}>Members</Col>
-            <Col span={4}>Managers</Col>
+            <Col span={4}>
+              <Tooltip title="Members">
+                <Space size={6}>
+                  <span>Members</span>
+                  <QuestionCircleOutlined />
+                </Space>
+              </Tooltip>
+            </Col>
+            <Col span={4}>
+              <Tooltip title="Managers">
+                <Space size={6}>
+                  <span>Managers</span>
+                  <QuestionCircleOutlined />
+                </Space>
+              </Tooltip>
+            </Col>
           </Row>
         }
         renderItem={(item) => (

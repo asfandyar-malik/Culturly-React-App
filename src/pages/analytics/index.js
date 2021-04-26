@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { Card, Col, Row, Select, Progress, Space, DatePicker } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import {
+  Card,
+  Col,
+  Row,
+  Select,
+  Progress,
+  Space,
+  DatePicker,
+  Tooltip,
+} from "antd";
+import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import {
   getWorkspaceTeams,
@@ -41,6 +50,10 @@ const Analytics = () => {
     });
   }, [selectedWeekDay, selectedTeam]);
 
+  function formatValue(val) {
+    return val ? parseFloat(val.toFixed(2)) : val;
+  }
+
   return (
     <div className="analytics-container">
       <Select
@@ -60,12 +73,21 @@ const Analytics = () => {
       </Select>
       <Row>
         <Col span={24} className="mt-16">
-          <Card title="Happiness score">
+          <Card
+            title={
+              <Tooltip title="Happiness score">
+                <Space size={6}>
+                  <span>Happiness score</span>
+                  <QuestionCircleOutlined />
+                </Space>
+              </Tooltip>
+            }
+          >
             <Row justify="space-between">
               <Col>
                 <Progress
                   type="circle"
-                  percent={happinessScore.current_week_score}
+                  percent={formatValue(happinessScore.current_week_score)}
                 />
               </Col>
               <Col>
@@ -77,13 +99,13 @@ const Analytics = () => {
                   <Card>
                     <p className="text-xl medium">Last week</p>
                     <p className="text-5xl medium">
-                      {happinessScore.last_week_score}%
+                      {formatValue(happinessScore.last_week_score)}%
                     </p>
                   </Card>
                   <Card>
                     <p className="text-xl medium">Avg. last month</p>
                     <p className="text-5xl medium">
-                      {happinessScore.last_month_score}%
+                      {formatValue(happinessScore.last_month_score)}%
                     </p>
                   </Card>
                 </Space>
@@ -93,7 +115,14 @@ const Analytics = () => {
         </Col>
         <Col span={24} className="mt-16">
           <Card
-            title="Engagement score"
+            title={
+              <Tooltip title="Engagement score">
+                <Space size={6}>
+                  <span>Engagement score</span>
+                  <QuestionCircleOutlined />
+                </Space>
+              </Tooltip>
+            }
             extra={
               <DatePicker
                 picker="week"
@@ -112,7 +141,7 @@ const Analytics = () => {
               return (
                 <Row justify="space-between" key={index} className="text-2xl">
                   <Col>{item.title}</Col>
-                  <Col className="font-medium">{item.score}%</Col>
+                  <Col className="font-medium">{formatValue(item.score)}%</Col>
                 </Row>
               );
             })}

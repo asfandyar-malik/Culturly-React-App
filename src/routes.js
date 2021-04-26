@@ -19,7 +19,7 @@ export const INDEX_ROUTE = "/";
 export const MEMBERS_ROUTE = "/members/";
 export const SETTINGS_ROUTE = "/settings/";
 export const ANALYTICS_ROUTE = "/analytics/";
-export const EVENT_FEEDBACK_ROUTE = "/event-feedback/";
+export const EVENT_POLL_ROUTE = "/event-polls/";
 export const EVENT_REQUESTS_ROUTE = "/event-requests/";
 export const EVENT_RECOMMENDATION_ROUTE = "/event-recommendation/";
 
@@ -101,7 +101,7 @@ export const LOGGED_IN_ROUTES = [
       {
         exact: true,
         name: "event-feedback",
-        path: EVENT_FEEDBACK_ROUTE,
+        path: EVENT_POLL_ROUTE,
         component: EventFeedbackComponent,
       },
       {
@@ -146,15 +146,9 @@ export const ROUTES = [
     path: EVENT_RECOMMENDATION_ROUTE,
   },
   {
-    key: "event-feedback",
-    title: "Event feedback",
+    key: "event-polls",
+    title: "Event polls",
     icon: <SmileOutlined />,
-    path: EVENT_FEEDBACK_ROUTE,
-  },
-  {
-    key: "event-requests",
-    title: "Event requests",
-    icon: <AimOutlined />,
-    path: EVENT_REQUESTS_ROUTE,
-  },
+    path: EVENT_POLL_ROUTE,
+  }
 ];

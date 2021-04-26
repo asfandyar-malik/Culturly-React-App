@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import { Avatar, Col, List, Row, Space, Tag, Menu, Dropdown } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
+import {
+  Avatar,
+  Col,
+  List,
+  Row,
+  Space,
+  Tag,
+  Menu,
+  Dropdown,
+  Tooltip,
+} from "antd";
+import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { getSlackMembers, updateSlackMember } from "actions";
 
@@ -50,7 +60,15 @@ const MemberManagement = () => {
         <Row gutter={32}>
           <Col span={6}>Member Name</Col>
           <Col span={4}>Status</Col>
-          <Col span={4}>Is manager</Col>
+          <Col span={4}>
+            <Tooltip title="Is manager">
+              <Space size={6}>
+                <span>Is manager</span>
+                <QuestionCircleOutlined />
+              </Space>
+            </Tooltip>
+          </Col>
+          <Col span={4}>Team</Col>
         </Row>
       }
       renderItem={(item) => (
@@ -68,7 +86,8 @@ const MemberManagement = () => {
               </Tag>
             </Col>
             <Col span={4}>{item.is_manager ? "Yes" : "No"}</Col>
-            <Col span={10}>
+            <Col span={4}>{item.team || "-"}</Col>
+            <Col span={6}>
               <Dropdown
                 trigger={["click"]}
                 overlay={

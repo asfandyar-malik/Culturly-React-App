@@ -1,5 +1,3 @@
-import { Card } from "antd";
-
 import "./style.scss";
 
 const EventRecommendationCategoryCard = ({ category }) => {
@@ -8,15 +6,16 @@ const EventRecommendationCategoryCard = ({ category }) => {
   }
 
   return (
-    <Card
-      bordered={false}
+    <div
       className="event-recommendation-category-card"
       onClick={() => openLink(category.external_link)}
-      cover={<img alt={category.title} src={category.picture_url} />}
     >
-      <div className="overlay" />
-      <p className="title text-3xl medium">{category.title}</p>
-    </Card>
+      <div
+        className="cover"
+        style={{ backgroundImage: `url(${category.picture_url})` }}
+      />
+      <p className="title text-2xl medium">{category.title}</p>
+    </div>
   );
 };
 

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { Col, Row, Space, Button } from "antd";
-import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { Col, Row, Space, Button, Tooltip } from "antd";
+import {
+  DeleteOutlined,
+  PlusCircleOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 const TeamMemberSelectionStep = ({
   saving,
@@ -113,7 +117,12 @@ const TeamMemberSelectionStep = ({
     <Row gutter={24}>
       <Col span={8}>
         <div className="mb-12">
-          <p>Select managers</p>
+          <Tooltip title="Select managers">
+            <Space size={6}>
+              <span>Select managers</span>
+              <QuestionCircleOutlined />
+            </Space>
+          </Tooltip>
           {filterManagers.length ? (
             filterManagers.map((item) => {
               return (
@@ -139,7 +148,12 @@ const TeamMemberSelectionStep = ({
           )}
         </div>
         <div>
-          <p>Select members</p>
+          <Tooltip title="Select members">
+            <Space size={6}>
+              <span>Select members</span>
+              <QuestionCircleOutlined />
+            </Space>
+          </Tooltip>
           {filterMembers.length ? (
             filterMembers.map((item) => {
               return (

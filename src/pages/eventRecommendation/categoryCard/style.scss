@@ -1,44 +1,21 @@
 .event-recommendation-category-card {
-  width: 24rem;
-  height: 35rem;
+  display: flex;
+  height: 7.2rem;
   cursor: pointer;
-  overflow: hidden;
-  position: relative;
-  margin-bottom: 2rem;
+  min-width: 21rem;
+  align-items: center;
   border-radius: 1.6rem;
-  transform: scale(1.001);
-  will-change: transform, box-shadow;
   box-shadow: 0 4px 8px rgba(191, 183, 204, 0.8);
-  transition: transform 0.15s ease 0s, box-shadow 0.15s ease 0s, -webkit-transform 0.15s ease 0s;
-
-  .ant-card-cover img {
-    height: 35rem;
-    object-fit: cover;
-    border-radius: 1.6rem 1.6rem 0 0;
-  }
-
-  .ant-card-body {
-    padding: 0;
-  }
-
-  .overlay {
-    top: 0;
-    left: 0;
-    width: 100%;
+  .cover {
     height: 100%;
-    position: absolute;
-    border-radius: 1.6rem;
-    -webkit-transform: scale(1.001);
-    background: linear-gradient(1turn, rgba(0, 0, 0, 0.8), rgba(71, 71, 71, 0) 51.56%);
+    width: 5.6rem;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 1.6rem 0 0 1.6rem;
   }
-
   .title {
-    width: 100%;
-    bottom: 1.6rem;
-    padding: 0 1rem;
-    color: #ffffff;
-    line-height: 1.6;
-    position: absolute;
-    text-align: center;
+    padding: 1.6rem;
+    line-height: 1.3;
   }
 }
