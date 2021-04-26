@@ -150,8 +150,12 @@ export const getEngagementScore = (teamId, startTs, endTs) => {
   return instance.get(path);
 };
 
-export const getEventFeedback = () => {
-  return instance.get(endpoints.WORKSPACE_EVENT_FEEDBACK_API_PATH);
+export const getEventsFeedback = () => {
+  return instance.get(endpoints.WORKSPACE_EVENTS_FEEDBACK_API_PATH);
+};
+
+export const getEventsPoll = () => {
+  return instance.get(endpoints.WORKSPACE_EVENTS_POLL_API_PATH);
 };
 
 export const getEventRequests = () => {

@@ -16,7 +16,8 @@ export const WORKSPACE_REMAINING_TEAM_MEMBERS_API_PATH =
   "slack_bot/members/remaining_team_members";
 export const WORKSPACE_REMAINING_TEAM_MANAGERS_API_PATH =
   "slack_bot/members/remaining_team_managers";
-export const WORKSPACE_EVENT_FEEDBACK_API_PATH = "slack_bot/event-feedback";
+export const WORKSPACE_EVENTS_POLL_API_PATH = "slack_bot/event-poll";
+export const WORKSPACE_EVENTS_FEEDBACK_API_PATH = "slack_bot/event-feedback";
 export const WORKSPACE_EVENT_REQUESTS_API_PATH = "slack_bot/event-requests";
 export const EVENT_RECOMMENDATION_API_PATH = "slack_bot/event-recommendation";
 export const EVENT_RECOMMENDATION_SECTIONS_API_PATH =

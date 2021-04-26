@@ -3,9 +3,8 @@ import {
   TeamOutlined,
   ApartmentOutlined,
   PieChartOutlined,
-  SettingOutlined,
   SmileOutlined,
-  AimOutlined,
+  ExperimentOutlined,
   MacCommandOutlined,
 } from "@ant-design/icons";
 
@@ -19,6 +18,7 @@ export const INDEX_ROUTE = "/";
 export const MEMBERS_ROUTE = "/members/";
 export const SETTINGS_ROUTE = "/settings/";
 export const ANALYTICS_ROUTE = "/analytics/";
+export const EVENT_POLL_ROUTE = "/event-poll/";
 export const EVENT_FEEDBACK_ROUTE = "/event-feedback/";
 export const EVENT_REQUESTS_ROUTE = "/event-requests/";
 export const EVENT_RECOMMENDATION_ROUTE = "/event-recommendation/";
@@ -30,6 +30,7 @@ const WorkspaceOAuthCompleteComponent = lazy(() =>
   import("pages/authComplete/workspace")
 );
 
+const EventPollComponent = lazy(() => import("pages/eventPoll"));
 const EventFeedbackComponent = lazy(() => import("pages/eventFeedback"));
 const EventRequestsComponent = lazy(() => import("pages/eventRequests"));
 const EventRecommendationComponent = lazy(() =>
@@ -112,9 +113,9 @@ export const LOGGED_IN_ROUTES = [
       },
       {
         exact: true,
-        name: "event-requests",
-        path: EVENT_REQUESTS_ROUTE,
-        component: EventRequestsComponent,
+        name: "event-poll",
+        path: EVENT_POLL_ROUTE,
+        component: EventPollComponent,
       },
     ],
   },
@@ -150,5 +151,11 @@ export const ROUTES = [
     title: "Event feedback",
     icon: <SmileOutlined />,
     path: EVENT_FEEDBACK_ROUTE,
-  }
+  },
+  {
+    key: "event-poll",
+    title: "Event poll",
+    icon: <ExperimentOutlined />,
+    path: EVENT_POLL_ROUTE,
+  },
 ];
