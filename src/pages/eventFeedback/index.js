@@ -16,19 +16,21 @@ const EventFeedback = () => {
   return (
     <List
       loading={loading}
-      className="common-list"
       dataSource={feedbackItems}
+      className="common-list max-container"
       header={
         <Row gutter={32}>
-          <Col span={8}>Event</Col>
-          <Col span={4}>Rating</Col>
+          <Col span={12}>Event</Col>
+          <Col span={6}>Rating</Col>
+          <Col span={6}>Event date</Col>
         </Row>
       }
       renderItem={(item) => (
         <List.Item>
           <Row gutter={32} className="font-medium">
-            <Col span={8}>{item.title}</Col>
-            <Col span={4}>{item.rating}/5</Col>
+            <Col span={12}>{item.title}</Col>
+            <Col span={6}>{item.rating}/5</Col>
+            <Col span={6}>{item.event_date}</Col>
           </Row>
         </List.Item>
       )}

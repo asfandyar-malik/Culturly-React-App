@@ -55,7 +55,7 @@ const MemberManagement = () => {
     <List
       loading={loading}
       dataSource={members}
-      className="common-list member-management"
+      className="common-list member-management max-container"
       header={
         <Row gutter={32}>
           <Col span={6}>Member Name</Col>

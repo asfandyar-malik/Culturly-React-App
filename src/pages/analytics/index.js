@@ -59,7 +59,7 @@ const Analytics = () => {
   }
 
   return (
-    <div className="analytics-container">
+    <div className="analytics-container max-container">
       <Select
         value={selectedTeam}
         style={{ width: 300 }}

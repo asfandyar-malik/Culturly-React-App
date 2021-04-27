@@ -64,7 +64,7 @@ const EventRecommendation = () => {
     <Card
       bordered={0}
       loading={loading}
-      className="no-padding event-recommendations"
+      className="no-padding event-recommendations max-container"
     >
       <div className="mb-8">
         <Tooltip title="Event categories">

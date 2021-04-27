@@ -76,6 +76,10 @@
     font-weight: 600;
 }
 
+.max-container {
+    max-width: 114rem;
+}
+
 @include list-loop(".pt-", "padding-top");
 @include list-loop(".mt-", "margin-top");
 @include list-loop(".pb-", "padding-bottom");

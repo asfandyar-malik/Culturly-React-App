@@ -69,7 +69,7 @@ const TeamManagement = () => {
   }
 
   return (
-    <>
+    <div className="max-container">
       <Row justify="end">
         <Col>
           <Button type="primary" onClick={() => setCreateModalVisible(true)}>
@@ -164,7 +164,7 @@ const TeamManagement = () => {
         onUpdateTeam={(data) => onTeamCreate(data)}
         onClose={() => setCreateModalVisible(false)}
       />
-    </>
+    </div>
   );
 };
 
