@@ -67,13 +67,14 @@ const EventRecommendation = () => {
       className="no-padding event-recommendations max-container"
     >
       <div className="mb-8">
-        <Tooltip title="Event categories">
+        <Tooltip title="These are different event categories, to choose your online event from">
           <Space size={6}>
             <span className="text-3xl medium">Event categories</span>
             <QuestionCircleOutlined />
           </Space>
         </Tooltip>
       </div>
+
       <div className="event-recommendation-categories mb-16">
         {categories.map((item, index) => {
           return (

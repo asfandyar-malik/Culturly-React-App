@@ -61,9 +61,9 @@ const MemberManagement = () => {
           <Col span={6}>Member Name</Col>
           <Col span={4}>Status</Col>
           <Col span={4}>
-            <Tooltip title="Is manager">
+            <Tooltip title="Managers have access to create Teams, Edit Surveys, Edit user access, View Analytics etc ">
               <Space size={6}>
-                <span>Is manager</span>
+                <span>Manager</span>
                 <QuestionCircleOutlined />
               </Space>
             </Tooltip>
