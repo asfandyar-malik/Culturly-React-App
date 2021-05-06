@@ -85,7 +85,10 @@ const TeamManagement = () => {
           <Row gutter={32}>
             <Col span={6}>Team name</Col>
             <Col span={4}>
-              <Tooltip title="Members receive Mood Check Survey and Pulse Check Survey on Slack. One member can be part of only one Team">
+              <Tooltip
+                title="Members receive Mood Check Survey and Pulse Check Survey on Slack. 
+              One member can be part of only one Team"
+              >
                 <Space size={6}>
                   <span>Members</span>
                   <QuestionCircleOutlined />
@@ -93,7 +96,10 @@ const TeamManagement = () => {
               </Tooltip>
             </Col>
             <Col span={4}>
-              <Tooltip title="Managers have access to create Teams, Edit Surveys, Edit user access, View Analytics etc">
+              <Tooltip
+                title="Managers have access to create Teams, Edit Surveys, Edit user access, 
+              View Analytics etc"
+              >
                 <Space size={6}>
                   <span>Managers</span>
                   <QuestionCircleOutlined />

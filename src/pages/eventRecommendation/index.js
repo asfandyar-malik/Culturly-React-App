@@ -74,7 +74,6 @@ const EventRecommendation = () => {
           </Space>
         </Tooltip>
       </div>
-
       <div className="event-recommendation-categories mb-16">
         {categories.map((item, index) => {
           return (

@@ -117,7 +117,10 @@ const TeamMemberSelectionStep = ({
     <Row gutter={24}>
       <Col span={8}>
         <div className="mb-12">
-          <Tooltip title="Managers have access to viewing Analytics, managing Team members, editing Team, managing Member access etc ">
+          <Tooltip
+            title="Managers have access to viewing Analytics, managing Team members, 
+          editing Team, managing Member access etc "
+          >
             <Space size={6}>
               <span>Select managers</span>
               <QuestionCircleOutlined />
@@ -148,7 +151,10 @@ const TeamMemberSelectionStep = ({
           )}
         </div>
         <div>
-          <Tooltip title="Members receive Mood Check Survey and Pulse Check Survey on Slack. One member can be part of only one Team">
+          <Tooltip
+            title="Members receive Mood Check Survey and Pulse Check Survey on Slack. 
+          One member can be part of only one Team"
+          >
             <Space size={6}>
               <span>Select members</span>
               <QuestionCircleOutlined />

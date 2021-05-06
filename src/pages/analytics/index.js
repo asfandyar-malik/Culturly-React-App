@@ -91,7 +91,11 @@ const Analytics = () => {
         <Col span={24} className="mt-16 happiness-col">
           <Card
             title={
-              <Tooltip title="Happiness score is calculated from Mood Check survey. Mood check is sent daily to each team member asking them, how they are feeling ">                <Space size={6}>
+              <Tooltip
+                title="Happiness score is calculated from Mood Check survey. Mood check is 
+              sent daily to each team member asking them, how they are feeling "
+              >
+                <Space size={6}>
                   <span>Happiness score</span>
                   <QuestionCircleOutlined />
                 </Space>
@@ -131,7 +135,11 @@ const Analytics = () => {
         <Col span={24} className="mt-16">
           <Card
             title={
-              <Tooltip title="Engagement score is calcuated from the response to Pulse Check, which is a weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact.">                <Space size={6}>
+              <Tooltip
+                title="Engagement score is calcuated from the response to Pulse Check, which is a 
+              weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact."
+              >
+                <Space size={6}>
                   <span>Engagement score</span>
                   <QuestionCircleOutlined />
                 </Space>
