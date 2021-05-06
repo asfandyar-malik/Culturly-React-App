@@ -7,9 +7,13 @@
       background-color: rgba(250, 173, 20, 0.27);
     }
   }
-  .engagement-progress {
-  }
-  .emoji {
-    margin-right: 0.8rem;
+  .ant-badge {
+    .ant-badge-status-dot {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .ant-badge-status-text {
+      font-size: 1.6rem;
+    }
   }
 }

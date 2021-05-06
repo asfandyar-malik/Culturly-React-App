@@ -9,6 +9,7 @@ import {
   Space,
   DatePicker,
   Tooltip,
+  Badge,
 } from "antd";
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
@@ -58,15 +59,15 @@ const Analytics = () => {
     return val ? parseFloat(val.toFixed(2)) : val;
   }
 
-  function getEngagementScoreEmoji(val) {
-    let emoji = "😃";
-    if (val < 30) {
-      emoji = "🙁";
+  function getBadgeColor(val) {
+    let color = "#19AF19";
+    if (val < 40) {
+      color = "#E11919";
     }
-    if (val > 30 && val < 60) {
-      emoji = "🙂";
+    if (val > 40 && val < 80) {
+      color = "#FEAF00";
     }
-    return emoji;
+    return color;
   }
 
   return (
@@ -162,10 +163,10 @@ const Analytics = () => {
                 <Row justify="space-between" key={index} className="text-2xl">
                   <Col>{item.title}</Col>
                   <Col className="font-medium">
-                    <span className="emoji">
-                      {getEngagementScoreEmoji(item.score)}
-                    </span>
-                    <span>{formatValue(item.score)}%</span>
+                    <Badge
+                      color={getBadgeColor(item.score)}
+                      text={`${formatValue(item.score)}%`}
+                    />
                   </Col>
                 </Row>
               );
