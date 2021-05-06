@@ -1,6 +1,15 @@
 .analytics-container {
-  // max-width: 84rem;
   .info-icon {
     margin-left: 0.8rem;
+  }
+  .happiness-col {
+    .ant-card {
+      background-color: rgba(250, 173, 20, 0.27);
+    }
+  }
+  .engagement-progress {
+  }
+  .emoji {
+    margin-right: 0.8rem;
   }
 }

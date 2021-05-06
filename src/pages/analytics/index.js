@@ -58,6 +58,17 @@ const Analytics = () => {
     return val ? parseFloat(val.toFixed(2)) : val;
   }
 
+  function getEngagementScoreEmoji(val) {
+    let emoji = "😃";
+    if (val < 30) {
+      emoji = "🙁";
+    }
+    if (val > 30 && val < 60) {
+      emoji = "🙂";
+    }
+    return emoji;
+  }
+
   return (
     <div className="analytics-container max-container">
       <Select
@@ -76,7 +87,7 @@ const Analytics = () => {
         })}
       </Select>
       <Row>
-        <Col span={24} className="mt-16">
+        <Col span={24} className="mt-16 happiness-col">
           <Card
             title={
               <Tooltip title="Happiness score">
@@ -150,7 +161,12 @@ const Analytics = () => {
               return (
                 <Row justify="space-between" key={index} className="text-2xl">
                   <Col>{item.title}</Col>
-                  <Col className="font-medium">{formatValue(item.score)}%</Col>
+                  <Col className="font-medium">
+                    <span className="emoji">
+                      {getEngagementScoreEmoji(item.score)}
+                    </span>
+                    <span>{formatValue(item.score)}%</span>
+                  </Col>
                 </Row>
               );
             })}
