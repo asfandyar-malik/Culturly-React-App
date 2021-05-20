@@ -17,23 +17,33 @@ import {
   getWorkspaceTeams,
   getHappinessScore,
   getEngagementScore,
+  getSurveyQuestionCategories,
 } from "actions";
 
 import "./style.scss";
 
 const Analytics = () => {
   const [teams, setTeams] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [happinessScore, setHappinessScore] = useState({});
   const [engagementItems, setEngagementItems] = useState([]);
   const [selectedWeekDay, setSelectedWeekDay] = useState(moment());
-  const [totalEngagementResponses, setTotalEngagementResponses] = useState(0);
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
   const [totalResponseMembers, setTotalResponseMembers] = useState(0);
+  const [totalEngagementResponses, setTotalEngagementResponses] = useState(0);
 
   useEffect(() => {
     getWorkspaceTeams("name,id").then((response) => {
       setTeams(response.data.results);
+    });
+    getSurveyQuestionCategories().then((response) => {
+      const { data } = response;
+      setCategories(data);
+      if (data.length) {
+        setSelectedCategory(data[0].slug);
+      }
     });
   }, []);
 
@@ -44,16 +54,20 @@ const Analytics = () => {
   }, [selectedTeam]);
 
   useEffect(() => {
-    const endTs = selectedWeekDay.endOf("week").format("X");
-    const startTs = selectedWeekDay.startOf("week").format("X");
-    getEngagementScore(selectedTeam, startTs, endTs).then((response) => {
-      const { data } = response;
-      setEngagementItems(data.questions);
-      setTotalTeamMembers(data.total_team_members);
-      setTotalEngagementResponses(data.total_responses);
-      setTotalResponseMembers(data.total_response_members);
-    });
-  }, [selectedWeekDay, selectedTeam]);
+    if (selectedCategory) {
+      const endTs = selectedWeekDay.endOf("week").format("X");
+      const startTs = selectedWeekDay.startOf("week").format("X");
+      getEngagementScore(selectedTeam, selectedCategory, startTs, endTs).then(
+        (response) => {
+          const { data } = response;
+          setEngagementItems(data.questions);
+          setTotalTeamMembers(data.total_team_members);
+          setTotalEngagementResponses(data.total_responses);
+          setTotalResponseMembers(data.total_response_members);
+        }
+      );
+    }
+  }, [selectedWeekDay, selectedTeam, selectedCategory]);
 
   function formatValue(val) {
     return val ? parseFloat(val.toFixed(2)) : val;
@@ -146,14 +160,29 @@ const Analytics = () => {
               </Tooltip>
             }
             extra={
-              <DatePicker
-                picker="week"
-                allowClear={false}
-                style={{ width: 200 }}
-                value={selectedWeekDay}
-                placeholder="Select a week"
-                onChange={(value) => setSelectedWeekDay(value)}
-              />
+              <Space>
+                <Select
+                  value={selectedCategory}
+                  style={{ width: "20rem" }}
+                  onChange={(value) => setSelectedCategory(value)}
+                >
+                  {categories.map((item) => {
+                    return (
+                      <Select.Option key={item.slug} value={item.slug}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+                <DatePicker
+                  picker="week"
+                  allowClear={false}
+                  style={{ width: 200 }}
+                  value={selectedWeekDay}
+                  placeholder="Select a week"
+                  onChange={(value) => setSelectedWeekDay(value)}
+                />
+              </Space>
             }
           >
             <Row justify="space-between" className="text-2xl">

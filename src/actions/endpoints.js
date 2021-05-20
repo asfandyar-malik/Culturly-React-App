@@ -24,6 +24,8 @@ export const EVENT_RECOMMENDATION_SECTIONS_API_PATH =
   "slack_bot/event-recommendation-sections";
 export const EVENT_RECOMMENDATION_CATEGORIES_API_PATH =
   "slack_bot/event-recommendation-categories";
+export const SURVEY_QUESTION_CATEGORIES_API_PATH =
+  "slack_bot/survey-categories/";
 
 export const USER_DETAIL_API_PATH = "user/";
 export const USER_LOGOUT_API_PATH = "logout/";

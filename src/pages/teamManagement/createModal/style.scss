@@ -1,9 +1,81 @@
+@import "../../../styles/variable.scss";
+
 .team-create-modal {
+  .survey-selection-form {
+    // .ant-card {
+    //   .ant-card-head {
+    //     padding: 1rem 2rem;
+    //     min-height: auto;
+    //     .ant-card-head-title {
+    //       padding: 0;
+    //       font-size: 1.4rem;
+    //     }
+    //     .ant-card-extra {
+    //       padding: 0;
+    //       color: #727474;
+    //       font-weight: 600;
+    //       font-size: 1.2rem;
+    //     }
+    //   }
+    //   .ant-card-body {
+    //     padding: 1rem 2rem;
+    //     .ant-form-item {
+    //       margin-bottom: 1.6rem;
+    //       &:last-of-type {
+    //         margin-bottom: 0;
+    //       }
+    //     }
+    //   }
+    // }
+    .survey-group-card {
+      margin-bottom: 1.6rem;
+      > .ant-card-head {
+        min-height: auto;
+        font-weight: 600;
+        font-size: 1.4rem;
+        padding: 1rem 1.6rem;
+        .ant-card-head-title,
+        .ant-card-extra {
+          padding: 0;
+        }
+      }
+      > .ant-card-body {
+        padding: 1rem 1.6rem;
+      }
+      .survey-card {
+        margin-bottom: 1.6rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid $BORDER_COLOR;
+        .ant-card-head {
+          min-height: auto;
+          font-size: 1.4rem;
+          margin: 0 1.6rem;
+          border-bottom: 0;
+          padding: 0 0 0.8rem 0;
+          .ant-card-head-title,
+          .ant-card-extra {
+            padding: 0;
+          }
+        }
+        .ant-card-body {
+          padding: 1rem 1.6rem;
+          .ant-form-item {
+            margin-bottom: 1.6rem;
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+        &:last-child {
+          margin-bottom: 0;
+          border-bottom: 0;
+        }
+      }
+    }
+  }
 }
 
 .team-selection-dropdown {
-  > div {
-  }
   .ant-divider {
     width: 96%;
     min-width: 96%;

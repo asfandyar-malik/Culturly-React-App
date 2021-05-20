@@ -1,87 +1,87 @@
 @import "./variable.scss";
 
 .w-full {
-    width: 100%;
+  width: 100%;
 }
 
 .text-center {
-    text-align: center;
+  text-align: center;
 }
 
 .uppercase {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .block {
-    display: block;
+  display: block;
 }
 
 .text-base {
-    font-size: 1.2rem;
-    &.secondary {
-        color: $SECONDARY_TEXT_COLOR;
-    }
-    &.medium {
-        font-weight: 600;
-    }
+  font-size: 1.2rem;
+  &.secondary {
+    color: $SECONDARY_TEXT_COLOR;
+  }
+  &.medium {
+    font-weight: 600;
+  }
 }
 
 .text-xl {
-    font-size: 1.4rem;
-    line-height: 1.75;
-    &.medium {
-        font-weight: 600;
-    }
-    &.secondary {
-        color: $SECONDARY_TEXT_COLOR;
-    }
+  font-size: 1.4rem;
+  line-height: 1.75;
+  &.medium {
+    font-weight: 600;
+  }
+  &.secondary {
+    color: $SECONDARY_TEXT_COLOR;
+  }
 }
 
 .text-2xl {
-    font-size: 1.6rem;
-    line-height: 2;
-    &.medium {
-        font-weight: 600;
-    }
+  font-size: 1.6rem;
+  line-height: 2;
+  &.medium {
+    font-weight: 600;
+  }
 }
 
 .text-3xl {
-    font-size: 1.8rem;
-    line-height: 2;
-    &.medium {
-        font-weight: 600;
-    }
-    &.bold {
-        font-weight: 900;
-        letter-spacing: 1px;
-    }
+  font-size: 1.8rem;
+  line-height: 2;
+  &.medium {
+    font-weight: 600;
+  }
+  &.bold {
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
 }
 
 .text-5xl {
-    font-size: 3rem;
-    line-height: 1;
-    &.medium {
-        font-weight: 600;
-    }
-    &.bold {
-        font-weight: 900;
-        letter-spacing: 1px;
-    }
+  font-size: 3rem;
+  line-height: 1;
+  &.medium {
+    font-weight: 600;
+  }
+  &.bold {
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
 }
 
 .vertical-center {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .font-medium {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .max-container {
-    max-width: 114rem;
+  max-width: 114rem;
 }
 
 @include list-loop(".pt-", "padding-top");

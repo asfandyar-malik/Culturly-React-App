@@ -20,6 +20,10 @@ export const getSurveys = () => {
   return instance.get(endpoints.SURVEYS_BASE_API_PATH);
 };
 
+export const getSurveyQuestionCategories = () => {
+  return instance.get(endpoints.SURVEY_QUESTION_CATEGORIES_API_PATH);
+};
+
 export const updateSurveyForWorkspace = (payload, objectId = null) => {
   let path = null;
   let method = null;
@@ -142,11 +146,12 @@ export const getHappinessScore = (teamId) => {
   return instance.get(path);
 };
 
-export const getEngagementScore = (teamId, startTs, endTs) => {
+export const getEngagementScore = (teamId, categorySlug, startTs, endTs) => {
   let path = endpoints.WORKPSACE_TEAM_ENGAGEMENT_SCORE_API_PATH;
   path = path.concat("?team_id=", teamId);
-  path = path.concat("&start_date=", startTs);
   path = path.concat("&end_date=", endTs);
+  path = path.concat("&start_date=", startTs);
+  path = path.concat("&category_slug=", categorySlug);
   return instance.get(path);
 };
 
