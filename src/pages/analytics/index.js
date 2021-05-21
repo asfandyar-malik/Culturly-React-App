@@ -10,6 +10,7 @@ import {
   DatePicker,
   Tooltip,
   Badge,
+  Collapse,
 } from "antd";
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
@@ -17,33 +18,23 @@ import {
   getWorkspaceTeams,
   getHappinessScore,
   getEngagementScore,
-  getSurveyQuestionCategories,
 } from "actions";
 
 import "./style.scss";
 
 const Analytics = () => {
   const [teams, setTeams] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [happinessScore, setHappinessScore] = useState({});
-  const [engagementItems, setEngagementItems] = useState([]);
-  const [selectedWeekDay, setSelectedWeekDay] = useState(moment());
+  const [engagementItems, setEngagementItems] = useState({});
+  const [selectedMonth, setSelectedMonth] = useState(moment());
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
-  const [totalResponseMembers, setTotalResponseMembers] = useState(0);
-  const [totalEngagementResponses, setTotalEngagementResponses] = useState(0);
+  const [overallCulureScore, setOverallCulureScore] = useState(0);
 
   useEffect(() => {
     getWorkspaceTeams("name,id").then((response) => {
       setTeams(response.data.results);
-    });
-    getSurveyQuestionCategories().then((response) => {
-      const { data } = response;
-      setCategories(data);
-      if (data.length) {
-        setSelectedCategory(data[0].slug);
-      }
     });
   }, []);
 
@@ -54,20 +45,26 @@ const Analytics = () => {
   }, [selectedTeam]);
 
   useEffect(() => {
-    if (selectedCategory) {
-      const endTs = selectedWeekDay.endOf("week").format("X");
-      const startTs = selectedWeekDay.startOf("week").format("X");
-      getEngagementScore(selectedTeam, selectedCategory, startTs, endTs).then(
-        (response) => {
-          const { data } = response;
-          setEngagementItems(data.questions);
-          setTotalTeamMembers(data.total_team_members);
-          setTotalEngagementResponses(data.total_responses);
-          setTotalResponseMembers(data.total_response_members);
-        }
-      );
-    }
-  }, [selectedWeekDay, selectedTeam, selectedCategory]);
+    let totalScore = 0;
+    let totalResponses = 0;
+    const endTs = selectedMonth.endOf("month").format("X");
+    const startTs = selectedMonth.startOf("month").format("X");
+    getEngagementScore(selectedTeam, startTs, endTs).then((response) => {
+      const { data } = response;
+      Object.keys(data.categories).forEach((key) => {
+        (data.categories[key]?.questions || []).forEach((item) => {
+          if (item.score) {
+            totalResponses += 1;
+            totalScore += item.score;
+          }
+        });
+      });
+      setLoading(false);
+      setEngagementItems(data.categories);
+      setTotalTeamMembers(data.total_team_members);
+      setOverallCulureScore(totalResponses ? totalScore / totalResponses : 0);
+    });
+  }, [selectedMonth, selectedTeam]);
 
   function formatValue(val) {
     return val ? parseFloat(val.toFixed(2)) : val;
@@ -148,64 +145,87 @@ const Analytics = () => {
         </Col>
         <Col span={24} className="mt-16">
           <Card
+            loading={loading}
             title={
               <Tooltip
                 title="Engagement score is calcuated from the response to Pulse Check, which is a 
               weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact."
               >
                 <Space size={6}>
-                  <span>Engagement score</span>
+                  <span>Culture score</span>
                   <QuestionCircleOutlined />
                 </Space>
               </Tooltip>
             }
             extra={
               <Space>
-                <Select
-                  value={selectedCategory}
-                  style={{ width: "20rem" }}
-                  onChange={(value) => setSelectedCategory(value)}
-                >
-                  {categories.map((item) => {
-                    return (
-                      <Select.Option key={item.slug} value={item.slug}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
                 <DatePicker
-                  picker="week"
+                  picker="month"
                   allowClear={false}
                   style={{ width: 200 }}
-                  value={selectedWeekDay}
-                  placeholder="Select a week"
-                  onChange={(value) => setSelectedWeekDay(value)}
+                  value={selectedMonth}
+                  placeholder="Select a month"
+                  onChange={(value) => setSelectedMonth(value)}
                 />
               </Space>
             }
           >
-            <Row justify="space-between" className="text-2xl">
-              <Col>No of responses</Col>
-              <Col className="font-medium">{totalEngagementResponses}</Col>
+            <Row justify="space-between" className="text-2xl mb-12">
+              <Col className="font-medium">Overall culture score</Col>
+              <Col className="font-medium">
+                <Badge
+                  color={getBadgeColor(overallCulureScore)}
+                  text={`${formatValue(overallCulureScore)}%`}
+                />
+              </Col>
             </Row>
-            <Row justify="space-between" className="text-2xl">
-              <Col>Number of people engaging</Col>
-              <Col className="font-medium">{`${totalResponseMembers}/${totalTeamMembers}`}</Col>
-            </Row>
-            {engagementItems.map((item, index) => {
-              return (
-                <Row justify="space-between" key={index} className="text-2xl">
-                  <Col>{item.title}</Col>
-                  <Col className="font-medium">
-                    <Badge
-                      color={getBadgeColor(item.score)}
-                      text={`${formatValue(item.score)}%`}
-                    />
-                  </Col>
-                </Row>
-              );
-            })}
+            <Collapse bordered={false}>
+              {Object.keys(engagementItems).map((key) => {
+                const categoryData = engagementItems[key];
+                return (
+                  <Collapse.Panel
+                    key={key}
+                    header={key}
+                    className="site-collapse-custom-panel"
+                  >
+                    <Row justify="space-between" className="text-xl mb-4">
+                      <Col>Total no. of responses</Col>
+                      <Col className="font-medium">
+                        {categoryData.total_responses || 0}
+                      </Col>
+                    </Row>
+                    <Row justify="space-between" className="text-xl mb-4">
+                      <Col>Number of people answering</Col>
+                      <Col className="font-medium">{`${
+                        categoryData.total_member_responses || 0
+                      }/${totalTeamMembers}`}</Col>
+                    </Row>
+                    {(categoryData?.questions || []).map((item) => {
+                      const { score } = item;
+                      return (
+                        <Row
+                          key={item.question_id}
+                          justify="space-between"
+                          className="text-xl mb-4"
+                        >
+                          <Col>{item.title}</Col>
+                          <Col className="font-medium">
+                            {score ? (
+                              <Badge
+                                color={getBadgeColor(score)}
+                                text={`${formatValue(score)}%`}
+                              />
+                            ) : (
+                              "NA"
+                            )}
+                          </Col>
+                        </Row>
+                      );
+                    })}
+                  </Collapse.Panel>
+                );
+              })}
+            </Collapse>
           </Card>
         </Col>
       </Row>
