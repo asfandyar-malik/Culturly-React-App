@@ -28,15 +28,20 @@ const TeamSurveySelectionStep = ({
     const pulseSurveys = groupBy(teamSurveys, (c) => c.is_pulse_check)["true"];
 
     if (pulseSurveys && pulseSurveys.length) {
+      const surveyTime = getTimezoneTime(pulseSurveys[0].survey_time, timezone);
       initalValues["pulse"] = {
         survey_day: pulseSurveys[0].survey_day,
-        survey_time: moment(pulseSurveys[0].survey_time, "HH:mm:ss"),
+        survey_time: moment(surveyTime, "HH:mm:ss"),
       };
     } else {
       if (surveyGroup.pulse && surveyGroup.pulse.length) {
+        const surveyTime = getTimezoneTime(
+          surveyGroup.pulse[0].survey_time,
+          timezone
+        );
         initalValues["pulse"] = {
           survey_day: surveyGroup.pulse[0].survey_day,
-          survey_time: moment(surveyGroup.pulse[0].survey_time, "HH:mm:ss"),
+          survey_time: moment(surveyTime, "HH:mm:ss"),
         };
       }
     }
@@ -72,8 +77,8 @@ const TeamSurveySelectionStep = ({
           id: key,
         },
         id: item.id,
+        is_active: true,
         survey_time: surveyTime,
-        is_active: !!item.is_active,
         survey_day: item.survey_day,
       });
     });
@@ -88,8 +93,8 @@ const TeamSurveySelectionStep = ({
           id: item.id,
         },
         id: surveyItem.id,
+        is_active: true,
         survey_time: surveyTime,
-        is_active: !!item.is_active,
         survey_day: pulse.survey_day,
       });
     });

@@ -117,6 +117,7 @@ const Analytics = () => {
               <Col>
                 <Progress
                   type="circle"
+                  format={(percent) => `${percent}%`}
                   percent={formatValue(happinessScore.current_week_score)}
                 />
               </Col>
