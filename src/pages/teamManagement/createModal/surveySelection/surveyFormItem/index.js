@@ -1,4 +1,5 @@
-import { Form, TimePicker, Select } from "antd";
+import { Form, TimePicker, Select, Tooltip, Space } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import { SURVEY_DAY_OPTIONS } from "../../../../../constants";
 
@@ -19,7 +20,18 @@ const SurveyFormItem = ({ showDay, dayItemName, timeItemName, timezone }) => {
         </Form.Item>
       </If>
       <Form.Item
-        label="Schedule"
+        label={
+          <Space size={6}>
+            <span>Schedule</span>
+            <Tooltip
+              title="All members are sent these surveys at this time, 
+            in their timezone e.g Team member in Europe & China both 
+            receive it at 10:00 their time"
+            >
+              <QuestionCircleOutlined />
+            </Tooltip>
+          </Space>
+        }
         name={timeItemName}
         extra={<p className="mt-4">{`Timezone: ${timezone}`}</p>}
       >

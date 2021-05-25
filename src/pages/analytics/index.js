@@ -171,7 +171,7 @@ const Analytics = () => {
               </Space>
             }
           >
-            <Row justify="space-between" className="text-2xl mb-12">
+            <Row justify="space-between overall-row" className="text-2xl mb-12">
               <Col className="font-medium">Overall culture score</Col>
               <Col className="font-medium">
                 <Badge
@@ -183,10 +183,17 @@ const Analytics = () => {
             <Collapse bordered={false}>
               {Object.keys(engagementItems).map((key) => {
                 const categoryData = engagementItems[key];
+                const meanScore = categoryData.mean_response || 0;
                 return (
                   <Collapse.Panel
                     key={key}
                     header={key}
+                    extra={
+                      <Badge
+                        color={getBadgeColor(meanScore)}
+                        text={`${formatValue(meanScore)}%`}
+                      />
+                    }
                     className="site-collapse-custom-panel"
                   >
                     <Row justify="space-between" className="text-xl mb-4">

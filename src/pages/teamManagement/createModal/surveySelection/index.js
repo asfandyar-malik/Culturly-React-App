@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import moment from "moment";
+import moment from "moment-timezone";
 import { Button, Card, Form, Space, Tooltip, Input } from "antd";
 
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import { isEmpty, groupBy } from "_dash";
-import { getTimezoneTime } from "utils";
+import { getFormatTimezoneTime } from "utils";
 import { SURVEY_TYPE_DISPLAY_MAPPING } from "../../../../constants";
 
 import SurveyFormItem from "./surveyFormItem";
@@ -28,14 +28,17 @@ const TeamSurveySelectionStep = ({
     const pulseSurveys = groupBy(teamSurveys, (c) => c.is_pulse_check)["true"];
 
     if (pulseSurveys && pulseSurveys.length) {
-      const surveyTime = getTimezoneTime(pulseSurveys[0].survey_time, timezone);
+      const surveyTime = getFormatTimezoneTime(
+        pulseSurveys[0].survey_time,
+        timezone
+      );
       initalValues["pulse"] = {
         survey_day: pulseSurveys[0].survey_day,
         survey_time: moment(surveyTime, "HH:mm:ss"),
       };
     } else {
       if (surveyGroup.pulse && surveyGroup.pulse.length) {
-        const surveyTime = getTimezoneTime(
+        const surveyTime = getFormatTimezoneTime(
           surveyGroup.pulse[0].survey_time,
           timezone
         );
@@ -48,7 +51,7 @@ const TeamSurveySelectionStep = ({
 
     surveys.map((item) => {
       const surveyItem = teamSurveys.find((i) => i.survey.id === item.id) || {};
-      const surveyTime = getTimezoneTime(
+      const surveyTime = getFormatTimezoneTime(
         surveyItem.survey_time || item.survey_time,
         timezone
       );
@@ -64,6 +67,11 @@ const TeamSurveySelectionStep = ({
     form.setFieldsValue(initalValues);
   }, [teamDetail]);
 
+  function getWorkspaceUTCTime(time) {
+    const tzTime = moment.tz(time.format("HH:mm"), "HH:mm", timezone);
+    return tzTime.utc().format("HH:mm:ss");
+  }
+
   function onFormSubmit(values) {
     let surveyArray = [];
     const { pulse, ...happinessValues } = values;
@@ -71,7 +79,7 @@ const TeamSurveySelectionStep = ({
 
     Object.keys(happinessValues).map((key) => {
       const item = values[key];
-      const surveyTime = moment.utc(item.survey_time).format("HH:mm:ss");
+      const surveyTime = getWorkspaceUTCTime(item.survey_time);
       surveyArray.push({
         survey: {
           id: key,
@@ -85,7 +93,7 @@ const TeamSurveySelectionStep = ({
 
     Object.keys(pulseSurveys).map((key) => {
       const item = pulseSurveys[key];
-      const surveyTime = moment.utc(pulse.survey_time).format("HH:mm:ss");
+      const surveyTime = getWorkspaceUTCTime(pulse.survey_time);
       const surveyItem =
         (teamDetail.surveys || []).find((i) => i.survey.id === item.id) || {};
       surveyArray.push({

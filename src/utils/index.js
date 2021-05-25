@@ -7,6 +7,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-export const getTimezoneTime = (timeString, tz) => {
+export const getFormatTimezoneTime = (timeString, tz) => {
   return dayjs.utc(timeString, "HH:mm:ss").tz(tz).format("HH:mm");
 };
