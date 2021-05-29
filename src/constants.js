@@ -36,5 +36,5 @@ export const DFFAULT_TEAM_NAMES = [
 
 export const SURVEY_TYPE_DISPLAY_MAPPING = {
   happiness: "Happiness check",
-  pulse: "Pulse check",
+  pulse: "Culture check",
 };

@@ -89,7 +89,7 @@ const Analytics = () => {
         placeholder="Select a team"
         onChange={(value) => setSelectedTeam(value)}
       >
-        <Select.Option value="">All</Select.Option>
+        <Select.Option value="">All Department"</Select.Option>
         {teams.map((item) => {
           return (
             <Select.Option value={item.id} key={item.id}>
@@ -124,7 +124,9 @@ const Analytics = () => {
               <Col>
                 <div className="mb-12">
                   <span>How does score compare?</span>
-                  <InfoCircleOutlined className="info-icon" />
+                  <Tooltip title="You view here your happiness score from previous weeks and previous month">
+                    <InfoCircleOutlined className="info-icon" />
+                  </Tooltip>
                 </div>
                 <Space>
                   <Card>
@@ -149,7 +151,7 @@ const Analytics = () => {
             loading={loading}
             title={
               <Tooltip
-                title="Engagement score is calcuated from the response to Pulse Check, which is a 
+                title="Engagement score is calcuated from the response to Culture check, which is a 
               weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact."
               >
                 <Space size={6}>
