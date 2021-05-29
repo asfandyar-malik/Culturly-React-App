@@ -36,5 +36,32 @@ export const DFFAULT_TEAM_NAMES = [
 
 export const SURVEY_TYPE_DISPLAY_MAPPING = {
   happiness: "Happiness check",
-  pulse: "Pulse check",
+  pulse: "Culture check",
+};
+
+export const LINE_CHART_OPTIONS = {
+  interaction: {
+    mode: "index",
+    intersect: false,
+  },
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "none",
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      grid: {
+        color: "#eaecf0",
+        drawBorder: false,
+      },
+    },
+  },
 };
