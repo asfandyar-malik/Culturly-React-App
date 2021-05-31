@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import moment from "moment";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -75,4 +76,8 @@ export const getWeekDaysOfWeek = (year, month, day) => {
   const endDate = dayjs(`${year}-${month}-${day}`).endOf("week");
   let startDate = dayjs(`${year}-${month}-${day}`).startOf("week");
   return getWeekDays(startDate, endDate);
+};
+
+export const disabledFutureDate = (current) => {
+  return current && current > moment().endOf("day");
 };

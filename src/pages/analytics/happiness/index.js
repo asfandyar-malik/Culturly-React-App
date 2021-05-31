@@ -1,11 +1,24 @@
 import moment from "moment";
 import Chart from "chart.js/auto";
 import { useEffect, useState, useRef } from "react";
-import { Card, Col, Row, Progress, Space, DatePicker, Tooltip } from "antd";
+import {
+  Card,
+  Col,
+  Row,
+  Progress,
+  Space,
+  DatePicker,
+  Tooltip,
+  Empty,
+} from "antd";
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { LINE_CHART_OPTIONS } from "../../../constants";
-import { getWeekDaysOfWeek, getWeekDaysOfMonth } from "utils";
+import {
+  getWeekDaysOfWeek,
+  getWeekDaysOfMonth,
+  disabledFutureDate,
+} from "utils";
 import { getHappinessScore, getHappinessGraph } from "actions";
 
 const HappinessAnalyticsCard = ({ selectedTeam }) => {
@@ -157,6 +170,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
           </Row>
         </Card>
         <Card
+          className="no-header-border"
           extra={
             <Space size={16}>
               <DatePicker
@@ -165,6 +179,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
                 allowClear={false}
                 style={{ width: 200 }}
                 value={happinessGraphMonth}
+                disabledDate={disabledFutureDate}
                 onChange={(value) => setHappinessGraphMonth(value)}
               />
               <DatePicker
@@ -173,12 +188,22 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
                 allowClear={false}
                 style={{ width: 200 }}
                 value={happinessGraphWeek}
+                disabledDate={disabledFutureDate}
                 onChange={(value) => setHappinessGraphWeek(value)}
               />
             </Space>
           }
         >
-          <canvas ref={happinessChartRef} height={320} />
+          <Choose>
+            <When condition={happinessGraphData.length}>
+              <canvas ref={happinessChartRef} height={320} />
+            </When>
+            <Otherwise>
+              <div className="empty-container vertical-center">
+                <Empty description="No data available to display" />
+              </div>
+            </Otherwise>
+          </Choose>
         </Card>
       </Col>
     </Row>

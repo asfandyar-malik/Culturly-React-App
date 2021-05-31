@@ -50,6 +50,15 @@ export const LINE_CHART_OPTIONS = {
     legend: {
       position: "none",
     },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return `${context.dataset.label}: ${parseFloat(
+            context.parsed.y.toFixed(2)
+          )}%`;
+        },
+      },
+    },
   },
   scales: {
     x: {
@@ -61,6 +70,12 @@ export const LINE_CHART_OPTIONS = {
       grid: {
         color: "#eaecf0",
         drawBorder: false,
+      },
+      ticks: {
+        precision: 0,
+        callback: function (value, index, values) {
+          return `${value}%`;
+        },
       },
     },
   },

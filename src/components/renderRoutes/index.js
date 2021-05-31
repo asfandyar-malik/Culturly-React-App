@@ -9,7 +9,7 @@ const RenderRoutes = ({ routes }) => {
   return (
     <Suspense
       fallback={
-        <div className="vertical-center">
+        <div className="h-full vertical-center">
           <Spin />
         </div>
       }

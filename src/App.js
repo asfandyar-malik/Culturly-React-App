@@ -42,7 +42,7 @@ const AppRouter = ({ accountData, setAccountData }) => {
 
   if (loading) {
     return (
-      <div className="vertical-center">
+      <div className="h-full vertical-center">
         <Spin />
       </div>
     );

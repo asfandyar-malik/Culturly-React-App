@@ -11,11 +11,16 @@ import {
   Badge,
   Collapse,
   Select,
+  Empty,
 } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import { LINE_CHART_OPTIONS } from "../../../constants";
-import { getWeeksInMonth, getMonthsBetweenDates } from "utils";
+import {
+  getWeeksInMonth,
+  disabledFutureDate,
+  getMonthsBetweenDates,
+} from "utils";
 import { getEngagementScore, getEngagementGraph } from "actions";
 
 const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
@@ -164,6 +169,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                 value={selectedMonth}
                 style={{ width: 200 }}
                 placeholder="Select a month"
+                disabledDate={disabledFutureDate}
                 onChange={(value) => setSelectedMonth(value)}
               />
             </Space>
@@ -234,6 +240,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           </Collapse>
         </Card>
         <Card
+          className="no-header-border"
           extra={
             <Space size={16}>
               <Select
@@ -256,12 +263,22 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                 picker="month"
                 style={{ width: 200 }}
                 value={culureGraphMonth}
+                disabledDate={disabledFutureDate}
                 onChange={(value) => setCulureGraphMonth(value)}
               />
             </Space>
           }
         >
-          <canvas ref={cultureChartRef} height={320} />
+          <Choose>
+            <When condition={cultureGraphData.length}>
+              <canvas ref={cultureChartRef} height={320} />
+            </When>
+            <Otherwise>
+              <div className="empty-container vertical-center">
+                <Empty description="No data available to display" />
+              </div>
+            </Otherwise>
+          </Choose>
         </Card>
       </Col>
     </Row>
