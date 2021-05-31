@@ -64,15 +64,17 @@ export const LINE_CHART_OPTIONS = {
     x: {
       grid: {
         display: false,
-      },
+      }
     },
     y: {
+      beginAtZero: true,
       grid: {
         color: "#eaecf0",
         drawBorder: false,
       },
       ticks: {
         precision: 0,
+        maxTicksLimit: 10,
         callback: function (value, index, values) {
           return `${value}%`;
         },
