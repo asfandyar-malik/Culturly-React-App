@@ -152,7 +152,7 @@ const TeamMemberSelectionStep = ({
         </div>
         <div>
           <Tooltip
-            title="Members receive Mood Check Survey and Pulse Check Survey on Slack. 
+            title="Members receive Mood Check Survey and Culture check Survey on Slack. 
           One member can be part of only one Team"
           >
             <Space size={6}>

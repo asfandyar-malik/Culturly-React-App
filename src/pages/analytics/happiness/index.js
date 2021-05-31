@@ -90,8 +90,11 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
           labels,
           datasets: [
             {
+              fill: true,
               label: "Score",
               data: dataPoints,
+              borderColor: "#30CAEC",
+              backgroundColor: "#f0ffff87",
             },
           ],
         },
