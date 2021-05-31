@@ -147,7 +147,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           loading={loading}
           title={
             <Tooltip
-              title="Engagement score is calcuated from the response to Pulse Check, which is a 
+              title="Engagement score is calcuated from the response to Culture Check, which is a 
               weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact."
             >
               <Space size={6}>

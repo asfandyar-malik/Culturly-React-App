@@ -135,7 +135,9 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
             <Col>
               <div className="mb-12">
                 <span>How does score compare?</span>
-                <InfoCircleOutlined className="info-icon" />
+                <Tooltip title="You view here your happiness score from previous weeks and previous month">
+                  <InfoCircleOutlined className="info-icon" />
+                </Tooltip>
               </div>
               <Space>
                 <Card>
