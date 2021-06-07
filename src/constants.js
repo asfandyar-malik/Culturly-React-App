@@ -64,7 +64,7 @@ export const LINE_CHART_OPTIONS = {
     x: {
       grid: {
         display: false,
-      }
+      },
     },
     y: {
       beginAtZero: true,
@@ -74,6 +74,7 @@ export const LINE_CHART_OPTIONS = {
       },
       ticks: {
         precision: 0,
+        stepSize: 10,
         maxTicksLimit: 10,
         callback: function (value, index, values) {
           return `${value}%`;

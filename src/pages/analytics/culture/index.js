@@ -58,12 +58,13 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   }, [selectedMonth, selectedTeam]);
 
   useEffect(() => {
-    let endTs = moment().endOf("month").format("X");
-    let startTs = moment().subtract(1, "years").startOf("month").format("X");
+    let endTs = moment().endOf("month");
+    let startTs = moment().subtract(1, "years").startOf("month");
     if (culureGraphMonth) {
-      endTs = culureGraphMonth.endOf("month").format("X");
-      startTs = culureGraphMonth.startOf("month").format("X");
+      startTs = culureGraphMonth.startOf("month");
     }
+    endTs = endTs.utc(true).format("X");
+    startTs = startTs.utc(true).format("X");
     getEngagementGraph(selectedTeam, startTs, endTs, selectedCategory).then(
       (response) => {
         setCultureGraphData(response.data);
