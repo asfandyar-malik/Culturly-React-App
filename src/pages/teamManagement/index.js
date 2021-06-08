@@ -11,6 +11,7 @@ import {
   Button,
   Space,
 } from "antd";
+import { useLocation } from "react-router";
 import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { getWorkspaceTeams, deleteWorkspaceTeam, getSurveys } from "actions";
@@ -20,17 +21,26 @@ import CreateTeamModal from "./createModal";
 import "./style.scss";
 
 const TeamManagement = () => {
+  const location = useLocation();
   let [teams, setTeams] = useState([]);
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState({});
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
+  const isNewUser = location.state?.is_new_user || false;
+
   useEffect(() => {
     if (!createModalVisible) {
       setSelectedTeam({});
     }
   }, [createModalVisible]);
+
+  useEffect(() => {
+    if (isNewUser) {
+      setCreateModalVisible(true);
+    }
+  }, [isNewUser]);
 
   useEffect(() => {
     getWorkspaceTeams().then((response) => {

@@ -31,7 +31,12 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
               "Congratulations!! Your workspace has been succesfully connected"
             );
             setAccountData(response);
-            history.push(INDEX_ROUTE);
+            history.push({
+              pathname: INDEX_ROUTE,
+              state: {
+                is_new_user: true,
+              },
+            });
           });
         })
         .catch((err) => {
