@@ -6,88 +6,90 @@ import {
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 
-const TeamMemberSelectionStep = ({
+const TeamManagerSelectionStep = ({
   saving,
-  members,
+  managers,
   teamDetail,
   onBack,
   onProceed,
 }) => {
-  const [allMembers, setAllMembers] = useState([]);
-  const [filterMembers, setFilterMembers] = useState([]);
+  const [allManagers, setAllManagers] = useState([]);
+  const [filterManagers, setFilterManagers] = useState([]);
   const [isInitalLoaded, setIsInitalLoaded] = useState(false);
-  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [selectedManagers, setSelectedManagers] = useState([]);
 
   useEffect(() => {
-    setAllMembers(members);
-    setFilterMembers(members);
-    setSelectedMembers(teamDetail.members.map((item) => item.member));
+    setAllManagers(managers);
+    setFilterManagers(managers);
+    setSelectedManagers(teamDetail.managers.map((item) => item.member));
     setIsInitalLoaded(true);
-  }, [members, teamDetail]);
+  }, [managers, teamDetail]);
 
   useEffect(() => {
     if (isInitalLoaded) {
-      let newMembers = [...allMembers];
-      newMembers = newMembers.filter(
-        (item) => !selectedMembers.map((i) => i.id).includes(item.id)
+      let newManagers = [...allManagers];
+      newManagers = newManagers.filter(
+        (item) => !selectedManagers.map((i) => i.id).includes(item.id)
       );
-      setFilterMembers([...newMembers]);
+      setFilterManagers([...newManagers]);
     }
-  }, [selectedMembers]);
+  }, [selectedManagers]);
 
-  const onDeselectMember = (member) => {
-    const index = selectedMembers.findIndex((item) => item.id === member.id);
+  const onDeselectManager = (member) => {
+    const index = selectedManagers.findIndex((item) => item.id === member.id);
     if (index > -1) {
-      const memberIndex = allMembers.findIndex((item) => item.id === member.id);
+      const memberIndex = allManagers.findIndex(
+        (item) => item.id === member.id
+      );
       if (memberIndex === -1) {
-        allMembers.push(member);
-        setAllMembers(allMembers);
+        allManagers.push(member);
+        setAllManagers(allManagers);
       }
-      selectedMembers.splice(index, 1);
-      setSelectedMembers([...selectedMembers]);
+      selectedManagers.splice(index, 1);
+      setSelectedManagers([...selectedManagers]);
     }
   };
 
-  function getExistingMemberId(memberId) {
-    const teamMembers = teamDetail.members;
+  function getExistingManagerId(memberId) {
+    const teamMembers = teamDetail.managers;
     const member = teamMembers.find((item) => item.member.id === memberId);
     return member ? member.id : null;
   }
 
   function onSubmit() {
-    if (selectedMembers.length) {
-      const memberArrary = selectedMembers.map((item) => {
+    if (selectedManagers.length) {
+      const managerArrary = selectedManagers.map((item) => {
         return {
-          id: getExistingMemberId(item.id),
+          id: getExistingManagerId(item.id),
           member: {
             id: item.id,
           },
         };
       });
       const payload = {
-        members: memberArrary,
+        managers: managerArrary,
       };
       onProceed(payload);
     } else {
-      message.error("Please select members");
+      message.error("Please select manangers");
     }
   }
 
   return (
     <Row gutter={24}>
       <Col span={8}>
-        <div>
+        <div className="mb-12">
           <Tooltip
-            title="Members receive Mood Check Survey and Culture check Survey on Slack. 
-          One member can be part of only one Team"
+            title="Managers have access to viewing Analytics, managing Team members, 
+          editing Team, managing Member access etc "
           >
             <Space size={6}>
-              <span>Select members</span>
+              <span>Select managers</span>
               <QuestionCircleOutlined />
             </Space>
           </Tooltip>
-          {filterMembers.length ? (
-            filterMembers.map((item) => {
+          {filterManagers.length ? (
+            filterManagers.map((item) => {
               return (
                 <Space className="member-list-item" key={item.id}>
                   <div>
@@ -99,7 +101,7 @@ const TeamMemberSelectionStep = ({
                   <div>
                     <PlusCircleOutlined
                       onClick={() =>
-                        setSelectedMembers([...selectedMembers, item])
+                        setSelectedManagers([...selectedManagers, item])
                       }
                     />
                   </div>
@@ -112,10 +114,10 @@ const TeamMemberSelectionStep = ({
         </div>
       </Col>
       <Col span={16}>
-        <div className="mt-12">
-          <p>Members</p>
-          {selectedMembers.length ? (
-            selectedMembers.map((item) => {
+        <div>
+          <p>Managers</p>
+          {selectedManagers.length ? (
+            selectedManagers.map((item) => {
               return (
                 <Space className="member-list-item" key={item.id}>
                   <div>
@@ -125,13 +127,13 @@ const TeamMemberSelectionStep = ({
                     </Space>
                   </div>
                   <div>
-                    <DeleteOutlined onClick={() => onDeselectMember(item)} />
+                    <DeleteOutlined onClick={() => onDeselectManager(item)} />
                   </div>
                 </Space>
               );
             })
           ) : (
-            <p>No members selected</p>
+            <p>No managers selected</p>
           )}
         </div>
         <Space size={20} className="mt-20">
@@ -152,4 +154,4 @@ const TeamMemberSelectionStep = ({
   );
 };
 
-export default TeamMemberSelectionStep;
+export default TeamManagerSelectionStep;

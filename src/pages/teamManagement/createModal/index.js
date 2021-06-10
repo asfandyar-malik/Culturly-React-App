@@ -10,6 +10,7 @@ import {
 
 import AccountHook from "hooks/account";
 import TeamMemberSelectionStep from "./memberSelection";
+import TeamManagerSelectionStep from "./managerSelection";
 import TeamSurveySelectionStep from "./surveySelection";
 import TeamBasicInformationStep from "./basicInformation";
 
@@ -95,13 +96,21 @@ const CreateTeamModal = ({
             <TeamMemberSelectionStep
               saving={saving}
               members={members}
-              managers={managers}
               teamDetail={teamDetail}
               onProceed={(payload) => onSubmit(payload)}
               onBack={() => setCurrentStep(currentStep - 1)}
             />
           </When>
           <When condition={currentStep === 2}>
+            <TeamManagerSelectionStep
+              saving={saving}
+              managers={managers}
+              teamDetail={teamDetail}
+              onProceed={(payload) => onSubmit(payload)}
+              onBack={() => setCurrentStep(currentStep - 1)}
+            />
+          </When>
+          <When condition={currentStep === 3}>
             <TeamSurveySelectionStep
               saving={saving}
               surveys={surveys}
