@@ -71,7 +71,7 @@ const CreateTeamModal = ({
 
   return (
     <Modal
-      width={840}
+      width={940}
       footer={null}
       visible={visible}
       title="Create new team"
@@ -81,6 +81,7 @@ const CreateTeamModal = ({
       <Steps current={currentStep}>
         <Step title="Basic information" />
         <Step title="Member management" />
+        <Step title="Manager management" />
         <Step title="Surveys" />
       </Steps>
       <div className="mt-24">
