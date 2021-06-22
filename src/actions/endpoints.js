@@ -38,3 +38,8 @@ export const USER_AUTH_API_PATH = "auth-user/complete/";
 export const WORKSPACE_AUTH_API_PATH = "auth-workspace/complete/";
 
 export const TIMEZONES_API_PATH = "timezones/";
+
+export const EVENTS_BASE_API_PATH = "events/";
+export const MESSAGING_BASE_API_PATH = "channels/";
+export const EVENT_DETAIL_API_PATH = `${EVENTS_BASE_API_PATH}{}/`;
+export const EVENT_REGISTER_API_PATH = `${EVENTS_BASE_API_PATH}{}/register/`;

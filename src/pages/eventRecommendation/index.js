@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 
 import {
+  getEvents,
   getEventRecommendationSections,
   getEventRecommendationCateogries,
 } from "actions";
@@ -22,10 +23,8 @@ const PAGE_SIZE = 4;
 const EventRecommendation = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [
-    eventRecommendationSections,
-    setEventRecommendationSections,
-  ] = useState([]);
+  const [eventRecommendationSections, setEventRecommendationSections] =
+    useState([]);
   const [sectionPagination, setSectionPagination] = useState({});
 
   useEffect(() => {
@@ -42,6 +41,9 @@ const EventRecommendation = () => {
 
     getEventRecommendationCateogries().then((response) => {
       setCategories(response.data);
+    });
+    getEvents().then((response) => {
+      console.log(response.data);
     });
   }, []);
 

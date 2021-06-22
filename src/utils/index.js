@@ -81,3 +81,12 @@ export const getWeekDaysOfWeek = (year, month, day) => {
 export const disabledFutureDate = (current) => {
   return current && current > moment().endOf("day");
 };
+
+export const getEventCover = (eventDetail) => {
+  let cover = `https://api.platterz.ca/files/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBakFLIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5e1428f61658f03d2278acb28ddfe85d9ed6edca/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBPZ2wzWldKd09neHhkV0ZzYVhSNWFWVTZDMlJsWm1sdVpVa2lGM2RsWW5BNmJHOXpjMnhsYzNNOWRISjFaUVk2QmtWVSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--98ef3d9b0eb9f3ddeb642efd51c271930315995c/vx_covers_holistic_corporate_wellness_program.jpg`;
+  const { pictures = [] } = eventDetail;
+  if (pictures.length) {
+    cover = pictures[0].picture_url;
+  }
+  return cover;
+};

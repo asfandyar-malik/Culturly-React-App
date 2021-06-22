@@ -194,3 +194,20 @@ export const getEventRecommendationSections = () => {
 export const getEventRecommendationCateogries = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_CATEGORIES_API_PATH);
 };
+
+export const getEvents = () => {
+  return instance.get(endpoints.EVENTS_BASE_API_PATH);
+};
+
+export const getEventDetail = (slug) => {
+  return instance.get(endpoints.EVENT_DETAIL_API_PATH.replace("{}", slug));
+};
+
+export const registerForEvent = (slug, payload) => {
+  const path = endpoints.EVENT_REGISTER_API_PATH.replace("{}", slug);
+  return instance.post(path, payload);
+};
+
+export const getChannels = () => {
+  return instance.get(endpoints.MESSAGING_BASE_API_PATH);
+};

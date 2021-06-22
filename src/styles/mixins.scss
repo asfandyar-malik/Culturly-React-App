@@ -2,7 +2,7 @@
     $i: $start;
     @while $i <= $max {
         #{$className + $i} {
-            #{$styleName}: #{$i / $divider + "px"};
+            #{$styleName}: #{$i / $divider + "px !important"};
         }
         $i: $i + $offset;
     }

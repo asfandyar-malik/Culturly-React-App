@@ -1,0 +1,29 @@
+.user-event-management {
+  display: flex;
+  margin: 0 auto;
+  max-width: 120rem;
+  flex-direction: column;
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 1.6rem 2.4rem;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    .logo {
+      height: 3.6rem;
+    }
+    .menu {
+      flex: 1;
+      margin: 0;
+      padding: 0 3.6rem;
+      li {
+        padding: 1.6rem;
+        margin: 0 0.8rem;
+        display: inline-block;
+      }
+    }
+  }
+  .content {
+    padding: 1.6rem;
+  }
+}
