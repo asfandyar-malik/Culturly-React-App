@@ -1,13 +1,13 @@
 @import "../../../styles/variable.scss";
 
-.event-recommendation-event-card {
+.course-recommendation-course-card {
   width: 22rem;
   height: 32rem;
   overflow: hidden;
   cursor: pointer;
   margin-bottom: 2rem;
   border-radius: 1.6rem;
-  box-shadow: 0 4px 8px rgba(191, 183, 204, 0.8);
+  box-shadow: 0 4px 8px rgba(202, 176, 245, 0.8);
 
   .ant-card-cover img {
     height: 22rem;

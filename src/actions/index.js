@@ -16,6 +16,11 @@ export const updateSlackMember = (memberId, payload) => {
   return instance.patch(path, payload);
 };
 
+export const getLeaderboardScore = () => {
+  let path = endpoints.SLACK_MEMBERS_LEADERBOARD_SCORE_API_PATH;
+  return instance.get(path);
+};
+
 export const getSurveys = () => {
   return instance.get(endpoints.SURVEYS_BASE_API_PATH);
 };
@@ -190,6 +195,11 @@ export const getEventRecommendations = () => {
 export const getEventRecommendationSections = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_SECTIONS_API_PATH);
 };
+
+export const getCourseRecommendationSections = () => {
+  return instance.get(endpoints.COURSE_RECOMMENDATION_SECTIONS_API_PATH);
+};
+
 
 export const getEventRecommendationCateogries = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_CATEGORIES_API_PATH);

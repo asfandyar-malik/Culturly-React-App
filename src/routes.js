@@ -16,12 +16,15 @@ export const SLACK_WORKSPACE_OAUTH_COMPLETE_ROUTE = "/auth-workspace/complete/";
 
 export const INDEX_ROUTE = "/";
 export const MEMBERS_ROUTE = "/members/";
+export const LEADERBOARD_ROUTE = "/leaderboard/";
 export const SETTINGS_ROUTE = "/settings/";
 export const ANALYTICS_ROUTE = "/analytics/";
 export const EVENT_POLL_ROUTE = "/event-poll/";
 export const EVENT_FEEDBACK_ROUTE = "/event-feedback/";
 export const EVENT_REQUESTS_ROUTE = "/event-requests/";
 export const EVENT_RECOMMENDATION_ROUTE = "/event-recommendation/";
+export const COURSE_ROUTE = "/course/";
+export const SENTIMENT_ROUTE = "/sentiment-score/";
 
 const UserOAuthCompleteComponent = lazy(() =>
   import("pages/authComplete/user")
@@ -33,15 +36,16 @@ const WorkspaceOAuthCompleteComponent = lazy(() =>
 const EventPollComponent = lazy(() => import("pages/eventPoll"));
 const EventFeedbackComponent = lazy(() => import("pages/eventFeedback"));
 const EventRequestsComponent = lazy(() => import("pages/eventRequests"));
-const EventRecommendationComponent = lazy(() =>
-  import("pages/eventRecommendation")
-);
-
+const EventRecommendationComponent = lazy(() => import("pages/eventRecommendation"));
+const CourseRecommendationComponent = lazy(() => import("pages/courseRecommendation"));
 const LandingComponent = lazy(() => import("pages/landing"));
 const AnalyticsComponent = lazy(() => import("pages/analytics"));
 const WorkspaceSettingsComponent = lazy(() => import("pages/settings"));
 const TeamManagementComponent = lazy(() => import("pages/teamManagement"));
 const MemberManagementComponent = lazy(() => import("pages/memberManagement"));
+const LeaderboardComponent = lazy(() => import("pages/leaderboard"));
+const SentimentComponent = lazy(() => import("pages/sentiment"));
+
 
 export const NON_LOGIN_ROUTES = [
   {
@@ -89,6 +93,18 @@ export const LOGGED_IN_ROUTES = [
       },
       {
         exact: true,
+        name: "leaderboard",
+        path: LEADERBOARD_ROUTE,
+        component: LeaderboardComponent,
+      },
+      {
+        exact: true,
+        name: "leaderboard",
+        path: SENTIMENT_ROUTE,
+        component: SentimentComponent,
+      },
+      {
+        exact: true,
         name: "settings",
         path: SETTINGS_ROUTE,
         component: WorkspaceSettingsComponent,
@@ -113,6 +129,12 @@ export const LOGGED_IN_ROUTES = [
       },
       {
         exact: true,
+        name: "course",
+        path: COURSE_ROUTE,
+        component: CourseRecommendationComponent,
+      },
+      {
+        exact: true,
         name: "event-poll",
         path: EVENT_POLL_ROUTE,
         component: EventPollComponent,
@@ -127,6 +149,12 @@ export const ROUTES = [
     title: "Teams",
     icon: <TeamOutlined />,
     path: INDEX_ROUTE,
+  },
+  {
+    key: "leaderboard",
+    path: LEADERBOARD_ROUTE,
+    icon: <ApartmentOutlined />,
+    title: "Leaderboard",
   },
   {
     key: "members",
@@ -147,6 +175,12 @@ export const ROUTES = [
     path: EVENT_RECOMMENDATION_ROUTE,
   },
   {
+    key: "courses",
+    title: "Courses",
+    icon: <MacCommandOutlined />,
+    path: COURSE_ROUTE,
+  },
+  {
     key: "event-feedback",
     title: "Event feedback",
     icon: <SmileOutlined />,
@@ -158,4 +192,11 @@ export const ROUTES = [
     icon: <ExperimentOutlined />,
     path: EVENT_POLL_ROUTE,
   },
+  {
+    key: "sentiment",
+    title: "Sentiment",
+    icon: <ExperimentOutlined />,
+    path: SENTIMENT_ROUTE,
+  },
+  
 ];

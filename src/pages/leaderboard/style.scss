@@ -1,0 +1,12 @@
+.member-management {
+  .ant-list-items {
+    .ant-list-item {
+      .ant-row {
+        > div:last-child {
+          font-size: 2rem;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
