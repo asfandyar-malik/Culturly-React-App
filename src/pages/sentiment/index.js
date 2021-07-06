@@ -15,7 +15,7 @@ import sentimentImg from "assets/images/sentiment.png";
               Anonymous Sentiment analysis from the open ended survey questions 
             </p>
             <div className="images-list">
-              <img src={sentimentImg} />
+              <img src={sentimentImg} alt="Sentiment" />
             </div>
           </div>
         </div>

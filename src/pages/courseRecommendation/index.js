@@ -4,7 +4,6 @@ import { Card, Col, Row, Space, Tooltip } from "antd";
 import {
   LeftCircleFilled,
   RightCircleFilled,
-  QuestionCircleOutlined,
 } from "@ant-design/icons";
 
 import {
@@ -69,7 +68,7 @@ const CourseRecommendation = () => {
 
       <div>
         <h1>Learning is better with cohorts</h1>
-        <text> We partner with the world’s best instructors to offer live, online, community-driven courses to transform your career.</text>
+        <p> We partner with the world’s best instructors to offer live, online, community-driven courses to transform your career.</p>
       </div>
 
       {courseRecommendationSections.map((section, index) => {

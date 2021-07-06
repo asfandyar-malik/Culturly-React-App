@@ -181,6 +181,12 @@ export const ROUTES = [
     path: COURSE_ROUTE,
   },
   {
+    key: "sentiment",
+    title: "Sentiment",
+    icon: <ExperimentOutlined />,
+    path: SENTIMENT_ROUTE,
+  },
+  {
     key: "event-feedback",
     title: "Event feedback",
     icon: <SmileOutlined />,
@@ -189,14 +195,7 @@ export const ROUTES = [
   {
     key: "event-poll",
     title: "Event poll",
-    icon: <ExperimentOutlined />,
+    icon: <MacCommandOutlined />,
     path: EVENT_POLL_ROUTE,
-  },
-  {
-    key: "sentiment",
-    title: "Sentiment",
-    icon: <ExperimentOutlined />,
-    path: SENTIMENT_ROUTE,
-  },
-  
+  },  
 ];
