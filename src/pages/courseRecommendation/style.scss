@@ -1,0 +1,23 @@
+@import "../../styles//variable.scss";
+
+.course-recommendations {
+  .course-recommendation-categories {
+    display: grid;
+    grid-gap: 2.4rem;
+    grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  }
+  .course-sections {
+    display: grid;
+    grid-gap: 2.4rem;
+    grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  }
+  .course-recommendation-section {
+    .header {
+      padding: 0 1.2rem 0 0;
+      .anticon {
+        cursor: pointer;
+        font-size: 2.4rem;
+      }
+    }
+  }
+}

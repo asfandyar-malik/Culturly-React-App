@@ -1,0 +1,41 @@
+.leaderboard {
+  .ant-list-items {
+    .ant-list-item {
+      width: 75%;
+      padding: 5px;
+      .ant-row {
+        > div:last-child {
+          font-size: 1rem;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+.leaderboard-list {
+  .ant-list-header {
+    width: 75%;
+    border-bottom: 0 !important;
+    color: #000000;
+    .ant-row {
+      margin: 0 !important;
+    }
+  }
+  .ant-list-item {
+    padding: 1.8rem 0;
+    border-bottom: 0 !important;
+    .ant-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: 0 !important;
+      background: #F7F7F7;
+    }
+  }
+}
+
+.updown-logo img{
+  width: 20%;
+  height: auto; 
+}
