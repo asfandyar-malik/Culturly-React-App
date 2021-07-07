@@ -140,10 +140,10 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
 
   function getBadgeColor(val) {
     let color = "#19AF19";
-    if (val < 40) {
+    if (val < 33.3) {
       color = "#E11919";
     }
-    if (val > 40 && val < 80) {
+    if (val > 33.4 && val < 66.6) {
       color = "#FEAF00";
     }
     return color;
