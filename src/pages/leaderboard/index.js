@@ -20,15 +20,36 @@
   const Leaderboard = () => {
     const [loading, setLoading] = useState(true);
     const [leaderboardScores, setLeaderboardScore] = useState([]);
-    const [exactScore, setExactScore] = useState([]);
 
     useEffect(() => {
       getLeaderboardScore().then((response) => {
         setLoading(false);
-        setLeaderboardScore(response.data.member);
-        setExactScore(response.data.leaderboard_score);
+        setLeaderboardScore(response.data.output);
       });
     }, []);
+
+    function renderOutput(item, index) {
+      return (
+        <List.Item>
+          <Row gutter={32} className="font-medium">
+          <Col span={2}>{index + 1}</Col>
+            <Col span={8}>
+              <Space>
+                <Avatar src={item.avatar} />
+                {item.display_name || item.name}
+              </Space>
+            </Col>
+            <Col span={5}>{item.team || "-"}</Col>
+            <Col span={3}>{item.leaderboard_score} </Col>
+            <Col span={4}>
+              <div className="updown-logo">
+                {index < 3 ? <img src={upArrow} alt="up arrow" /> : <img src={downArrow} alt="down arrow" />}
+              </div>                
+            </Col>
+          </Row>
+        </List.Item>
+      )
+    }
 
     return (
       <List
@@ -46,24 +67,7 @@
         }
         
         renderItem={(item, index) => (
-          <List.Item>
-            <Row gutter={32} className="font-medium">
-            <Col span={2}>{index + 1}</Col>
-              <Col span={8}>
-                <Space>
-                  <Avatar src={item.avatar} />
-                  {item.display_name || item.name}
-                </Space>
-              </Col>
-              <Col span={5}>{item.team || "-"}</Col>
-              <Col span={3}>{exactScore} </Col>
-              <Col span={4}>
-                <div className="updown-logo">
-                  {index < 3 ? <img src={upArrow} alt="up arrow" /> : <img src={downArrow} alt="down arrow" />}
-                </div>                
-              </Col>
-            </Row>
-          </List.Item>
+          renderOutput(item,index)
         )}
       />
     );
