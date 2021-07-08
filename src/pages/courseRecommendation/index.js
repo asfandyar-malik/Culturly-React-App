@@ -79,9 +79,10 @@ const CourseRecommendation = () => {
         const courses = [...section.courses];
         return (
           <div key={slug} className="course-recommendation-section">
+            <br/><br/>
             <Row justify="space-between" className="header">
               <Col>
-                <p className="text-3xl medium"><br/>{section.title} </p>
+                <p className="text-3xl medium">{section.title} </p>
               </Col>
               
               <If condition={courses.length > PAGE_SIZE}>
