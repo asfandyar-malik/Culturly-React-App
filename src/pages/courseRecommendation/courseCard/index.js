@@ -24,16 +24,7 @@ const CourseCard = ({ course }) => {
 
 const CourseRecommendationCourseCard = ({ course }) => {
   return (
-    <Choose>
-      <When condition={course.is_premium}>
-        <Badge.Ribbon text="PREMIUM" color="#30CAEC" placement="start">
-          <CourseCard course={course} />
-        </Badge.Ribbon>
-      </When>
-      <Otherwise>
-        <CourseCard course={course} />
-      </Otherwise>
-    </Choose>
+      <CourseCard course={course} />
   );
 };
 
