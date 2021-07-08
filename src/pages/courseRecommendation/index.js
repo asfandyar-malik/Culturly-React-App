@@ -79,7 +79,7 @@ const CourseRecommendation = () => {
         const courses = [...section.courses];
         return (
           <div key={slug} className="course-recommendation-section">
-            <Row className="header">
+            <Row justify="space-between" className="header">
               <Col>
                 <p className="text-3xl medium"><br/>{section.title} </p>
               </Col>
