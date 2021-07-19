@@ -165,7 +165,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           title={
             <Tooltip
               title="Culture Score is calculated from Weekly Survey checks. Weekly survey checks are sent
-              4 times a week and include 9 questions in total in 8 different Culture categories.  "
+              4 times a month and include 9 questions in total in 8 different Culture categories.  "
             >
               <Space size={6}>
                 <span>Culture score</span>
@@ -179,23 +179,17 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
               <Progress
                 type="circle"
                 format={(percent) => `${percent}%`}
-                percent={formatValue(cultureScore.current_week_score)}
+                percent={formatValue(cultureScore.current_month_score)}
               />
             </Col>
             <Col>
               <div className="mb-12">
                 <span>How does score compare?</span>
-                <Tooltip title="You view here your Culture score from previous weeks and previous month">
+                <Tooltip title="You view here your Culture score from previous months">
                   <InfoCircleOutlined className="info-icon" />
                 </Tooltip>
               </div>
               <Space>
-                <Card>
-                  <p className="text-xl medium">Last week</p>
-                  <p className="text-5xl medium">
-                    {formatValue(cultureScore.last_week_score)}%
-                  </p>
-                </Card>
                 <Card>
                   <p className="text-xl medium">Avg. last month</p>
                   <p className="text-5xl medium">
