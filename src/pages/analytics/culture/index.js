@@ -12,8 +12,9 @@ import {
   Collapse,
   Select,
   Empty,
+  Progress,
 } from "antd";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { LINE_CHART_OPTIONS } from "../../../constants";
 import {
@@ -21,12 +22,13 @@ import {
   disabledFutureDate,
   getMonthsBetweenDates,
 } from "utils";
-import { getEngagementScore, getEngagementGraph } from "actions";
+import { getCultureScore, getCultureScorePerCategory, getCultureGraph } from "actions";
 
 const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   const cultureChartRef = useRef(null);
   const [loading, setLoading] = useState(true);
-  const [engagementItems, setEngagementItems] = useState({});
+  const [cultureScore, setCultureScore] = useState({});
+  const [cultureItems, setCultureItems] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedMonth, setSelectedMonth] = useState(moment());
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
@@ -35,12 +37,19 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   const [cultureGraphData, setCultureGraphData] = useState([]);
   const [cultureChartElement, setCultureChartElement] = useState("");
 
+
+  useEffect(() => {
+    getCultureScore(selectedTeam).then((response) => {
+      setCultureScore(response.data);
+    });
+  }, [selectedTeam]);
+
   useEffect(() => {
     let totalScore = 0;
     let totalResponses = 0;
     const endTs = selectedMonth.endOf("month").format("X");
     const startTs = selectedMonth.startOf("month").format("X");
-    getEngagementScore(selectedTeam, startTs, endTs).then((response) => {
+    getCultureScorePerCategory(selectedTeam, startTs, endTs).then((response) => {
       const { data } = response;
       Object.keys(data.categories).forEach((key) => {
         (data.categories[key]?.questions || []).forEach((item) => {
@@ -51,7 +60,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
         });
       });
       setLoading(false);
-      setEngagementItems(data.categories);
+      setCultureItems(data.categories);
       setTotalTeamMembers(data.total_team_members);
       setOverallCulureScore(totalResponses ? totalScore / totalResponses : 0);
     });
@@ -68,7 +77,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       endTs = culureGraphMonth.endOf("month").utc(true).format("X");
       startTs = culureGraphMonth.startOf("month").utc(true).format("X");
     }
-    getEngagementGraph(selectedTeam, startTs, endTs, selectedCategory).then(
+    getCultureGraph(selectedTeam, startTs, endTs, selectedCategory).then(
       (response) => {
         setCultureGraphData(response.data);
       }
@@ -151,12 +160,100 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
 
   return (
     <Row>
-      <Col span={24} className="mt-16">
+      <Col span={24} className="mt-16 culture-col">
+        <Card
+          title={
+            <Tooltip
+              title="Culture Score is calculated from Weekly Survey checks. Weekly survey checks are sent
+              4 times a week and include 9 questions in total in 8 different Culture categories.  "
+            >
+              <Space size={6}>
+                <span>Culture score</span>
+                <QuestionCircleOutlined />
+              </Space>
+            </Tooltip>
+          }
+        >
+          <Row justify="space-between">
+            <Col>
+              <Progress
+                type="circle"
+                format={(percent) => `${percent}%`}
+                percent={formatValue(cultureScore.current_week_score)}
+              />
+            </Col>
+            <Col>
+              <div className="mb-12">
+                <span>How does score compare?</span>
+                <Tooltip title="You view here your Culture score from previous weeks and previous month">
+                  <InfoCircleOutlined className="info-icon" />
+                </Tooltip>
+              </div>
+              <Space>
+                <Card>
+                  <p className="text-xl medium">Last week</p>
+                  <p className="text-5xl medium">
+                    {formatValue(cultureScore.last_week_score)}%
+                  </p>
+                </Card>
+                <Card>
+                  <p className="text-xl medium">Avg. last month</p>
+                  <p className="text-5xl medium">
+                    {formatValue(cultureScore.last_month_score)}%
+                  </p>
+                </Card>
+              </Space>
+            </Col>
+          </Row>
+        </Card>
+
+        <Card
+          className="no-header-border"
+          extra={
+            <Space size={16}>
+              <Select
+                style={{ width: 175 }}
+                value={selectedCategory}
+                placeholder="Select a category"
+                onChange={(value) => setSelectedCategory(value)}
+              >
+                <Select.Option value="">All</Select.Option>
+                {categories.map((item) => {
+                  return (
+                    <Select.Option value={item.slug} key={item.slug}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
+              </Select>
+              <DatePicker
+                format="MMM"
+                picker="month"
+                style={{ width: 200 }}
+                value={culureGraphMonth}
+                disabledDate={disabledFutureDate}
+                onChange={(value) => setCulureGraphMonth(value)}
+              />
+            </Space>
+          }
+        >
+          <Choose>
+            <When condition={cultureGraphData.length}>
+              <canvas ref={cultureChartRef} height={320} />
+            </When>
+            <Otherwise>
+              <div className="empty-container vertical-center">
+                <Empty description="No data available to display" />
+              </div>
+            </Otherwise>
+          </Choose>
+        </Card>
+
         <Card
           loading={loading}
           title={
             <Tooltip
-              title="Engagement score is calcuated from the response to Culture Check, which is a 
+              title="Culturly score is calcuated from the response to Culture Check, which is a 
               weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact."
             >
               <Space size={6}>
@@ -168,6 +265,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           extra={
             <Space>
               <DatePicker
+                format="MMM"
                 picker="month"
                 allowClear={false}
                 value={selectedMonth}
@@ -189,8 +287,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             </Col>
           </Row>
           <Collapse bordered={false}>
-            {Object.keys(engagementItems).map((key) => {
-              const categoryData = engagementItems[key];
+            {Object.keys(cultureItems).map((key) => {
+              const categoryData = cultureItems[key];
               const meanScore = categoryData.mean_response || 0;
               return (
                 <Collapse.Panel
@@ -243,47 +341,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             })}
           </Collapse>
         </Card>
-        <Card
-          className="no-header-border"
-          extra={
-            <Space size={16}>
-              <Select
-                style={{ width: 175 }}
-                value={selectedCategory}
-                placeholder="Select a category"
-                onChange={(value) => setSelectedCategory(value)}
-              >
-                <Select.Option value="">All</Select.Option>
-                {categories.map((item) => {
-                  return (
-                    <Select.Option value={item.slug} key={item.slug}>
-                      {item.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-              <DatePicker
-                format="MMM"
-                picker="month"
-                style={{ width: 200 }}
-                value={culureGraphMonth}
-                disabledDate={disabledFutureDate}
-                onChange={(value) => setCulureGraphMonth(value)}
-              />
-            </Space>
-          }
-        >
-          <Choose>
-            <When condition={cultureGraphData.length}>
-              <canvas ref={cultureChartRef} height={320} />
-            </When>
-            <Otherwise>
-              <div className="empty-container vertical-center">
-                <Empty description="No data available to display" />
-              </div>
-            </Otherwise>
-          </Choose>
-        </Card>
+      
       </Col>
     </Row>
   );
