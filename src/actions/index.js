@@ -162,15 +162,21 @@ export const getHappinessGraph = (teamId, startTs, endTs) => {
   return instance.get(path);
 };
 
-export const getEngagementScore = (teamId, startTs, endTs) => {
-  let path = endpoints.WORKPSACE_TEAM_CULTURE_SCORE_API_PATH;
+export const getCultureScore = (teamId) => {
+  let path = endpoints.WORKPSACE_TEAM_HAPPINESS_SCORE_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  return instance.get(path);
+};
+
+export const getCultureScorePerCategory = (teamId, startTs, endTs) => {
+  let path = endpoints.WORKPSACE_TEAM_CULTURE_SCORE_PER_CATEGORY_API_PATH;
   path = path.concat("?team_id=", teamId);
   path = path.concat("&end_date=", endTs);
   path = path.concat("&start_date=", startTs);
   return instance.get(path);
 };
 
-export const getEngagementGraph = (teamId, startTs, endTs, category) => {
+export const getCultureGraph = (teamId, startTs, endTs, category) => {
   let path = endpoints.WORKPSACE_TEAM_CULTURE_GRAPH_API_PATH;
   path = path.concat("?team_id=", teamId);
   path = path.concat("&end_date=", endTs);
