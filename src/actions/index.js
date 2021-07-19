@@ -16,8 +16,11 @@ export const updateSlackMember = (memberId, payload) => {
   return instance.patch(path, payload);
 };
 
-export const getLeaderboardScore = () => {
-  let path = endpoints.SLACK_MEMBERS_LEADERBOARD_SCORE_API_PATH;
+export const getLeaderboardScore = (teamId, endTs, startTs) => {
+  let path = endpoints.WORKPSACE_TEAM_LEADERBOARD_SCORE_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  path = path.concat("&end_date=", endTs);
+  path = path.concat("&start_date=", startTs);
   return instance.get(path);
 };
 

@@ -1,76 +1,64 @@
+import moment from "moment";
   import { useEffect, useState } from "react";
   import {
-    Avatar,
-    Col,
-    List,
-    Row,
-    Space, 
-    Tag,
-
+    Select,
+    DatePicker
   } from "antd";
 
-  import upArrow from "assets/images/up.png";
-  import downArrow from "assets/images/down.png";
+import { getWorkspaceTeams } from "actions";
 
+import "./style.scss";
+import Leader from "./leader";
 
-  import { getLeaderboardScore } from "actions";
+import {
+  disabledFutureDate,
+} from "utils";
 
-  import "./style.scss";
+const Leaderboard = () => {
+  const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState("");
+  const [leaderboardMonth, setLeaderboardMonth] = useState(moment());
+  
+  useEffect(() => {
+    getWorkspaceTeams("name,id").then((response) => {
+      setTeams(response.data.results);
+    });
+  }, []);
 
-  const Leaderboard = () => {
-    const [loading, setLoading] = useState(true);
-    const [leaderboardScores, setLeaderboardScore] = useState([]);
+  return (
+    <div className="analytics-container max-container">
+      <Select
+        value={selectedTeam}
+        style={{ width: 300 }}
+        placeholder="Select a team"
+        onChange={(value) => setSelectedTeam(value)}
+      >
+      <Select.Option value="">All Department</Select.Option>
+        {teams.map((item) => {
+          return (
+            <Select.Option value={item.id} key={item.id}>
+              {item.name}
+            </Select.Option>
+          );
+        })}
+      </Select>
 
-    useEffect(() => {
-      getLeaderboardScore().then((response) => {
-        setLoading(false);
-        setLeaderboardScore(response.data.output);
-      });
-    }, []);
-
-    function renderOutput(item, index) {
-      return (
-        <List.Item>
-          <Row gutter={32} className="font-medium">
-          <Col span={2}>{index + 1}</Col>
-            <Col span={8}>
-              <Space>
-                <Avatar src={item.avatar} />
-                {item.display_name || item.name}
-              </Space>
-            </Col>
-            <Col span={5}>{item.team || "-"}</Col>
-            <Col span={3}>{item.leaderboard_score} </Col>
-            <Col span={4}>
-              <div className="updown-logo">
-                {index < 3 ? <img src={upArrow} alt="up arrow" /> : <img src={downArrow} alt="down arrow" />}
-              </div>                
-            </Col>
-          </Row>
-        </List.Item>
-      )
-    }
-
-    return (
-      <List
-        loading={loading}
-        dataSource={leaderboardScores}
-        className="leaderboard leaderboard-list "
-        header={
-          <Row gutter={32}>
-            <Col span={2}>#</Col>
-            <Col span={8}>Leader</Col>
-            <Col span={5}>Team</Col>
-            <Col span={5}>Score</Col>
-            <Col span={4}>Change</Col>
-          </Row>
-        }
-        
-        renderItem={(item, index) => (
-          renderOutput(item,index)
-        )}
+      <DatePicker
+        format="MMM"
+        picker="month"
+        allowClear={false}
+        style={{ margin: 10, width: 200 }}
+        value={leaderboardMonth}
+        disabledDate={disabledFutureDate}
+        onChange={(value) => setLeaderboardMonth(value)}
       />
-    );
-  };
 
-  export default Leaderboard;
+      <Leader
+        selectedTeam={selectedTeam} 
+        leaderboardMonth={leaderboardMonth} 
+      />
+    </div>
+  );
+};
+
+export default Leaderboard;
