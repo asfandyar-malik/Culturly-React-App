@@ -47,9 +47,9 @@ export const LINE_CHART_OPTIONS = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: {
-      position: "none",
-    },
+    // legend: {
+    //   position: "none",
+    // },
     tooltip: {
       callbacks: {
         label: function (context) {
@@ -83,3 +83,48 @@ export const LINE_CHART_OPTIONS = {
     },
   },
 };
+
+export const LINE_COUNT_CHART_OPTIONS = {
+  interaction: {
+    mode: "index",
+    intersect: false,
+  },
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    // legend: {
+    //   position: "none",
+    // },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return `${context.dataset.label}: ${parseFloat(
+            context.parsed.y.toFixed(2)
+          )}%`;
+        },
+      },
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      beginAtZero: true,
+      grid: {
+        color: "#eaecf0",
+        drawBorder: false,
+      },
+      ticks: {
+        precision: 0,
+        stepSize: 3,
+        maxTicksLimit: 10,
+        callback: function (value, index, values) {
+          return `${value}`;
+        },
+      },
+    },
+  },
+}
