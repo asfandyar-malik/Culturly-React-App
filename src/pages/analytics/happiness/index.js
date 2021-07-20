@@ -122,7 +122,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       });
 
       const countLineChart = new Chart(responseChartRef, {
-        type: "line",
+        type: "bar",
         data: {
           labels,
           datasets: [
@@ -130,8 +130,8 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
               fill: true,
               label: "Number of Responses",
               data: dataPointsCounts,
-              borderColor: "#ffde62",
-              backgroundColor: "#ffde6287",
+              borderColor: "#30CAEC",
+              backgroundColor: "#30CAEC",
             },
           ],
         },
