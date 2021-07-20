@@ -22,7 +22,11 @@ import {
   disabledFutureDate,
   getMonthsBetweenDates,
 } from "utils";
-import { getCultureScore, getCultureScorePerCategory, getCultureGraph } from "actions";
+import {
+  getCultureScore,
+  getCultureScorePerCategory,
+  getCultureGraph,
+} from "actions";
 
 const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   const cultureChartRef = useRef(null);
@@ -37,7 +41,6 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   const [cultureGraphData, setCultureGraphData] = useState([]);
   const [cultureChartElement, setCultureChartElement] = useState("");
 
-
   useEffect(() => {
     getCultureScore(selectedTeam).then((response) => {
       setCultureScore(response.data);
@@ -49,21 +52,23 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
     let totalResponses = 0;
     const endTs = selectedMonth.endOf("month").format("X");
     const startTs = selectedMonth.startOf("month").format("X");
-    getCultureScorePerCategory(selectedTeam, startTs, endTs).then((response) => {
-      const { data } = response;
-      Object.keys(data.categories).forEach((key) => {
-        (data.categories[key]?.questions || []).forEach((item) => {
-          if (item.score) {
-            totalResponses += 1;
-            totalScore += item.score;
-          }
+    getCultureScorePerCategory(selectedTeam, startTs, endTs).then(
+      (response) => {
+        const { data } = response;
+        Object.keys(data.categories).forEach((key) => {
+          (data.categories[key]?.questions || []).forEach((item) => {
+            if (item.score) {
+              totalResponses += 1;
+              totalScore += item.score;
+            }
+          });
         });
-      });
-      setLoading(false);
-      setCultureItems(data.categories);
-      setTotalTeamMembers(data.total_team_members);
-      setOverallCulureScore(totalResponses ? totalScore / totalResponses : 0);
-    });
+        setLoading(false);
+        setCultureItems(data.categories);
+        setTotalTeamMembers(data.total_team_members);
+        setOverallCulureScore(totalResponses ? totalScore / totalResponses : 0);
+      }
+    );
   }, [selectedMonth, selectedTeam]);
 
   useEffect(() => {
@@ -335,7 +340,6 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             })}
           </Collapse>
         </Card>
-      
       </Col>
     </Row>
   );
