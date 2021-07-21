@@ -16,7 +16,10 @@ import {
 } from "antd";
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
-import { LINE_CHART_OPTIONS } from "../../../constants";
+import {
+  LINE_CHART_OPTIONS,
+  LINE_COUNT_CHART_OPTIONS,
+} from "../../../constants";
 import {
   getWeeksInMonth,
   disabledFutureDate,
@@ -30,16 +33,17 @@ import {
 
 const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   const cultureChartRef = useRef(null);
+  const cultureCountChartRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [cultureScore, setCultureScore] = useState({});
   const [cultureItems, setCultureItems] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState(moment());
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
   const [overallCulureScore, setOverallCulureScore] = useState(0);
   const [culureGraphMonth, setCulureGraphMonth] = useState(moment());
   const [cultureGraphData, setCultureGraphData] = useState([]);
   const [cultureChartElement, setCultureChartElement] = useState("");
+  const [cultureCountChartElement, setCultureCountChartElement] = useState("");
 
   useEffect(() => {
     getCultureScore(selectedTeam).then((response) => {
@@ -50,8 +54,9 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   useEffect(() => {
     let totalScore = 0;
     let totalResponses = 0;
-    const endTs = selectedMonth.endOf("month").format("X");
-    const startTs = selectedMonth.startOf("month").format("X");
+    const endTs = culureGraphMonth.endOf("month").format("X");
+    const startTs = culureGraphMonth.startOf("month").format("X");
+
     getCultureScorePerCategory(selectedTeam, startTs, endTs).then(
       (response) => {
         const { data } = response;
@@ -69,7 +74,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
         setOverallCulureScore(totalResponses ? totalScore / totalResponses : 0);
       }
     );
-  }, [selectedMonth, selectedTeam]);
+  }, [culureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     let endTs = moment().endOf("month").utc(true).format("X");
@@ -93,10 +98,17 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
     if (cultureChartElement) {
       cultureChartElement.destroy();
     }
+    if (cultureCountChartElement) {
+      cultureCountChartElement.destroy();
+    }
+
     if (cultureGraphData.length) {
       const labels = [];
       const dataPoints = [];
+      const dataPointsCounts = [];
+
       const chartRef = cultureChartRef.current.getContext("2d");
+      const countChartRef = cultureCountChartRef.current.getContext("2d");
 
       if (culureGraphMonth) {
         const weeks = getWeeksInMonth(
@@ -110,6 +122,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             ) || {};
           labels.push(week.weekName);
           dataPoints.push(item.avg || 0);
+          dataPointsCounts.push(item.count || 0);
         });
       } else {
         const months = getMonthsBetweenDates(
@@ -125,6 +138,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             ) || {};
           labels.push(moment(month).format("MMM YYYY"));
           dataPoints.push(item.avg || 0);
+          dataPointsCounts.push(item.count || 0);
         });
       }
 
@@ -135,7 +149,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           datasets: [
             {
               fill: true,
-              label: "Score",
+              label: "Culture Score",
               data: dataPoints,
               borderColor: "#30CAEC",
               backgroundColor: "#f0ffff87",
@@ -144,7 +158,26 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
         },
         options: LINE_CHART_OPTIONS,
       });
+
+      const countLineChart = new Chart(countChartRef, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              fill: true,
+              label: "Number of responses",
+              data: dataPointsCounts,
+              borderColor: "#7d68eb",
+              backgroundColor: "#7d68eb67",
+            },
+          ],
+        },
+        options: LINE_COUNT_CHART_OPTIONS,
+      });
+
       setCultureChartElement(lineChart);
+      setCultureCountChartElement(countLineChart);
     }
   }, [cultureGraphData]);
 
@@ -236,18 +269,22 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             </Space>
           }
         >
-          <Choose>
-            <When condition={cultureGraphData.length}>
-              <canvas ref={cultureChartRef} height={320} />
-            </When>
-            <Otherwise>
-              <div className="empty-container vertical-center">
-                <Empty description="No data available to display" />
-              </div>
-            </Otherwise>
-          </Choose>
+          <div>
+            <Choose>
+              <When condition={cultureGraphData.length}>
+                <canvas ref={cultureChartRef} height={320} />
+              </When>
+              <Otherwise>
+                <div className="empty-container vertical-center">
+                  <Empty description="No data available to display" />
+                </div>
+              </Otherwise>
+            </Choose>
+          </div>
         </Card>
-
+        <br></br>
+        <br></br>
+        <br></br>
         <Card
           loading={loading}
           title={
@@ -260,20 +297,6 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                 <QuestionCircleOutlined />
               </Space>
             </Tooltip>
-          }
-          extra={
-            <Space>
-              <DatePicker
-                format="MMM"
-                picker="month"
-                allowClear={false}
-                value={selectedMonth}
-                style={{ width: 200 }}
-                placeholder="Select a month"
-                disabledDate={disabledFutureDate}
-                onChange={(value) => setSelectedMonth(value)}
-              />
-            </Space>
           }
         >
           <Row justify="space-between overall-row" className="text-2xl mb-12">
@@ -339,6 +362,33 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
               );
             })}
           </Collapse>
+        </Card>
+        <br></br>
+        <br></br>
+
+        <Card>
+          <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
+            <Space size={6}>
+              <span>Response Rate</span>
+              <QuestionCircleOutlined />
+            </Space>
+          </Tooltip>
+
+          <br></br>
+          <br></br>
+
+          <div>
+            <Choose>
+              <When condition={cultureGraphData.length}>
+                <canvas ref={cultureCountChartRef} height={320} />
+              </When>
+              <Otherwise>
+                <div className="empty-container vertical-center">
+                  <Empty description="No happiness rate available to display" />
+                </div>
+              </Otherwise>
+            </Choose>
+          </div>
         </Card>
       </Col>
     </Row>
