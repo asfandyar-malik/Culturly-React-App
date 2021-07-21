@@ -78,6 +78,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       let labelKey = "";
       const dataPoints = [];
       const dataPointsCounts = [];
+      const dataPointsUniqueUserCounts = [];
       const chartRef = happinessChartRef.current.getContext("2d");
       const countChartRef = happinessCountChartRef.current.getContext("2d");
 
@@ -106,6 +107,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
         labels.push(dayItem[labelKey]);
         dataPoints.push(item.avg || 0);
         dataPointsCounts.push(item.count || 0);
+        dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
       });
 
       const lineChart = new Chart(chartRef, {
@@ -136,6 +138,13 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
               data: dataPointsCounts,
               borderColor: "#ffde62",
               backgroundColor: "#ffde6267",
+            },
+            {
+              fill: true,
+              label: "Number of People answering",
+              data: dataPointsUniqueUserCounts,
+              borderColor: "#30CAEC",
+              backgroundColor: "#30CAEC67",
             },
           ],
         },
