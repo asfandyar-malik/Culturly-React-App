@@ -13,7 +13,10 @@ import {
 } from "antd";
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
-import { LINE_CHART_OPTIONS, LINE_COUNT_CHART_OPTIONS } from "../../../constants";
+import {
+  LINE_CHART_OPTIONS,
+  LINE_COUNT_CHART_OPTIONS,
+} from "../../../constants";
 import {
   getWeekDaysOfWeek,
   getWeekDaysOfMonth,
@@ -23,12 +26,13 @@ import { getHappinessScore, getHappinessGraph } from "actions";
 
 const HappinessAnalyticsCard = ({ selectedTeam }) => {
   const happinessChartRef = useRef(null);
-  const happinessResponseCountChartRef = useRef(null);
+  const happinessCountChartRef = useRef(null);
   const [happinessScore, setHappinessScore] = useState({});
   const [happinessGraphWeek, setHappinessGraphWeek] = useState();
   const [happinessGraphMonth, setHappinessGraphMonth] = useState(moment());
   const [happinessChartElement, setHappinessChartElement] = useState("");
-  const [happinessCountChartElement, setHappinessCountChartElement] = useState("");
+  const [happinessCountChartElement, setHappinessCountChartElement] =
+    useState("");
   const [happinessGraphData, setHappinessGraphData] = useState([]);
 
   useEffect(() => {
@@ -75,7 +79,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       const dataPoints = [];
       const dataPointsCounts = [];
       const chartRef = happinessChartRef.current.getContext("2d");
-      const responseChartRef = happinessResponseCountChartRef.current.getContext("2d");
+      const countChartRef = happinessCountChartRef.current.getContext("2d");
 
       if (happinessGraphMonth) {
         weekDays = getWeekDaysOfMonth(
@@ -121,7 +125,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
         options: LINE_CHART_OPTIONS,
       });
 
-      const countLineChart = new Chart(responseChartRef, {
+      const countLineChart = new Chart(countChartRef, {
         type: "line",
         data: {
           labels,
@@ -140,7 +144,6 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
 
       setHappinessChartElement(lineChart);
       setHappinessCountChartElement(countLineChart);
-
     }
   }, [happinessGraphData]);
 
@@ -237,13 +240,22 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
           <br></br>
           <br></br>
           <br></br>
+          <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
+            <Space size={6}>
+              <span>Response Rate</span>
+              <QuestionCircleOutlined />
+            </Space>
+          </Tooltip>
+          
+          <br></br>
+          <br></br>
           <br></br>
           <br></br>
 
           <div>
             <Choose>
               <When condition={happinessGraphData.length}>
-                <canvas ref={happinessResponseCountChartRef} height={320} />
+                <canvas ref={happinessCountChartRef} height={320} />
               </When>
               <Otherwise>
                 <div className="empty-container vertical-center">
@@ -252,7 +264,6 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-
         </Card>
       </Col>
     </Row>
