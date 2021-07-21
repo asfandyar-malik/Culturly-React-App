@@ -106,6 +106,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       const labels = [];
       const dataPoints = [];
       const dataPointsCounts = [];
+      const dataPointsUniqueUserCounts = [];
 
       const chartRef = cultureChartRef.current.getContext("2d");
       const countChartRef = cultureCountChartRef.current.getContext("2d");
@@ -123,6 +124,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           labels.push(week.weekName);
           dataPoints.push(item.avg || 0);
           dataPointsCounts.push(item.count || 0);
+          dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
         });
       } else {
         const months = getMonthsBetweenDates(
@@ -139,6 +141,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           labels.push(moment(month).format("MMM YYYY"));
           dataPoints.push(item.avg || 0);
           dataPointsCounts.push(item.count || 0);
+          dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
+
         });
       }
 
@@ -153,7 +157,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
               data: dataPoints,
               borderColor: "#30CAEC",
               backgroundColor: "#f0ffff87",
-            },
+            }
           ],
         },
         options: LINE_CHART_OPTIONS,
@@ -170,6 +174,13 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
               data: dataPointsCounts,
               borderColor: "#7d68eb",
               backgroundColor: "#7d68eb67",
+            },
+            {
+              fill: true,
+              label: "Number of People answering",
+              data: dataPointsUniqueUserCounts,
+              borderColor: "#30CAEC",
+              backgroundColor: "#30CAEC67",
             },
           ],
         },
