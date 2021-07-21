@@ -22,3 +22,20 @@
     }
   }
 }
+
+.cohort-course-page {
+  .ant-list-items {
+    .ant-list-item {
+      .ant-row {
+        > div:last-child {
+          font-size: 4rem;
+          text-align: right;
+        }
+      }
+    }
+  }
+  .body .images-list img {
+    width: 100%;
+    height: auto;
+  }
+}
