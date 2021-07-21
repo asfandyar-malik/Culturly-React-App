@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Row, Space, Tooltip } from "antd";
 
-import cohortImg from "assets/images/cohort-courses.png";
+import cohortCourseImg from "assets/images/cohort-courses.png";
 
 
 import "./style.scss";
@@ -9,7 +9,7 @@ import "./style.scss";
 const CourseRecommendation = () => {
 
   return (
-    <div className="sentiment-page">
+    <div className="cohort-course-page">
       <div className="body">
         <div>
           {/* <p className="text-3xl medium mt-12">
@@ -19,7 +19,7 @@ const CourseRecommendation = () => {
             Anonymous Sentiment analysis from the open ended survey questions 
           </p> */}
           <div className="images-list">
-            <img src={cohortImg} alt="Sentiment" />
+            <img src={cohortCourseImg} alt="CohortCourse" />
           </div>
         </div>
       </div>
