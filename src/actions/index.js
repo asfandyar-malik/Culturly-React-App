@@ -163,7 +163,7 @@ export const getHappinessGraph = (teamId, startTs, endTs) => {
 };
 
 export const getCultureScore = (teamId) => {
-  let path = endpoints.WORKPSACE_TEAM_HAPPINESS_SCORE_API_PATH;
+  let path = endpoints.WORKPSACE_TEAM_CULTURE_SCORE_API_PATH;
   path = path.concat("?team_id=", teamId);
   return instance.get(path);
 };
