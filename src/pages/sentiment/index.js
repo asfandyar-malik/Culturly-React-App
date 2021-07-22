@@ -1,4 +1,4 @@
-import sentimentImg from "assets/images/sentiment-purple.png";
+import sentimentImg from "assets/images/sentiment.png";
 
 import "./style.scss";
 
