@@ -335,6 +335,18 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                   }
                   className="site-collapse-custom-panel"
                 >
+                  <Row justify="space-between" className="text-xl mb-4">
+                    <Col>Total no. of responses</Col>
+                    <Col className="font-medium">
+                      {categoryData.total_responses || 0}
+                    </Col>
+                  </Row>
+                  <Row justify="space-between" className="text-xl mb-4">
+                    <Col>Number of people answering</Col>
+                    <Col className="font-medium">{`${
+                      categoryData.total_member_responses || 0
+                    }/${totalTeamMembers}`}</Col>
+                  </Row>
                   {(categoryData?.questions || []).map((item) => {
                     const { score } = item;
                     return (
