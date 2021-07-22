@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Card, Col, Row, Space, Tooltip } from "antd";
+// import { useEffect, useState } from "react";
+// import { Card, Col, Row, Space, Tooltip } from "antd";
 
 import cohortCourseImg from "assets/images/cohort-courses.png";
 
@@ -12,12 +12,6 @@ const CourseRecommendation = () => {
     <div className="cohort-course-page">
       <div className="body">
         <div>
-          {/* <p className="text-3xl medium mt-12">
-            Sentiment score for your team
-          </p>
-          <p className="text-xl mb-16">
-            Anonymous Sentiment analysis from the open ended survey questions 
-          </p> */}
           <div className="images-list">
             <img src={cohortCourseImg} alt="CohortCourse" />
           </div>

@@ -99,9 +99,14 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       }
 
       weekDays.forEach((dayItem) => {
+
+        // happinessGraphData.forEach((i)=> {
+        //   console.log("momentDay: " + moment(i.day).format("DD-MMM"))
+        // });
+
         const item =
           happinessGraphData.find(
-            (i) => moment(i.day).format("D") === dayItem.day
+            (i) => moment(i.day).format("DD-MMM") === dayItem.weekDay
           ) || {};
         labels.push(dayItem[labelKey]);
         dataPoints.push(item.avg || 0);
@@ -246,7 +251,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
               <QuestionCircleOutlined />
             </Space>
           </Tooltip>
-          
+
           <br></br>
           <br></br>
           <br></br>
