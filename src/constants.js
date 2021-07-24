@@ -65,6 +65,10 @@ export const LINE_CHART_OPTIONS = {
       grid: {
         display: false,
       },
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 12,
+      },
     },
     y: {
       beginAtZero: true,
@@ -109,6 +113,10 @@ export const LINE_COUNT_CHART_OPTIONS = {
     x: {
       grid: {
         display: false,
+      },
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 12,
       },
     },
     y: {
