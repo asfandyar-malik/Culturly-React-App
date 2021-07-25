@@ -155,6 +155,9 @@ export const LINE_COUNT_CHART_OPTIONS = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
+    legend: {
+      position: "none",
+    },
     tooltip: {
       callbacks: {
         label: function (context) {
