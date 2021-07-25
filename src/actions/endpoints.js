@@ -13,6 +13,7 @@ export const WORKPSACE_TEAM_HAPPINESS_GRAPH_API_PATH ="slack_bot/teams/happiness
 export const WORKPSACE_TEAM_CULTURE_SCORE_PER_CATEGORY_API_PATH = "slack_bot/teams/culture_score_per_category/";
 export const WORKPSACE_TEAM_CULTURE_SCORE_API_PATH = "slack_bot/teams/culture_score/";
 export const WORKPSACE_TEAM_CULTURE_GRAPH_API_PATH = "slack_bot/teams/culture_graph/";
+export const WORKPSACE_TEAM_CULTURE_ALL_GRAPH_API_PATH = "slack_bot/teams/culture_all_graph/";
 export const WORKSPACE_REMAINING_TEAM_MEMBERS_API_PATH = "slack_bot/members/remaining_team_members";
 export const WORKSPACE_REMAINING_TEAM_MANAGERS_API_PATH = "slack_bot/members/remaining_team_managers";
 export const WORKSPACE_EVENTS_POLL_API_PATH = "slack_bot/event-poll";

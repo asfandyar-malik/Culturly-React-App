@@ -185,6 +185,15 @@ export const getCultureGraph = (teamId, startTs, endTs, category) => {
   return instance.get(path);
 };
 
+export const getAllCultureGraph = (teamId, startTs, endTs) => {
+  let path = endpoints.WORKPSACE_TEAM_CULTURE_ALL_GRAPH_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  path = path.concat("&end_date=", endTs);
+  path = path.concat("&start_date=", startTs);
+  return instance.get(path);
+};
+
+
 export const getEventsFeedback = () => {
   return instance.get(endpoints.WORKSPACE_EVENTS_FEEDBACK_API_PATH);
 };
