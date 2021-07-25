@@ -120,10 +120,11 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       const allDataSets = [];
       let labels = new Set();
       Object.keys(data.categories).forEach((key) => {
+        const dataPoints = [];
         (data.categories[key]?.results || []).forEach((item) => {
+
           setAllCultureGraphData(item);
           if (item.length !== 0) {
-            const dataPoints = [];
 
             if (cultureGraphMonth) {
               const weeks = getWeeksInMonth(
@@ -141,19 +142,20 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                     }
                   }
               });
-
-              const dataset = {
-                fill: true,
-                label: key,
-                data: dataPoints,
-                borderColor: CATEGORY_GRAPH_COLOR[key],
-                backgroundColor: "#f0ffff10",
-              };
-              
-              allDataSets.push(dataset);
             }
           }
         });
+
+        const dataset = {
+          fill: true,
+          label: key,
+          data: dataPoints,
+          borderColor: CATEGORY_GRAPH_COLOR[key],
+          backgroundColor: "#f0ffff10",
+        };
+        
+        allDataSets.push(dataset);
+
       });
 
       if (allCultureChartElement) {
