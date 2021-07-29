@@ -119,16 +119,14 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       const { data } = response;
       const allDataSets = [];
       let labels = new Set();
-      // const labels = [];
+      console.log("All data results: " + data.categories["all"].results)
+
+      setAllCultureGraphData(data.categories["all"].results);
 
       Object.keys(data.categories).forEach((key) => {
         console.log("-------------------------------");
-        console.log("key: " + key);
-
         const dataPoints = [];
-        setAllCultureGraphData(data.categories[key].results);
 
-        // (data.categories[key]?.results || []).forEach((item) => {
         if (cultureGraphMonth) {
           const weeks = getWeeksInMonth(
             cultureGraphMonth.format("YYYY"),
@@ -147,7 +145,6 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             });
           }
         }
-        console.log("DataPoints Array Size: " + dataPoints.length);
 
         const dataset = {
           fill: true,
@@ -164,18 +161,20 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
         allCultureChartElement.destroy();
       }
 
-      const chartAllCultureRef = allCultureChartRef.current.getContext("2d");
+      if (allCultureGraphData) {
 
-      const allLineChart = new Chart(chartAllCultureRef, {
-        type: "line",
-        data: {
-          labels: Array.from(labels),
-          datasets: allDataSets,
-        },
-        options: MULTIPLE_LINE_CHART_OPTIONS,
-      });
+        const chartAllCultureRef = allCultureChartRef.current.getContext("2d");
 
-      setAllCultureChartElement(allLineChart);
+        const allLineChart = new Chart(chartAllCultureRef, {
+          type: "line",
+          data: {
+            labels: Array.from(labels),
+            datasets: allDataSets,
+          },
+          options: MULTIPLE_LINE_CHART_OPTIONS,
+        });
+        setAllCultureChartElement(allLineChart);
+      }
     });
   }, [cultureGraphMonth]);
 
@@ -392,12 +391,12 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
 
           <div>
             <Choose>
-              <When condition={allCultureGraphData.length !== 0}>
+              <When condition={allCultureGraphData}>
                 <canvas ref={allCultureChartRef} height={320} />
               </When>
               <Otherwise>
                 <div className="empty-container vertical-center">
-                  <Empty description="No happiness rate available to display" />
+                  <Empty description="No data available to display" />
                 </div>
               </Otherwise>
             </Choose>
