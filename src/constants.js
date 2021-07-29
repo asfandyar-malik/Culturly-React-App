@@ -41,14 +41,14 @@ export const SURVEY_TYPE_DISPLAY_MAPPING = {
 };
 
 export const CATEGORY_GRAPH_COLOR = {
-  'belonging': '#2f4b7c',
-  'engagement': '#f95d6a',
-  'growth': '#ffa600',
-  'feedback': '#003f5c',
-  'personal-growth': '#6033FF',
-  'recognition': '#fd625d',
-  'relationships': '#ffde62',
-  'satisfaction': '#7d68eb',
+  'belonging': '#27cdec',
+  'engagement': '#00d6e0',
+  'growth': '#25ddcc',
+  'feedback': '#57e2b4',
+  'personal-growth': '#82e599',
+  'recognition': '#ace680',
+  'relationships': '#d5e46c',
+  'satisfaction': '#ffde62',
 }
 
 export const LINE_CHART_OPTIONS = {

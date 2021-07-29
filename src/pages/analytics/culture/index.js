@@ -119,43 +119,45 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       const { data } = response;
       const allDataSets = [];
       let labels = new Set();
+      // const labels = [];
+
       Object.keys(data.categories).forEach((key) => {
+        console.log("-------------------------------");
+        console.log("key: " + key);
+
         const dataPoints = [];
-        (data.categories[key]?.results || []).forEach((item) => {
+        setAllCultureGraphData(data.categories[key].results);
 
-          setAllCultureGraphData(item);
-          if (item.length !== 0) {
+        // (data.categories[key]?.results || []).forEach((item) => {
+        if (cultureGraphMonth) {
+          const weeks = getWeeksInMonth(
+            cultureGraphMonth.format("YYYY"),
+            cultureGraphMonth.format("M")
+          );
 
-            if (cultureGraphMonth) {
-              const weeks = getWeeksInMonth(
-                cultureGraphMonth.format("YYYY"),
-                cultureGraphMonth.format("M")
-              );
-              weeks.forEach((week) => {
-                  if (item.length !== 0) {
-                    if (moment(item["week"]).format("D") === week.startDay) {
-                      labels.add(week.weekName);
-                      dataPoints.push(item["avg"] || 0);
-                    } else {
-                      labels.add(week.weekName);
-                      dataPoints.push(0);
-                    }
-                  }
-              });
-            }
+          if (data.categories[key].results.length) {
+            weeks.forEach((week) => {
+              const item =
+                data.categories[key].results.find(
+                  (i) => moment(i.week).format("D") === week.startDay
+                ) || {};
+
+              labels.add(week.weekName);
+              dataPoints.push(item.avg || 0);
+            });
           }
-        });
+        }
+        console.log("DataPoints Array Size: " + dataPoints.length);
 
         const dataset = {
           fill: true,
           label: key,
           data: dataPoints,
           borderColor: CATEGORY_GRAPH_COLOR[key],
-          backgroundColor: "#f0ffff10",
+          backgroundColor: "#27cdec02",
         };
-        
-        allDataSets.push(dataset);
 
+        allDataSets.push(dataset);
       });
 
       if (allCultureChartElement) {
@@ -174,10 +176,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       });
 
       setAllCultureChartElement(allLineChart);
-
     });
   }, [cultureGraphMonth]);
-
 
   useEffect(() => {
     if (cultureChartElement) {
