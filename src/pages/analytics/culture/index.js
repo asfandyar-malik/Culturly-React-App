@@ -119,49 +119,47 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       const { data } = response;
       const allDataSets = [];
       let labels = new Set();
-      console.log("All data results: " + data.categories["all"].results)
-
-      setAllCultureGraphData(data.categories["all"].results);
-
-      Object.keys(data.categories).forEach((key) => {
-        console.log("-------------------------------");
-        const dataPoints = [];
-
-        if (cultureGraphMonth) {
-          const weeks = getWeeksInMonth(
-            cultureGraphMonth.format("YYYY"),
-            cultureGraphMonth.format("M")
-          );
-
-          if (data.categories[key].results.length) {
-            weeks.forEach((week) => {
-              const item =
-                data.categories[key].results.find(
-                  (i) => moment(i.week).format("D") === week.startDay
-                ) || {};
-
-              labels.add(week.weekName);
-              dataPoints.push(item.avg || 0);
-            });
-          }
-        }
-
-        const dataset = {
-          fill: true,
-          label: key,
-          data: dataPoints,
-          borderColor: CATEGORY_GRAPH_COLOR[key],
-          backgroundColor: "#27cdec02",
-        };
-
-        allDataSets.push(dataset);
-      });
 
       if (allCultureChartElement) {
         allCultureChartElement.destroy();
       }
 
-      if (allCultureGraphData) {
+      setAllCultureGraphData(data.categories);
+
+      if (data.categories) {
+
+        Object.keys(data.categories).forEach((key) => {
+          const dataPoints = [];
+
+          if (cultureGraphMonth) {
+            const weeks = getWeeksInMonth(
+              cultureGraphMonth.format("YYYY"),
+              cultureGraphMonth.format("M")
+            );
+
+            if (data.categories[key].results.length) {
+              weeks.forEach((week) => {
+                const item =
+                  data.categories[key].results.find(
+                    (i) => moment(i.week).format("D") === week.startDay
+                  ) || {};
+
+                labels.add(week.weekName);
+                dataPoints.push(item.avg || 0);
+              });
+            }
+          }
+
+          const dataset = {
+            fill: true,
+            label: key,
+            data: dataPoints,
+            borderColor: CATEGORY_GRAPH_COLOR[key],
+            backgroundColor: "#27cdec02",
+          };
+
+          allDataSets.push(dataset);
+        });
 
         const chartAllCultureRef = allCultureChartRef.current.getContext("2d");
 
@@ -334,9 +332,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           </Row>
         </Card>
 
-        <Card
-          className="no-header-border"
-          extra={
+        <Card           
+        extra={
             <Space size={16}>
               <Select
                 style={{ width: 175 }}
@@ -362,23 +359,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                 onChange={(value) => setcultureGraphMonth(value)}
               />
             </Space>
-          }
-        >
-          <div>
-            <Choose>
-              <When condition={cultureGraphData.length}>
-                <canvas ref={cultureChartRef} height={320} />
-              </When>
-              <Otherwise>
-                <div className="empty-container vertical-center">
-                  <Empty description="No data available to display" />
-                </div>
-              </Otherwise>
-            </Choose>
-          </div>
-        </Card>
-
-        <Card>
+          }>
           <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
             <Space size={6}>
               <span>All Culture Categories</span>
@@ -431,6 +412,26 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
         <br></br>
         <br></br>
         <br></br>
+
+        <Card className="no-header-border">
+          <div>
+            <Choose>
+              <When condition={cultureGraphData.length}>
+                <canvas ref={cultureChartRef} height={320} />
+              </When>
+              <Otherwise>
+                <div className="empty-container vertical-center">
+                  <Empty description="No data available to display" />
+                </div>
+              </Otherwise>
+            </Choose>
+          </div>
+        </Card>
+
+        <br></br>
+        <br></br>
+        <br></br>
+        
         <Card
           loading={loading}
           title={
