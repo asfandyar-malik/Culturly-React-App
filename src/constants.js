@@ -41,7 +41,7 @@ export const SURVEY_TYPE_DISPLAY_MAPPING = {
 };
 
 export const CATEGORY_GRAPH_COLOR = {
-  'all': "#808080",
+  'all': "#7d68eb",
   'belonging': '#27cdec',
   'engagement': '#00d6e0',
   'well-being': '#25ddcc',
@@ -131,21 +131,6 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
         },
       },
     },
-  },
-  legendCallback: function(chart) { 
-    var text = []; 
-    text.push('<ul class="' + chart.id + '-legend">'); 
-    for (var i = 0; i < chart.data.datasets.length; i++) { 
-        text.push('<li><span style="background-color:' + 
-                   chart.data.datasets[i].backgroundColor + 
-                   '"></span>'); 
-        if (chart.data.datasets[i].label) { 
-            text.push(chart.data.datasets[i].label); 
-        } 
-        text.push('</li>'); 
-    } 
-    text.push('</ul>'); 
-    return text.join(''); 
   },
   legend: {
     display: true,
