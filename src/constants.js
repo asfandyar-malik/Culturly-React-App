@@ -41,6 +41,7 @@ export const SURVEY_TYPE_DISPLAY_MAPPING = {
 };
 
 export const CATEGORY_GRAPH_COLOR = {
+  'all': "#808080",
   'belonging': '#27cdec',
   'engagement': '#00d6e0',
   'well-being': '#25ddcc',
@@ -48,8 +49,19 @@ export const CATEGORY_GRAPH_COLOR = {
   'personal-growth': '#82e599',
   'recognition': '#ace680',
   'relationships': '#d5e46c',
-  'satisfaction': '#ffde62',
-  'all': "#808080"
+  'satisfaction': '#ffde62'
+}
+
+export const CATEGORY_GRAPH_LABEL = {
+  'all': "All Graphs",
+  'belonging': 'Belonging',
+  'engagement': 'Engagement',
+  'well-being': 'Well Being',
+  'feedback': 'Feedback',
+  'personal-growth': 'Personal Growth',
+  'recognition': 'Recognition',
+  'relationships': 'Relationships',
+  'satisfaction': 'Satisfaction'
 }
 
 export const LINE_CHART_OPTIONS = {
@@ -120,9 +132,24 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
       },
     },
   },
+  legendCallback: function(chart) { 
+    var text = []; 
+    text.push('<ul class="' + chart.id + '-legend">'); 
+    for (var i = 0; i < chart.data.datasets.length; i++) { 
+        text.push('<li><span style="background-color:' + 
+                   chart.data.datasets[i].backgroundColor + 
+                   '"></span>'); 
+        if (chart.data.datasets[i].label) { 
+            text.push(chart.data.datasets[i].label); 
+        } 
+        text.push('</li>'); 
+    } 
+    text.push('</ul>'); 
+    return text.join(''); 
+  },
   legend: {
     display: true,
-    position: 'bottom',
+    position: 'left',
     labels: {
         fontColor: '#333',
         usePointStyle:true

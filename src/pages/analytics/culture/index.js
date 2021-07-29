@@ -21,6 +21,7 @@ import {
   LINE_COUNT_CHART_OPTIONS,
   CATEGORY_GRAPH_COLOR,
   MULTIPLE_LINE_CHART_OPTIONS,
+  CATEGORY_GRAPH_LABEL,
 } from "../../../constants";
 import {
   getWeeksInMonth,
@@ -125,9 +126,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
       }
 
       setAllCultureGraphData(data.categories);
-
       if (data.categories) {
-
         Object.keys(data.categories).forEach((key) => {
           const dataPoints = [];
 
@@ -152,7 +151,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
 
           const dataset = {
             fill: true,
-            label: key,
+            label: CATEGORY_GRAPH_LABEL[key],
             data: dataPoints,
             borderColor: CATEGORY_GRAPH_COLOR[key],
             backgroundColor: "#27cdec02",
@@ -431,7 +430,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
         <br></br>
         <br></br>
         <br></br>
-        
+
         <Card
           loading={loading}
           title={
