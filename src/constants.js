@@ -43,12 +43,13 @@ export const SURVEY_TYPE_DISPLAY_MAPPING = {
 export const CATEGORY_GRAPH_COLOR = {
   'belonging': '#27cdec',
   'engagement': '#00d6e0',
-  'growth': '#25ddcc',
+  'well-being': '#25ddcc',
   'feedback': '#57e2b4',
   'personal-growth': '#82e599',
   'recognition': '#ace680',
   'relationships': '#d5e46c',
   'satisfaction': '#ffde62',
+  'all': "#808080"
 }
 
 export const LINE_CHART_OPTIONS = {
@@ -118,6 +119,14 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
         },
       },
     },
+  },
+  legend: {
+    display: true,
+    position: 'bottom',
+    labels: {
+        fontColor: '#333',
+        usePointStyle:true
+    }
   },
   scales: {
     x: {
