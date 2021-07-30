@@ -155,6 +155,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
             data: dataPoints,
             borderColor: CATEGORY_GRAPH_COLOR[key],
             backgroundColor: "#27cdec02",
+            pointBackgroundColor: CATEGORY_GRAPH_COLOR[key],
+
           };
 
           allDataSets.push(dataset);
@@ -237,7 +239,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
               label: "Culture Score",
               data: dataPoints,
               borderColor: "#30CAEC",
-              backgroundColor: "#f0ffff87",
+              pointBackgroundColor: "#30CAEC",
+              backgroundColor: "#f0ffff87"
             },
           ],
         },
@@ -254,6 +257,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
               label: "Number of responses",
               data: dataPointsCounts,
               borderColor: "#7d68eb",
+              pointBackgroundColor: "#7d68eb",
               backgroundColor: "#7d68eb67",
             },
             {
@@ -261,6 +265,7 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
               label: "Number of People answering",
               data: dataPointsUniqueUserCounts,
               borderColor: "#30CAEC",
+              pointBackgroundColor: "#30CAEC",
               backgroundColor: "#30CAEC67",
             },
           ],
@@ -358,7 +363,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                 onChange={(value) => setcultureGraphMonth(value)}
               />
             </Space>
-          }>
+          }
+          >
           <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
             <Space size={6}>
               <span>All Culture Categories</span>
@@ -413,6 +419,12 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
         <br></br>
 
         <Card className="no-header-border">
+        <Tooltip title="Overall culture score shows us the avg culture score per week ">
+            <Space size={6}>
+              <span>Overall Culture Score </span>
+              <QuestionCircleOutlined />
+            </Space>
+          </Tooltip>
           <div>
             <Choose>
               <When condition={cultureGraphData.length}>
