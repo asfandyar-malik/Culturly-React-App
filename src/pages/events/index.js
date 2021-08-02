@@ -26,6 +26,7 @@ const Events = () => {
           return (
             <Card
               key={event.slug}
+              className="event-list-card"
               cover={<img alt={event.title} src={getEventCover(event)} />}
             >
               <p className="text-2xl medium">{event.title}</p>

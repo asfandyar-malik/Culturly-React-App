@@ -6,6 +6,7 @@ import {
   SmileOutlined,
   ExperimentOutlined,
   MacCommandOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 
 import AppLayout from "layouts/appLayout";
@@ -19,11 +20,12 @@ export const INDEX_ROUTE = "/";
 export const EVENTS_ROUTE = "/events/";
 export const MEMBERS_ROUTE = "/members/";
 export const SETTINGS_ROUTE = "/settings/";
+export const MESSAGING_ROUTE = "/messaging/";
 export const ANALYTICS_ROUTE = "/analytics/";
 export const EVENT_POLL_ROUTE = "/event-poll/";
 export const EVENT_FEEDBACK_ROUTE = "/event-feedback/";
 export const EVENT_DETAIL_ROUTE = "/events/:eventSlug/";
-export const EVENT_REQUESTS_ROUTE = "/event-requests/";
+export const EVENTS_REQUESTS_ROUTE = "/events-requests/";
 export const EVENT_RECOMMENDATION_ROUTE = "/event-recommendation/";
 
 const UserOAuthCompleteComponent = lazy(() =>
@@ -34,14 +36,16 @@ const WorkspaceOAuthCompleteComponent = lazy(() =>
 );
 
 const EventsComponent = lazy(() => import("pages/events"));
-const EventDetailComponent = lazy(() => import("pages/events/detail"));
 const EventPollComponent = lazy(() => import("pages/eventPoll"));
+const EventDetailComponent = lazy(() => import("pages/events/detail"));
 const EventFeedbackComponent = lazy(() => import("pages/eventFeedback"));
+const EventsRequestsComponent = lazy(() => import("pages/eventsRequests"));
 const EventRecommendationComponent = lazy(() =>
   import("pages/eventRecommendation")
 );
 
 const LandingComponent = lazy(() => import("pages/landing"));
+const MessagingComponent = lazy(() => import("pages/messaging"));
 const AnalyticsComponent = lazy(() => import("pages/analytics"));
 const WorkspaceSettingsComponent = lazy(() => import("pages/settings"));
 const TeamManagementComponent = lazy(() => import("pages/teamManagement"));
@@ -141,6 +145,12 @@ export const LOGGED_IN_ROUTES = [
           },
           {
             exact: true,
+            name: "messaging",
+            path: MESSAGING_ROUTE,
+            component: MessagingComponent,
+          },
+          {
+            exact: true,
             name: "settings",
             path: SETTINGS_ROUTE,
             component: WorkspaceSettingsComponent,
@@ -168,6 +178,12 @@ export const LOGGED_IN_ROUTES = [
             name: "event-poll",
             path: EVENT_POLL_ROUTE,
             component: EventPollComponent,
+          },
+          {
+            exact: true,
+            name: "event-requests",
+            path: EVENTS_REQUESTS_ROUTE,
+            component: EventsRequestsComponent,
           },
         ],
       },
@@ -199,6 +215,18 @@ export const ROUTES = [
     title: "Online Events",
     icon: <MacCommandOutlined />,
     path: EVENT_RECOMMENDATION_ROUTE,
+  },
+  {
+    key: "events-requests",
+    title: "Events requests",
+    icon: <MessageOutlined />,
+    path: EVENTS_REQUESTS_ROUTE,
+  },
+  {
+    key: "messages",
+    title: "Messages",
+    path: MESSAGING_ROUTE,
+    icon: <MessageOutlined />,
   },
   {
     key: "event-feedback",

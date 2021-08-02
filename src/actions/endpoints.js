@@ -22,7 +22,6 @@ export const WORKSPACE_REMAINING_TEAM_MANAGERS_API_PATH =
   "slack_bot/members/remaining_team_managers";
 export const WORKSPACE_EVENTS_POLL_API_PATH = "slack_bot/event-poll";
 export const WORKSPACE_EVENTS_FEEDBACK_API_PATH = "slack_bot/event-feedback";
-export const WORKSPACE_EVENT_REQUESTS_API_PATH = "slack_bot/event-requests";
 export const EVENT_RECOMMENDATION_API_PATH = "slack_bot/event-recommendation";
 export const EVENT_RECOMMENDATION_SECTIONS_API_PATH =
   "slack_bot/event-recommendation-sections";
@@ -40,6 +39,11 @@ export const WORKSPACE_AUTH_API_PATH = "auth-workspace/complete/";
 export const TIMEZONES_API_PATH = "timezones/";
 
 export const EVENTS_BASE_API_PATH = "events/";
-export const MESSAGING_BASE_API_PATH = "channels/";
 export const EVENT_DETAIL_API_PATH = `${EVENTS_BASE_API_PATH}{}/`;
 export const EVENT_REGISTER_API_PATH = `${EVENTS_BASE_API_PATH}{}/register/`;
+export const USER_BOOKINGS_API_PATH = `${EVENTS_BASE_API_PATH}user-bookings/`;
+
+export const CHANNEL_BASE_API_PATH = "channels/";
+export const CHANNEL_DETAIL_API_PATH = `${CHANNEL_BASE_API_PATH}{}/`;
+export const CHANNEL_MESSAGES_API_PATH = `${CHANNEL_DETAIL_API_PATH}messages/`;
+export const CHANNEL_ATTACHMENT_UPLOAD_API_PATH = `${CHANNEL_DETAIL_API_PATH}upload_attachment/`;

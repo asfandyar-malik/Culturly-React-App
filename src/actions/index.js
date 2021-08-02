@@ -2,6 +2,12 @@ import instance from "../axios";
 import * as endpoints from "./endpoints";
 import { AUTHORIZATION_KEY } from "../constants";
 
+export const getChannelAttachmentUploadPath = (channelId) => {
+  return `${
+    instance.defaults.baseURL
+  }${endpoints.CHANNEL_ATTACHMENT_UPLOAD_API_PATH.replace("{}", channelId)}`;
+};
+
 export const getSlackConfiguration = () => {
   return instance.get(endpoints.SLACK_CONFIGURATION_API_PATH);
 };
@@ -179,10 +185,6 @@ export const getEventsPoll = () => {
   return instance.get(endpoints.WORKSPACE_EVENTS_POLL_API_PATH);
 };
 
-export const getEventRequests = () => {
-  return instance.get(endpoints.WORKSPACE_EVENT_REQUESTS_API_PATH);
-};
-
 export const getEventRecommendations = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_API_PATH);
 };
@@ -203,11 +205,28 @@ export const getEventDetail = (slug) => {
   return instance.get(endpoints.EVENT_DETAIL_API_PATH.replace("{}", slug));
 };
 
+export const getUserBookings = () => {
+  return instance.get(endpoints.USER_BOOKINGS_API_PATH);
+};
+
 export const registerForEvent = (slug, payload) => {
   const path = endpoints.EVENT_REGISTER_API_PATH.replace("{}", slug);
   return instance.post(path, payload);
 };
 
 export const getChannels = () => {
-  return instance.get(endpoints.MESSAGING_BASE_API_PATH);
+  return instance.get(endpoints.CHANNEL_BASE_API_PATH);
+};
+
+export const getChannelMessages = (page, channelId, hostId) => {
+  let path = endpoints.CHANNEL_MESSAGES_API_PATH.replace("{}", channelId);
+  path = path.concat("?host_id=", hostId);
+  path = path.concat("&page=", page);
+  return instance.get(path);
+};
+
+export const sendChannelMessage = (channelId, hostId, payload) => {
+  let path = endpoints.CHANNEL_MESSAGES_API_PATH.replace("{}", channelId);
+  path = path.concat("?host_id=", hostId);
+  return instance.post(path, payload);
 };

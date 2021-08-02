@@ -1,122 +1,49 @@
+import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Card, Col, Row, Space, Tooltip } from "antd";
+import { Space, Button, Card } from "antd";
 
-import {
-  LeftCircleFilled,
-  RightCircleFilled,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
-
-import {
-  getEvents,
-  getEventRecommendationSections,
-  getEventRecommendationCateogries,
-} from "actions";
-
-import EventRecommendationEventCard from "./eventCard";
-import EventRecommendationCategoryCard from "./categoryCard";
-
-import "./style.scss";
-
-const PAGE_SIZE = 4;
+import { getEvents } from "actions";
+import { getEventCover } from "utils";
+import { getEventDetailRoute } from "routes";
 
 const EventRecommendation = () => {
-  const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState([]);
-  const [eventRecommendationSections, setEventRecommendationSections] =
-    useState([]);
-  const [sectionPagination, setSectionPagination] = useState({});
+  const history = useHistory();
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    getEventRecommendationSections().then((response) => {
-      let pagination = {};
-      const { data } = response;
-      data.forEach((item) => {
-        pagination[item.slug] = 0;
-      });
-      setLoading(false);
-      setSectionPagination(pagination);
-      setEventRecommendationSections(data);
-    });
-
-    getEventRecommendationCateogries().then((response) => {
-      setCategories(response.data);
-    });
     getEvents().then((response) => {
-      console.log(response.data);
+      setEvents(response.data.results);
     });
   }, []);
 
-  function onPrevious(slug) {
-    if (sectionPagination[slug] !== 0) {
-      sectionPagination[slug] -= 1;
-      setSectionPagination({ ...sectionPagination });
-    }
-  }
-
-  function onNext(slug, count) {
-    const hasMore = (sectionPagination[slug] + 1) * PAGE_SIZE < count;
-    if (hasMore) {
-      sectionPagination[slug] += 1;
-      setSectionPagination({ ...sectionPagination });
-    }
+  function onRegister(eventSlug) {
+    history.push(getEventDetailRoute(eventSlug));
   }
 
   return (
-    <Card
-      bordered={0}
-      loading={loading}
-      className="no-padding event-recommendations max-container"
-    >
-      <div className="mb-8">
-        <Tooltip title="These are different event categories, to choose your online event from">
-          <Space size={6}>
-            <span className="text-3xl medium">Event categories</span>
-            <QuestionCircleOutlined />
-          </Space>
-        </Tooltip>
-      </div>
-      <div className="event-recommendation-categories mb-16">
-        {categories.map((item, index) => {
+    <div className="events-listing">
+      <Space size={24}>
+        {events.map((event) => {
           return (
-            <EventRecommendationCategoryCard category={item} key={index} />
+            <Card
+              key={event.slug}
+              className="event-list-card"
+              cover={<img alt={event.title} src={getEventCover(event)} />}
+            >
+              <p className="text-2xl medium">{event.title}</p>
+              <p className="mt-8 description">{event.detail.description}</p>
+              <Button
+                type="primary"
+                className="mt-12"
+                onClick={() => onRegister(event.slug)}
+              >
+                Register
+              </Button>
+            </Card>
           );
         })}
-      </div>
-      {eventRecommendationSections.map((section, index) => {
-        const { slug } = section;
-        const page = sectionPagination[slug];
-        const start = page * PAGE_SIZE;
-        const end = start + PAGE_SIZE;
-        const events = [...section.events];
-        return (
-          <div key={slug} className="event-recommendation-section">
-            <Row justify="space-between" className="header">
-              <Col>
-                <p className="text-3xl medium">{section.title}</p>
-              </Col>
-              <If condition={events.length > PAGE_SIZE}>
-                <Col>
-                  <Space>
-                    <LeftCircleFilled onClick={() => onPrevious(slug)} />
-                    <RightCircleFilled
-                      onClick={() => onNext(slug, events.length)}
-                    />
-                  </Space>
-                </Col>
-              </If>
-            </Row>
-            <div className="mt-12 event-sections">
-              {events.slice(start, end).map((item, index) => {
-                return (
-                  <EventRecommendationEventCard event={item} key={index} />
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
-    </Card>
+      </Space>
+    </div>
   );
 };
 

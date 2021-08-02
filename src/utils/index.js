@@ -90,3 +90,14 @@ export const getEventCover = (eventDetail) => {
   }
   return cover;
 };
+
+export const groupByDate = (data) => {
+  return data.reduce((groups, item) => {
+    const date = item.created_at.split("T")[0];
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(item);
+    return groups;
+  }, {});
+};
