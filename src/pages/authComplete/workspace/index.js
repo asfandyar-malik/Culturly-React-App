@@ -39,9 +39,9 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
             });
           });
         })
-        .catch((err) => {
-          const { error } = err.response.data;
-          setErrorStatusCode(err.response.status);
+        .catch((err = {}) => {
+          const { error } = err?.response?.data;
+          setErrorStatusCode(err?.response?.status);
           setError(`Look like something went wrong, ${error}`);
           setLoading(false);
         });

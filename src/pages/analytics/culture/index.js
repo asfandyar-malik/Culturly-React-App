@@ -13,6 +13,9 @@ import {
   Select,
   Empty,
   Progress,
+  Popover,
+  Button,
+  Checkbox,
 } from "antd";
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
@@ -35,7 +38,7 @@ import {
   getAllCultureGraph,
 } from "actions";
 
-const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
+const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   const cultureChartRef = useRef(null);
   const allCultureChartRef = useRef(null);
   const cultureCountChartRef = useRef(null);
@@ -51,6 +54,9 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   const [cultureChartElement, setCultureChartElement] = useState("");
   const [cultureCountChartElement, setCultureCountChartElement] = useState("");
   const [allCultureChartElement, setAllCultureChartElement] = useState("");
+  const [cultureGraphFilter, setCultureGraphFilter] = useState(
+    categories.map((c) => c.name)
+  );
 
   useEffect(() => {
     getCultureScore(selectedTeam).then((response) => {
@@ -104,28 +110,14 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
   }, [selectedCategory, cultureGraphMonth]);
 
   useEffect(() => {
-    let endTs = moment().endOf("month").utc(true).format("X");
-    let startTs = moment()
-      .subtract(1, "years")
-      .startOf("month")
-      .utc(true)
-      .format("X");
-
-    if (cultureGraphMonth) {
-      endTs = cultureGraphMonth.endOf("month").utc(true).format("X");
-      startTs = cultureGraphMonth.startOf("month").utc(true).format("X");
-    }
-
-    getAllCultureGraph(selectedTeam, startTs, endTs).then((response) => {
-      const { data } = response;
+    const data = allCultureGraphData;
+    if (data) {
       const allDataSets = [];
       let labels = new Set();
 
       if (allCultureChartElement) {
         allCultureChartElement.destroy();
       }
-
-      setAllCultureGraphData(data.categories);
       if (data.categories) {
         Object.keys(data.categories).forEach((key) => {
           const dataPoints = [];
@@ -166,12 +158,34 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           type: "line",
           data: {
             labels: Array.from(labels),
-            datasets: allDataSets,
+            datasets: allDataSets.filter((d) =>
+              cultureGraphFilter.includes(d.label)
+            ),
           },
           options: MULTIPLE_LINE_CHART_OPTIONS,
         });
         setAllCultureChartElement(allLineChart);
       }
+    }
+  }, [cultureGraphFilter]);
+
+  useEffect(() => {
+    let endTs = moment().endOf("month").utc(true).format("X");
+    let startTs = moment()
+      .subtract(1, "years")
+      .startOf("month")
+      .utc(true)
+      .format("X");
+
+    if (cultureGraphMonth) {
+      endTs = cultureGraphMonth.endOf("month").utc(true).format("X");
+      startTs = cultureGraphMonth.startOf("month").utc(true).format("X");
+    }
+
+    getAllCultureGraph(selectedTeam, startTs, endTs).then((response) => {
+      const { data } = response;
+      console.log({ data });
+      setAllCultureGraphData(data);
     });
   }, [cultureGraphMonth]);
 
@@ -273,6 +287,14 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
     }
   }, [cultureGraphData]);
 
+  function handleCategorySelect(check, name) {
+    if (check) {
+      setCultureGraphFilter([...cultureGraphFilter, name]);
+    } else {
+      setCultureGraphFilter(cultureGraphFilter.filter((f) => f !== name));
+    }
+  }
+
   function formatValue(val) {
     return val ? parseFloat(val.toFixed(2)) : val;
   }
@@ -331,8 +353,8 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
           </Row>
         </Card>
 
-        <Card           
-        extra={
+        <Card
+          extra={
             <Space size={16}>
               <Select
                 style={{ width: 175 }}
@@ -358,13 +380,34 @@ const CultureAnalyticsCard = ({ categories, selectedTeam }) => {
                 onChange={(value) => setcultureGraphMonth(value)}
               />
             </Space>
-          }>
-          <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
-            <Space size={6}>
+          }
+        >
+          <Space size={6}>
+            <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
               <span>All Culture Categories</span>
               <QuestionCircleOutlined />
-            </Space>
-          </Tooltip>
+            </Tooltip>
+            <Popover
+              placement="bottom"
+              content={
+                <Space direction="vertical" size={10} align="start">
+                  {categories.map((item) => (
+                    <Checkbox
+                      checked={cultureGraphFilter.includes(item.name)}
+                      onChange={(e) =>
+                        handleCategorySelect(e.target.checked, item.name)
+                      }
+                    >
+                      {item.name}
+                    </Checkbox>
+                  ))}
+                </Space>
+              }
+              trigger="click"
+            >
+              <Button>Bottom</Button>
+            </Popover>
+          </Space>
 
           <br></br>
           <br></br>
