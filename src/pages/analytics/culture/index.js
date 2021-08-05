@@ -16,8 +16,13 @@ import {
   Popover,
   Button,
   Checkbox,
+  message,
 } from "antd";
-import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import {
+  InfoCircleOutlined,
+  QuestionCircleOutlined,
+  CaretDownOutlined,
+} from "@ant-design/icons";
 
 import {
   LINE_CHART_OPTIONS,
@@ -54,9 +59,12 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   const [cultureChartElement, setCultureChartElement] = useState("");
   const [cultureCountChartElement, setCultureCountChartElement] = useState("");
   const [allCultureChartElement, setAllCultureChartElement] = useState("");
-  const [cultureGraphFilter, setCultureGraphFilter] = useState(
-    categories.map((c) => c.name)
-  );
+  const [cultureGraphFilter, setCultureGraphFilter] = useState([]);
+
+  useEffect(() => {
+    const allCategories = categories.map((c) => c.name);
+    setCultureGraphFilter(allCategories);
+  }, [categories]);
 
   useEffect(() => {
     getCultureScore(selectedTeam).then((response) => {
@@ -110,64 +118,61 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   }, [selectedCategory, cultureGraphMonth]);
 
   useEffect(() => {
-    const data = allCultureGraphData;
-    if (data) {
+    if (allCultureGraphData.categories) {
       const allDataSets = [];
       let labels = new Set();
 
       if (allCultureChartElement) {
         allCultureChartElement.destroy();
       }
-      if (data.categories) {
-        Object.keys(data.categories).forEach((key) => {
-          const dataPoints = [];
+      Object.keys(allCultureGraphData.categories).forEach((key) => {
+        const dataPoints = [];
 
-          if (cultureGraphMonth) {
-            const weeks = getWeeksInMonth(
-              cultureGraphMonth.format("YYYY"),
-              cultureGraphMonth.format("M")
-            );
+        if (cultureGraphMonth) {
+          const weeks = getWeeksInMonth(
+            cultureGraphMonth.format("YYYY"),
+            cultureGraphMonth.format("M")
+          );
 
-            if (data.categories[key].results.length) {
-              weeks.forEach((week) => {
-                const item =
-                  data.categories[key].results.find(
-                    (i) => moment(i.week).format("D") === week.startDay
-                  ) || {};
+          if (allCultureGraphData.categories[key].results.length) {
+            weeks.forEach((week) => {
+              const item =
+                allCultureGraphData.categories[key].results.find(
+                  (i) => moment(i.week).format("D") === week.startDay
+                ) || {};
 
-                labels.add(week.weekName);
-                dataPoints.push(item.avg || 0);
-              });
-            }
+              labels.add(week.weekName);
+              dataPoints.push(item.avg || 0);
+            });
           }
+        }
 
-          const dataset = {
-            fill: true,
-            label: CATEGORY_GRAPH_LABEL[key],
-            data: dataPoints,
-            borderColor: CATEGORY_GRAPH_COLOR[key],
-            backgroundColor: "#27cdec02",
-          };
+        const dataset = {
+          fill: true,
+          label: CATEGORY_GRAPH_LABEL[key],
+          data: dataPoints,
+          borderColor: CATEGORY_GRAPH_COLOR[key],
+          backgroundColor: "#27cdec02",
+        };
 
-          allDataSets.push(dataset);
-        });
+        allDataSets.push(dataset);
+      });
 
-        const chartAllCultureRef = allCultureChartRef.current.getContext("2d");
+      const chartAllCultureRef = allCultureChartRef.current.getContext("2d");
 
-        const allLineChart = new Chart(chartAllCultureRef, {
-          type: "line",
-          data: {
-            labels: Array.from(labels),
-            datasets: allDataSets.filter((d) =>
-              cultureGraphFilter.includes(d.label)
-            ),
-          },
-          options: MULTIPLE_LINE_CHART_OPTIONS,
-        });
-        setAllCultureChartElement(allLineChart);
-      }
+      const allLineChart = new Chart(chartAllCultureRef, {
+        type: "line",
+        data: {
+          labels: Array.from(labels),
+          datasets: allDataSets.filter((d) =>
+            cultureGraphFilter.includes(d.label)
+          ),
+        },
+        options: MULTIPLE_LINE_CHART_OPTIONS,
+      });
+      setAllCultureChartElement(allLineChart);
     }
-  }, [cultureGraphFilter]);
+  }, [cultureGraphFilter, cultureGraphMonth, allCultureGraphData]);
 
   useEffect(() => {
     let endTs = moment().endOf("month").utc(true).format("X");
@@ -182,10 +187,12 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       startTs = cultureGraphMonth.startOf("month").utc(true).format("X");
     }
 
+    message.loading({ content: "Loading data...", key: "loader" });
+
     getAllCultureGraph(selectedTeam, startTs, endTs).then((response) => {
       const { data } = response;
-      console.log({ data });
       setAllCultureGraphData(data);
+      message.success({ content: "Data loaded successfully", key: "loader" });
     });
   }, [cultureGraphMonth]);
 
@@ -382,39 +389,64 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
             </Space>
           }
         >
-          <Space size={6}>
-            <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
-              <span>All Culture Categories</span>
-              <QuestionCircleOutlined />
-            </Tooltip>
-            <Popover
-              placement="bottom"
-              content={
-                <Space direction="vertical" size={10} align="start">
-                  {categories.map((item) => (
-                    <Checkbox
-                      checked={cultureGraphFilter.includes(item.name)}
-                      onChange={(e) =>
-                        handleCategorySelect(e.target.checked, item.name)
-                      }
-                    >
-                      {item.name}
-                    </Checkbox>
-                  ))}
-                </Space>
-              }
-              trigger="click"
-            >
-              <Button>Bottom</Button>
-            </Popover>
-          </Space>
-
+          <Row justify="space-between">
+            <Col>
+              <Tooltip title="Response rate shows us the frequency of inputted information by team members.">
+                <span>All Culture Categories</span> <QuestionCircleOutlined />
+              </Tooltip>
+            </Col>
+            <Col>
+              <Popover
+                placement="bottom"
+                content={
+                  <Space direction="vertical" size={10} align="start">
+                    <Space>
+                      <Button
+                        onClick={() =>
+                          setCultureGraphFilter(
+                            (categories || []).map((c) => c.name)
+                          )
+                        }
+                        type="primary"
+                        size="small"
+                      >
+                        Select All
+                      </Button>
+                      <Button
+                        onClick={() => setCultureGraphFilter([])}
+                        danger
+                        type="primary"
+                        size="small"
+                      >
+                        Clear All
+                      </Button>
+                    </Space>
+                    {categories.map((item) => (
+                      <Checkbox
+                        checked={cultureGraphFilter.includes(item.name)}
+                        onChange={(e) =>
+                          handleCategorySelect(e.target.checked, item.name)
+                        }
+                      >
+                        {item.name}
+                      </Checkbox>
+                    ))}
+                  </Space>
+                }
+                trigger="click"
+              >
+                <Button>
+                  Select Categories <CaretDownOutlined />
+                </Button>
+              </Popover>
+            </Col>
+          </Row>
           <br></br>
           <br></br>
 
           <div>
             <Choose>
-              <When condition={allCultureGraphData}>
+              <When condition={allCultureGraphData?.categories}>
                 <canvas ref={allCultureChartRef} height={320} />
               </When>
               <Otherwise>
