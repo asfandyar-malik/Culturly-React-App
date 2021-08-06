@@ -30,6 +30,8 @@ import {
   CATEGORY_GRAPH_COLOR,
   MULTIPLE_LINE_CHART_OPTIONS,
   CATEGORY_GRAPH_LABEL,
+  BAR_GRAPH_BACKGROUND_COLORS,
+  BAR_GRAPH_BORDER_COLORS,
 } from "../../../constants";
 import {
   getWeeksInMonth,
@@ -60,10 +62,11 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   const [cultureCountChartElement, setCultureCountChartElement] = useState("");
   const [allCultureChartElement, setAllCultureChartElement] = useState("");
   const [cultureGraphFilter, setCultureGraphFilter] = useState([]);
+  const [chartType, setChartType] = useState("line");
 
   useEffect(() => {
     const allCategories = categories.map((c) => c.name);
-    setCultureGraphFilter(allCategories);
+    setCultureGraphFilter(["All Graphs", ...allCategories]);
   }, [categories]);
 
   useEffect(() => {
@@ -118,6 +121,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   }, [selectedCategory, cultureGraphMonth]);
 
   useEffect(() => {
+    console.log({ allCultureGraphData });
     if (allCultureGraphData.categories) {
       const allDataSets = [];
       let labels = new Set();
@@ -141,13 +145,13 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                   (i) => moment(i.week).format("D") === week.startDay
                 ) || {};
 
-              labels.add(week.weekName);
-              dataPoints.push(item.avg || 0);
+              item.avg && labels.add(week.weekName);
+              item.avg && dataPoints.push(item.avg);
             });
           }
         }
 
-        const dataset = {
+        const lineDataset = {
           fill: true,
           label: CATEGORY_GRAPH_LABEL[key],
           data: dataPoints,
@@ -155,13 +159,22 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           backgroundColor: "#27cdec02",
         };
 
-        allDataSets.push(dataset);
+        const chartDataset = {
+          fill: true,
+          label: CATEGORY_GRAPH_LABEL[key],
+          data: dataPoints,
+          borderColor: BAR_GRAPH_BORDER_COLORS,
+          backgroundColor: BAR_GRAPH_BACKGROUND_COLORS,
+          borderWidth: 1,
+        };
+
+        allDataSets.push(chartType === "line" ? lineDataset : chartDataset);
       });
 
       const chartAllCultureRef = allCultureChartRef.current.getContext("2d");
 
       const allLineChart = new Chart(chartAllCultureRef, {
-        type: "line",
+        type: chartType,
         data: {
           labels: Array.from(labels),
           datasets: allDataSets.filter((d) =>
@@ -172,7 +185,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       });
       setAllCultureChartElement(allLineChart);
     }
-  }, [cultureGraphFilter, cultureGraphMonth, allCultureGraphData]);
+  }, [cultureGraphFilter, cultureGraphMonth, allCultureGraphData, chartType]);
 
   useEffect(() => {
     let endTs = moment().endOf("month").utc(true).format("X");
@@ -396,49 +409,59 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
               </Tooltip>
             </Col>
             <Col>
-              <Popover
-                placement="bottom"
-                content={
-                  <Space direction="vertical" size={10} align="start">
-                    <Space>
-                      <Button
-                        onClick={() =>
-                          setCultureGraphFilter(
-                            (categories || []).map((c) => c.name)
-                          )
-                        }
-                        type="primary"
-                        size="small"
-                      >
-                        Select All
-                      </Button>
-                      <Button
-                        onClick={() => setCultureGraphFilter([])}
-                        danger
-                        type="primary"
-                        size="small"
-                      >
-                        Clear All
-                      </Button>
+              <Space size={15}>
+                <Popover
+                  placement="bottom"
+                  content={
+                    <Space direction="vertical" size={10} align="start">
+                      <Space>
+                        <Button
+                          onClick={() =>
+                            setCultureGraphFilter(
+                              (categories || []).map((c) => c.name)
+                            )
+                          }
+                          type="primary"
+                          size="small"
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          onClick={() => setCultureGraphFilter([])}
+                          danger
+                          type="primary"
+                          size="small"
+                        >
+                          Clear All
+                        </Button>
+                      </Space>
+                      {[{ name: "All Graphs" }, ...categories].map((item) => (
+                        <Checkbox
+                          checked={cultureGraphFilter.includes(item.name)}
+                          onChange={(e) =>
+                            handleCategorySelect(e.target.checked, item.name)
+                          }
+                        >
+                          {item.name}
+                        </Checkbox>
+                      ))}
                     </Space>
-                    {categories.map((item) => (
-                      <Checkbox
-                        checked={cultureGraphFilter.includes(item.name)}
-                        onChange={(e) =>
-                          handleCategorySelect(e.target.checked, item.name)
-                        }
-                      >
-                        {item.name}
-                      </Checkbox>
-                    ))}
-                  </Space>
-                }
-                trigger="click"
-              >
-                <Button>
-                  Select Categories <CaretDownOutlined />
-                </Button>
-              </Popover>
+                  }
+                  trigger="click"
+                >
+                  <Button>
+                    Select Categories <CaretDownOutlined />
+                  </Button>
+                </Popover>
+                <Select
+                  onChange={(type) => setChartType(type)}
+                  defaultValue={"line"}
+                  suffixIcon={<CaretDownOutlined />}
+                >
+                  <Select.Option value={"line"}>Line Graph</Select.Option>
+                  <Select.Option value={"bar"}>Bar Graph</Select.Option>
+                </Select>
+              </Space>
             </Col>
           </Row>
           <br></br>
