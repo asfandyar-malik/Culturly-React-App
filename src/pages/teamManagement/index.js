@@ -22,6 +22,7 @@ import "./style.scss";
 
 const TeamManagement = () => {
   const location = useLocation();
+
   let [teams, setTeams] = useState([]);
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
