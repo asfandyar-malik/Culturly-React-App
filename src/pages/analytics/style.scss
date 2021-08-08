@@ -10,7 +10,7 @@
 
   .culture-col {
     .ant-card:first-child {
-      background-color: #7e68eb80
+      background-color: #7e68eb80;
     }
   }
 
@@ -38,4 +38,23 @@
   .empty-container {
     height: 32rem;
   }
+}
+
+.ant-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+
+  .ant-checkbox {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+}
+
+.ant-popover-arrow {
+  display: none;
+}
+
+.ant-select-arrow {
+  color: #000;
 }
