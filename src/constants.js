@@ -142,6 +142,9 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
+    legend: {
+      position: "bottom",
+    },
     tooltip: {
       callbacks: {
         label: function (context) {

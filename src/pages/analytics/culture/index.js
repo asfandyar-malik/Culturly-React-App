@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import moment from "moment";
 import Chart from "chart.js/auto";
 import { useEffect, useState, useRef } from "react";
@@ -25,7 +26,6 @@ import {
 } from "@ant-design/icons";
 
 import {
-  LINE_CHART_OPTIONS,
   LINE_COUNT_CHART_OPTIONS,
   CATEGORY_GRAPH_COLOR,
   MULTIPLE_LINE_CHART_OPTIONS,
@@ -46,7 +46,6 @@ import {
 } from "actions";
 
 const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
-  const cultureChartRef = useRef(null);
   const allCultureChartRef = useRef(null);
   const cultureCountChartRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -58,15 +57,13 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   const [cultureGraphMonth, setcultureGraphMonth] = useState(moment());
   const [cultureGraphData, setCultureGraphData] = useState([]);
   const [allCultureGraphData, setAllCultureGraphData] = useState([]);
-  const [cultureChartElement, setCultureChartElement] = useState("");
   const [cultureCountChartElement, setCultureCountChartElement] = useState("");
   const [allCultureChartElement, setAllCultureChartElement] = useState("");
   const [cultureGraphFilter, setCultureGraphFilter] = useState([]);
   const [chartType, setChartType] = useState("line");
 
   useEffect(() => {
-    const allCategories = categories.map((c) => c.name);
-    setCultureGraphFilter(["All Graphs", ...allCategories]);
+    setCultureGraphFilter(["Average"]);
   }, [categories]);
 
   useEffect(() => {
@@ -121,7 +118,6 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   }, [selectedCategory, cultureGraphMonth]);
 
   useEffect(() => {
-    console.log({ allCultureGraphData });
     if (allCultureGraphData.categories) {
       const allDataSets = [];
       let labels = new Set();
@@ -166,6 +162,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           borderColor: BAR_GRAPH_BORDER_COLORS,
           backgroundColor: BAR_GRAPH_BACKGROUND_COLORS,
           borderWidth: 1,
+          barThickness: 15,
         };
 
         allDataSets.push(chartType === "line" ? lineDataset : chartDataset);
@@ -177,9 +174,13 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
         type: chartType,
         data: {
           labels: Array.from(labels),
-          datasets: allDataSets.filter((d) =>
-            cultureGraphFilter.includes(d.label)
-          ),
+          datasets: allDataSets.filter((d) => {
+            if (d.label === "All Graphs") {
+              return cultureGraphFilter.includes("Average");
+            } else {
+              return cultureGraphFilter.includes(d.label);
+            }
+          }),
         },
         options: MULTIPLE_LINE_CHART_OPTIONS,
       });
@@ -210,9 +211,6 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   }, [cultureGraphMonth]);
 
   useEffect(() => {
-    if (cultureChartElement) {
-      cultureChartElement.destroy();
-    }
     if (cultureCountChartElement) {
       cultureCountChartElement.destroy();
     }
@@ -223,7 +221,6 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       const dataPointsCounts = [];
       const dataPointsUniqueUserCounts = [];
 
-      const chartRef = cultureChartRef.current.getContext("2d");
       const countChartRef = cultureCountChartRef.current.getContext("2d");
 
       if (cultureGraphMonth) {
@@ -237,10 +234,10 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
               (i) => moment(i.week).format("D") === week.startDay
             ) || {};
 
-          labels.push(week.weekName);
-          dataPoints.push(item.avg || 0);
-          dataPointsCounts.push(item.count || 0);
-          dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
+          item.avg && labels.push(week.weekName);
+          item.avg && dataPoints.push(item.avg);
+          item.count && dataPointsCounts.push(item.count);
+          item.uniqueUsers && dataPointsUniqueUserCounts.push(item.uniqueUsers);
         });
       } else {
         const months = getMonthsBetweenDates(
@@ -255,29 +252,11 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                 moment(month).format("MM-YYYY")
             ) || {};
           labels.push(moment(month).format("MMM YYYY"));
-          dataPoints.push(item.avg || 0);
-          dataPointsCounts.push(item.count || 0);
-          dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
+          item.avg && dataPoints.push(item.avg);
+          item.count && dataPointsCounts.push(item.count);
+          item.uniqueUsers && dataPointsUniqueUserCounts.push(item.uniqueUsers);
         });
       }
-
-      const lineChart = new Chart(chartRef, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              fill: true,
-              label: "Culture Score",
-              data: dataPoints,
-              borderColor: "#30CAEC",
-              pointBackgroundColor: "#30CAEC",
-              backgroundColor: "#f0ffff87"
-            },
-          ],
-        },
-        options: LINE_CHART_OPTIONS,
-      });
 
       const countLineChart = new Chart(countChartRef, {
         type: "line",
@@ -305,7 +284,6 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
         options: LINE_COUNT_CHART_OPTIONS,
       });
 
-      setCultureChartElement(lineChart);
       setCultureCountChartElement(countLineChart);
     }
   }, [cultureGraphData]);
@@ -420,9 +398,10 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                       <Space>
                         <Button
                           onClick={() =>
-                            setCultureGraphFilter(
-                              (categories || []).map((c) => c.name)
-                            )
+                            setCultureGraphFilter([
+                              "Average",
+                              ...(categories || []).map((c) => c.name),
+                            ])
                           }
                           type="primary"
                           size="small"
@@ -438,7 +417,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                           Clear All
                         </Button>
                       </Space>
-                      {[{ name: "All Graphs" }, ...categories].map((item) => (
+                      {[{ name: "Average" }, ...categories].map((item) => (
                         <Checkbox
                           checked={cultureGraphFilter.includes(item.name)}
                           onChange={(e) =>
@@ -484,6 +463,10 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           </div>
         </Card>
 
+        <br></br>
+        <br></br>
+        <br></br>
+
         <Card>
           <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
             <Space size={6}>
@@ -509,7 +492,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           </div>
         </Card>
 
-        <br></br>
+        {/* <br></br>
         <br></br>
         <br></br>
 
@@ -532,7 +515,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-        </Card>
+        </Card> */}
 
         <br></br>
         <br></br>
