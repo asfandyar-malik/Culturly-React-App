@@ -162,6 +162,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           borderColor: BAR_GRAPH_BORDER_COLORS,
           backgroundColor: BAR_GRAPH_BACKGROUND_COLORS,
           borderWidth: 1,
+          barThickness: 15,
         };
 
         allDataSets.push(chartType === "line" ? lineDataset : chartDataset);
@@ -233,10 +234,10 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
               (i) => moment(i.week).format("D") === week.startDay
             ) || {};
 
-          labels.push(week.weekName);
-          dataPoints.push(item.avg || 0);
-          dataPointsCounts.push(item.count || 0);
-          dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
+          item.avg && labels.push(week.weekName);
+          item.avg && dataPoints.push(item.avg);
+          item.count && dataPointsCounts.push(item.count);
+          item.uniqueUsers && dataPointsUniqueUserCounts.push(item.uniqueUsers);
         });
       } else {
         const months = getMonthsBetweenDates(
@@ -251,9 +252,9 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                 moment(month).format("MM-YYYY")
             ) || {};
           labels.push(moment(month).format("MMM YYYY"));
-          dataPoints.push(item.avg || 0);
-          dataPointsCounts.push(item.count || 0);
-          dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
+          item.avg && dataPoints.push(item.avg);
+          item.count && dataPointsCounts.push(item.count);
+          item.uniqueUsers && dataPointsUniqueUserCounts.push(item.uniqueUsers);
         });
       }
 
