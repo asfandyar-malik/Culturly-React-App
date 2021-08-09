@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import moment from "moment";
 import Chart from "chart.js/auto";
 import { useEffect, useState, useRef } from "react";
@@ -46,7 +47,7 @@ import {
 } from "actions";
 
 const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
-  const cultureChartRef = useRef(null);
+  // const cultureChartRef = useRef(null);
   const allCultureChartRef = useRef(null);
   const cultureCountChartRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -223,7 +224,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       const dataPointsCounts = [];
       const dataPointsUniqueUserCounts = [];
 
-      const chartRef = cultureChartRef.current.getContext("2d");
+      // const chartRef = cultureChartRef.current.getContext("2d");
       const countChartRef = cultureCountChartRef.current.getContext("2d");
 
       if (cultureGraphMonth) {
@@ -261,23 +262,23 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
         });
       }
 
-      const lineChart = new Chart(chartRef, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              fill: true,
-              label: "Culture Score",
-              data: dataPoints,
-              borderColor: "#30CAEC",
-              pointBackgroundColor: "#30CAEC",
-              backgroundColor: "#f0ffff87"
-            },
-          ],
-        },
-        options: LINE_CHART_OPTIONS,
-      });
+      // const lineChart = new Chart(chartRef, {
+      //   type: "line",
+      //   data: {
+      //     labels,
+      //     datasets: [
+      //       {
+      //         fill: true,
+      //         label: "Culture Score",
+      //         data: dataPoints,
+      //         borderColor: "#30CAEC",
+      //         pointBackgroundColor: "#30CAEC",
+      //         backgroundColor: "#f0ffff87",
+      //       },
+      //     ],
+      //   },
+      //   options: LINE_CHART_OPTIONS,
+      // });
 
       const countLineChart = new Chart(countChartRef, {
         type: "line",
@@ -305,7 +306,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
         options: LINE_COUNT_CHART_OPTIONS,
       });
 
-      setCultureChartElement(lineChart);
+      // setCultureChartElement(lineChart);
       setCultureCountChartElement(countLineChart);
     }
   }, [cultureGraphData]);
@@ -484,6 +485,10 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           </div>
         </Card>
 
+        <br></br>
+        <br></br>
+        <br></br>
+
         <Card>
           <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
             <Space size={6}>
@@ -509,7 +514,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           </div>
         </Card>
 
-        <br></br>
+        {/* <br></br>
         <br></br>
         <br></br>
 
@@ -532,7 +537,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-        </Card>
+        </Card> */}
 
         <br></br>
         <br></br>
