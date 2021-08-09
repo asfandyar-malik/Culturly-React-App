@@ -95,6 +95,10 @@ export const LINE_CHART_OPTIONS = {
   plugins: {
     legend: {
       position: "none",
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8
+      }
     },
     tooltip: {
       callbacks: {
@@ -144,6 +148,10 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
   plugins: {
     legend: {
       position: "bottom",
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8
+      }
     },
     tooltip: {
       callbacks: {
@@ -157,10 +165,10 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
   },
   legend: {
     display: true,
-    position: "left",
+    position: "bottom",
     labels: {
-      fontColor: "#333",
       usePointStyle: true,
+      boxWidth: 8
     },
   },
   scales: {
@@ -201,6 +209,10 @@ export const LINE_COUNT_CHART_OPTIONS = {
   plugins: {
     legend: {
       position: "none",
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8
+      }
     },
     tooltip: {
       callbacks: {
