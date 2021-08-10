@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col, List, Row } from "antd";
 
+import { roundOff } from "_dash";
 import { getEventsFeedback } from "actions";
 
 const EventFeedback = () => {
@@ -29,7 +30,7 @@ const EventFeedback = () => {
         <List.Item>
           <Row gutter={32} className="font-medium">
             <Col span={12}>{item.title}</Col>
-            <Col span={6}>{item.rating}/5</Col>
+            <Col span={6}>{roundOff(item.rating)}/5</Col>
             <Col span={6}>{item.event_date}</Col>
           </Row>
         </List.Item>

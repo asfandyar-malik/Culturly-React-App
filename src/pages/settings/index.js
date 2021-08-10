@@ -14,11 +14,14 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
   const [saving, setSaving] = useState(false);
   const [timezones, setTimezones] = useState([]);
 
+  const hasWriteAccess = accountData?.member?.is_admin;
+
   useEffect(() => {
     getTimezones().then((response) => {
       setTimezones(response.data);
     });
     form.setFieldsValue({ timezone: workspace.timezone });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (values) => {
@@ -45,6 +48,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
       <Form.Item label="Timezone" name="timezone">
         <Select
           showSearch
+          disabled={!hasWriteAccess}
           filterOption={(input, option) =>
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
@@ -58,11 +62,18 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
           })}
         </Select>
       </Form.Item>
-      <Form.Item noStyle>
-        <Button type="primary" htmlType="submit" size="large" loading={saving}>
-          Save
-        </Button>
-      </Form.Item>
+      <If condition={hasWriteAccess}>
+        <Form.Item noStyle>
+          <Button
+            size="large"
+            type="primary"
+            htmlType="submit"
+            loading={saving}
+          >
+            Save
+          </Button>
+        </Form.Item>
+      </If>
     </Form>
   );
 };

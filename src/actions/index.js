@@ -16,6 +16,10 @@ export const updateSlackMember = (memberId, payload) => {
   return instance.patch(path, payload);
 };
 
+export const bulkSetSlackMemberAdmin = (payload) => {
+  return instance.post(endpoints.SLACK_BULK_SET_ADMIN_API_PATH, payload);
+};
+
 export const getLeaderboardScore = (teamId, endTs, startTs) => {
   let path = endpoints.WORKPSACE_TEAM_LEADERBOARD_SCORE_API_PATH;
   path = path.concat("?team_id=", teamId);
@@ -30,24 +34,6 @@ export const getSurveys = () => {
 
 export const getSurveyQuestionCategories = () => {
   return instance.get(endpoints.SURVEY_QUESTION_CATEGORIES_API_PATH);
-};
-
-export const updateSurveyForWorkspace = (payload, objectId = null) => {
-  let path = null;
-  let method = null;
-  if (objectId) {
-    path = endpoints.WORKSPACE_SURVEY_DETAIL_API_PATH;
-    path = path.replace("{}", objectId);
-    method = "PATCH";
-  } else {
-    method = "POST";
-    path = endpoints.WORKSPACE_SURVEY_BASE_API_PATH;
-  }
-  return instance.request({
-    method: method,
-    url: path,
-    data: payload,
-  });
 };
 
 export const authenticateWorkspaceUsingAuth = (payload) => {
@@ -193,17 +179,12 @@ export const getAllCultureGraph = (teamId, startTs, endTs) => {
   return instance.get(path);
 };
 
-
 export const getEventsFeedback = () => {
   return instance.get(endpoints.WORKSPACE_EVENTS_FEEDBACK_API_PATH);
 };
 
 export const getEventsPoll = () => {
   return instance.get(endpoints.WORKSPACE_EVENTS_POLL_API_PATH);
-};
-
-export const getEventRequests = () => {
-  return instance.get(endpoints.WORKSPACE_EVENT_REQUESTS_API_PATH);
 };
 
 export const getEventRecommendations = () => {
@@ -217,7 +198,6 @@ export const getEventRecommendationSections = () => {
 export const getCourseRecommendationSections = () => {
   return instance.get(endpoints.COURSE_RECOMMENDATION_SECTIONS_API_PATH);
 };
-
 
 export const getEventRecommendationCateogries = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_CATEGORIES_API_PATH);

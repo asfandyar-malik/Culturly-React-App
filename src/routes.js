@@ -1,9 +1,10 @@
 import { lazy } from "react";
 import {
   TeamOutlined,
-  ApartmentOutlined,
-  PieChartOutlined,
   SmileOutlined,
+  ControlOutlined,
+  PieChartOutlined,
+  ApartmentOutlined,
   ExperimentOutlined,
   MacCommandOutlined,
 } from "@ant-design/icons";
@@ -35,9 +36,12 @@ const WorkspaceOAuthCompleteComponent = lazy(() =>
 
 const EventPollComponent = lazy(() => import("pages/eventPoll"));
 const EventFeedbackComponent = lazy(() => import("pages/eventFeedback"));
-const EventRequestsComponent = lazy(() => import("pages/eventRequests"));
-const EventRecommendationComponent = lazy(() => import("pages/eventRecommendation"));
-const CourseRecommendationComponent = lazy(() => import("pages/courseRecommendation"));
+const EventRecommendationComponent = lazy(() =>
+  import("pages/eventRecommendation")
+);
+const CourseRecommendationComponent = lazy(() =>
+  import("pages/courseRecommendation")
+);
 const LandingComponent = lazy(() => import("pages/landing"));
 const AnalyticsComponent = lazy(() => import("pages/analytics"));
 const WorkspaceSettingsComponent = lazy(() => import("pages/settings"));
@@ -45,7 +49,6 @@ const TeamManagementComponent = lazy(() => import("pages/teamManagement"));
 const MemberManagementComponent = lazy(() => import("pages/memberManagement"));
 const LeaderboardComponent = lazy(() => import("pages/leaderboard"));
 const SentimentComponent = lazy(() => import("pages/sentiment"));
-
 
 export const NON_LOGIN_ROUTES = [
   {
@@ -84,60 +87,70 @@ export const LOGGED_IN_ROUTES = [
         name: "index",
         path: INDEX_ROUTE,
         component: TeamManagementComponent,
+        roles: ["admin", "manager", "member"],
       },
       {
         exact: true,
         name: "members",
         path: MEMBERS_ROUTE,
         component: MemberManagementComponent,
+        roles: ["admin", "manager", "member"],
       },
       {
         exact: true,
         name: "leaderboard",
         path: LEADERBOARD_ROUTE,
         component: LeaderboardComponent,
+        roles: ["admin", "manager", "member"],
       },
       {
         exact: true,
-        name: "leaderboard",
+        name: "sentiment",
         path: SENTIMENT_ROUTE,
         component: SentimentComponent,
+        roles: ["admin"],
       },
       {
         exact: true,
         name: "settings",
         path: SETTINGS_ROUTE,
         component: WorkspaceSettingsComponent,
+        roles: ["admin", "manager", "member"],
       },
       {
         exact: true,
         name: "analytics",
         path: ANALYTICS_ROUTE,
         component: AnalyticsComponent,
+        roles: ["admin", "manager"],
       },
       {
         exact: true,
         name: "event-feedback",
         path: EVENT_FEEDBACK_ROUTE,
         component: EventFeedbackComponent,
+        roles: ["admin", "manager"],
       },
       {
         exact: true,
         name: "event-recommendation",
         path: EVENT_RECOMMENDATION_ROUTE,
         component: EventRecommendationComponent,
+        roles: ["admin", "manager", "member"],
       },
       {
         exact: true,
-        name: "course",
+        name: "courses",
         path: COURSE_ROUTE,
         component: CourseRecommendationComponent,
+        roles: ["admin", "manager", "member"],
       },
       {
         exact: true,
         name: "event-poll",
         path: EVENT_POLL_ROUTE,
         component: EventPollComponent,
+        roles: ["admin", "manager"],
       },
     ],
   },
@@ -147,55 +160,71 @@ export const ROUTES = [
   {
     key: "teams",
     title: "Teams",
-    icon: <TeamOutlined />,
     path: INDEX_ROUTE,
+    icon: <TeamOutlined />,
+    roles: ["admin", "manager", "member"],
   },
   {
     key: "leaderboard",
+    title: "Leaderboard",
     path: LEADERBOARD_ROUTE,
     icon: <ApartmentOutlined />,
-    title: "Leaderboard",
+    roles: ["admin", "manager", "member"],
   },
   {
     key: "members",
-    path: MEMBERS_ROUTE,
-    icon: <ApartmentOutlined />,
     title: "Management",
+    path: MEMBERS_ROUTE,
+    icon: <ControlOutlined />,
+    roles: ["admin", "manager", "member"],
   },
   {
     key: "analytics",
     title: "Analytics",
-    icon: <PieChartOutlined />,
     path: ANALYTICS_ROUTE,
+    icon: <PieChartOutlined />,
+    roles: ["admin", "manager"],
   },
   {
     key: "online-events",
     title: "Online Events",
     icon: <MacCommandOutlined />,
     path: EVENT_RECOMMENDATION_ROUTE,
+    roles: ["admin", "manager", "member"],
   },
   {
     key: "courses",
     title: "Courses",
-    icon: <MacCommandOutlined />,
     path: COURSE_ROUTE,
+    icon: <MacCommandOutlined />,
+    roles: ["admin", "manager", "member"],
   },
   {
     key: "sentiment",
     title: "Sentiment",
-    icon: <ExperimentOutlined />,
     path: SENTIMENT_ROUTE,
+    icon: <ExperimentOutlined />,
+    roles: ["admin"],
   },
   {
     key: "event-feedback",
     title: "Event feedback",
     icon: <SmileOutlined />,
     path: EVENT_FEEDBACK_ROUTE,
+    roles: ["admin", "manager"],
   },
   {
     key: "event-poll",
     title: "Event poll",
-    icon: <MacCommandOutlined />,
     path: EVENT_POLL_ROUTE,
-  },  
+    icon: <MacCommandOutlined />,
+    roles: ["admin", "manager"],
+  },
+  {
+    isHidden: true,
+    key: "settings",
+    title: "Settings",
+    path: SETTINGS_ROUTE,
+    roles: ["admin", "manager", "member"],
+  },
 ];

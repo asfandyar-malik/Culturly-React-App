@@ -5,12 +5,13 @@ import { Select, DatePicker, Space, List, Row, Col, Avatar } from "antd";
 import { disabledFutureDate } from "utils";
 import { getWorkspaceTeams, getLeaderboardScore } from "actions";
 
+import AccountHook from "hooks/account";
 import upArrow from "assets/images/up.png";
 import downArrow from "assets/images/down.png";
 
 import "./style.scss";
 
-const Leaderboard = () => {
+const Leaderboard = ({ accountData }) => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState("");
@@ -107,4 +108,4 @@ const Leaderboard = () => {
   );
 };
 
-export default Leaderboard;
+export default AccountHook(Leaderboard);

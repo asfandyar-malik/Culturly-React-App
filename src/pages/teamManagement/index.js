@@ -16,20 +16,25 @@ import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { getWorkspaceTeams, deleteWorkspaceTeam, getSurveys } from "actions";
 
+import AccountHook from "hooks/account";
 import CreateTeamModal from "./createModal";
+import CreateAdminModal from "components/createAdminModal";
 
 import "./style.scss";
 
-const TeamManagement = () => {
+const TeamManagement = ({ accountData }) => {
   const location = useLocation();
+  const { member = {} } = accountData;
 
   let [teams, setTeams] = useState([]);
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState({});
   const [createModalVisible, setCreateModalVisible] = useState(false);
+  const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
 
   const isNewUser = location.state?.is_new_user || false;
+  const hasWriteAccess = member?.is_admin || member?.is_manager;
 
   useEffect(() => {
     if (!createModalVisible) {
@@ -39,8 +44,15 @@ const TeamManagement = () => {
 
   useEffect(() => {
     if (isNewUser) {
-      setCreateModalVisible(true);
+      if (member?.is_admin) {
+        setAddAdminModalVisible(true);
+      } else {
+        if (member?.is_manager) {
+          setCreateModalVisible(true);
+        }
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNewUser]);
 
   useEffect(() => {
@@ -52,6 +64,11 @@ const TeamManagement = () => {
       setSurveys(response.data.results);
     });
   }, []);
+
+  function onAdminAddModalClose() {
+    setAddAdminModalVisible(false);
+    setCreateModalVisible(true);
+  }
 
   function onTeamCreate(newTeam) {
     const index = teams.findIndex((item) => item.id === newTeam.id);
@@ -80,100 +97,114 @@ const TeamManagement = () => {
   }
 
   return (
-    <div className="max-container">
-      <Row justify="end">
-        <Col>
-          <Button type="primary" onClick={() => setCreateModalVisible(true)}>
-            Create team
-          </Button>
-        </Col>
-      </Row>
-      <List
-        loading={loading}
-        dataSource={teams}
-        className="common-list team-management"
-        header={
-          <Row gutter={32}>
-            <Col span={6}>Team name</Col>
-            <Col span={4}>
-              <Tooltip
-                title="Members receive Mood Check Survey and Culture check Survey on Slack. 
-              One member can be part of only one Team"
+    <>
+      <div className="max-container">
+        <If condition={hasWriteAccess}>
+          <Row justify="end">
+            <Col>
+              <Button
+                type="primary"
+                onClick={() => setCreateModalVisible(true)}
               >
-                <Space size={6}>
-                  <span>Members</span>
-                  <QuestionCircleOutlined />
-                </Space>
-              </Tooltip>
-            </Col>
-            <Col span={4}>
-              <Tooltip
-                title="Managers have access to create Teams, Edit Surveys, Edit user access, 
-              View Analytics etc"
-              >
-                <Space size={6}>
-                  <span>Managers</span>
-                  <QuestionCircleOutlined />
-                </Space>
-              </Tooltip>
+                Create team
+              </Button>
             </Col>
           </Row>
-        }
-        renderItem={(item) => (
-          <List.Item>
-            <Row gutter={32} className="font-medium">
-              <Col span={6}>{item.name}</Col>
-              <Col span={4}>
-                <Avatar.Group maxCount={5}>
-                  {item.members.map((item) => {
-                    const { member } = item;
-                    return (
-                      <Tooltip
-                        key={member.id}
-                        title={member.display_name || member.name}
-                      >
-                        <Avatar src={member.avatar} />
-                      </Tooltip>
-                    );
-                  })}
-                </Avatar.Group>
-              </Col>
-              <Col span={4}>
-                <Avatar.Group maxCount={5}>
-                  {item.managers.map((item) => {
-                    const { member } = item;
-                    return (
-                      <Tooltip
-                        key={member.id}
-                        title={member.display_name || member.name}
-                      >
-                        <Avatar src={member.avatar} />
-                      </Tooltip>
-                    );
-                  })}
-                </Avatar.Group>
-              </Col>
-              <Col span={10}>
-                <Dropdown
-                  trigger={["click"]}
-                  overlay={
-                    <Menu>
-                      <Menu.Item onClick={() => onEditTeam(item)}>
-                        Edit
-                      </Menu.Item>
-                      <Menu.Item onClick={() => onDeleteTeam(item)}>
-                        Delete
-                      </Menu.Item>
-                    </Menu>
-                  }
+        </If>
+        <List
+          loading={loading}
+          dataSource={teams}
+          className="common-list team-management"
+          header={
+            <Row gutter={32}>
+              <Col span={6}>Team name</Col>
+              <Col span={6}>
+                <Tooltip
+                  title="Members receive Mood Check Survey and Culture check Survey on Slack. 
+              One member can be part of only one Team"
                 >
-                  <EllipsisOutlined rotate={90} />
-                </Dropdown>
+                  <Space size={6}>
+                    <span>Members</span>
+                    <QuestionCircleOutlined />
+                  </Space>
+                </Tooltip>
+              </Col>
+              <Col span={6}>
+                <Tooltip
+                  title="Managers have access to create Teams, Edit Surveys, Edit user access, 
+              View Analytics etc"
+                >
+                  <Space size={6}>
+                    <span>Managers</span>
+                    <QuestionCircleOutlined />
+                  </Space>
+                </Tooltip>
               </Col>
             </Row>
-          </List.Item>
-        )}
-      />
+          }
+          renderItem={(item) => (
+            <List.Item>
+              <Row gutter={32} className="font-medium">
+                <Col span={6}>{item.name}</Col>
+                <Col span={6}>
+                  <Avatar.Group maxCount={5}>
+                    {item.members.map((item) => {
+                      const { member } = item;
+                      return (
+                        <Tooltip
+                          key={member.id}
+                          title={member.display_name || member.name}
+                        >
+                          <Avatar src={member.avatar} />
+                        </Tooltip>
+                      );
+                    })}
+                  </Avatar.Group>
+                </Col>
+                <Col span={6}>
+                  <Avatar.Group maxCount={5}>
+                    {item.managers.map((item) => {
+                      const { member } = item;
+                      return (
+                        <Tooltip
+                          key={member.id}
+                          title={member.display_name || member.name}
+                        >
+                          <Avatar src={member.avatar} />
+                        </Tooltip>
+                      );
+                    })}
+                  </Avatar.Group>
+                </Col>
+                <Choose>
+                  <When condition={hasWriteAccess}>
+                    <Col span={6}>
+                      <Dropdown
+                        trigger={["click"]}
+                        overlay={
+                          <Menu>
+                            <Menu.Item onClick={() => onEditTeam(item)}>
+                              Edit
+                            </Menu.Item>
+                            <Menu.Item onClick={() => onDeleteTeam(item)}>
+                              Delete
+                            </Menu.Item>
+                          </Menu>
+                        }
+                      >
+                        <EllipsisOutlined rotate={90} />
+                      </Dropdown>
+                    </Col>
+                  </When>
+                  <Otherwise>
+                    <Col span={6} />
+                  </Otherwise>
+                </Choose>
+              </Row>
+            </List.Item>
+          )}
+        />
+      </div>
       <CreateTeamModal
         surveys={surveys}
         selectedTeam={selectedTeam}
@@ -181,8 +212,12 @@ const TeamManagement = () => {
         onUpdateTeam={(data) => onTeamCreate(data)}
         onClose={() => setCreateModalVisible(false)}
       />
-    </div>
+      <CreateAdminModal
+        visible={addAdminModalVisible}
+        onClose={() => onAdminAddModalClose()}
+      />
+    </>
   );
 };
 
-export default TeamManagement;
+export default AccountHook(TeamManagement);
