@@ -297,7 +297,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   }
 
   function formatValue(val) {
-    return val ? parseFloat(val.toFixed(2)) : val;
+    return val ? parseFloat(Math.round(val)) : Math.round(val || 0);
   }
 
   function getBadgeColor(val) {
