@@ -159,8 +159,8 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           fill: true,
           label: CATEGORY_GRAPH_LABEL[key],
           data: dataPoints,
-          borderColor: BAR_GRAPH_BORDER_COLORS,
-          backgroundColor: BAR_GRAPH_BACKGROUND_COLORS,
+          borderColor: BAR_GRAPH_BORDER_COLORS[key],
+          backgroundColor: BAR_GRAPH_BACKGROUND_COLORS[key],
           borderWidth: 1,
           barThickness: 15,
         };
