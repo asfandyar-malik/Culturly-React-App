@@ -4,7 +4,7 @@ import { Avatar, Layout, Menu, Space, Dropdown, Row, Col } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
 import { AUTHORIZATION_KEY } from "../../constants";
-import { ROUTES, INDEX_ROUTE, SETTINGS_ROUTE } from "routes";
+import { ROUTES, INDEX_ROUTE, SETTINGS_ROUTE, MEMBERS_ROUTE } from "routes";
 
 import AccountHook from "hooks/account";
 import siderImage from "images/sider.png";
@@ -97,6 +97,9 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
               <Dropdown
                 overlay={
                   <Menu>
+                    <Menu.Item onClick={() => history.push(MEMBERS_ROUTE)}>
+                      Management
+                    </Menu.Item>
                     <Menu.Item onClick={() => history.push(SETTINGS_ROUTE)}>
                       Settings
                     </Menu.Item>

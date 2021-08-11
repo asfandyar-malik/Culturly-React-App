@@ -30,6 +30,7 @@ const TeamManagement = ({ accountData }) => {
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState({});
+  const [canCreateTeam, setCreateTeam] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
 
@@ -57,8 +58,10 @@ const TeamManagement = ({ accountData }) => {
 
   useEffect(() => {
     getWorkspaceTeams().then((response) => {
+      const { data } = response;
       setLoading(false);
-      setTeams(response.data.results);
+      setTeams(data.results);
+      setCreateTeam(data.can_create_team);
     });
     getSurveys().then((response) => {
       setSurveys(response.data.results);
@@ -104,6 +107,7 @@ const TeamManagement = ({ accountData }) => {
             <Col>
               <Button
                 type="primary"
+                disabled={!canCreateTeam}
                 onClick={() => setCreateModalVisible(true)}
               >
                 Create team

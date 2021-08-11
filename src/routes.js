@@ -172,6 +172,7 @@ export const ROUTES = [
     roles: ["admin", "manager", "member"],
   },
   {
+    isHidden: true,
     key: "members",
     title: "Management",
     path: MEMBERS_ROUTE,
