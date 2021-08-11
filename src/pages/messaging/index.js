@@ -73,7 +73,7 @@ const Messaging = () => {
       getChannelMessages(
         page,
         selectedChannel.channel_id,
-        selectedChannel.host.id
+        selectedChannel.host.user_id
       ).then((response) => {
         const { results } = response.data;
         setLoading(false);
@@ -106,7 +106,7 @@ const Messaging = () => {
   function onFormSubmit(payload) {
     sendChannelMessage(
       selectedChannel.channel_id,
-      selectedChannel.host.id,
+      selectedChannel.host.user_id,
       payload
     ).then((response) => {
       updateMessages([response.data]);
@@ -128,10 +128,12 @@ const Messaging = () => {
             const { host } = channel;
             return (
               <div
-                key={host.id}
+                key={host.user_id}
                 onClick={() => setSelectedChannel(channel)}
                 className={`user-item ${
-                  host.id === selectedChannel.host?.id ? "selected" : ""
+                  host.user_id === selectedChannel.host?.user_id
+                    ? "selected"
+                    : ""
                 }`}
               >
                 <Space>
