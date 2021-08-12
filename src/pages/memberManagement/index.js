@@ -108,7 +108,7 @@ const MemberManagement = ({ accountData }) => {
             <Col span={4}>{item.is_manager ? "Yes" : "No"}</Col>
             <Col span={5}>{item.team || "-"}</Col>
             <Choose>
-              <When condition={hasWriteAccess}>
+              <When condition={hasWriteAccess && !item.is_myself}>
                 <Col span={3}>
                   <Dropdown
                     trigger={["click"]}

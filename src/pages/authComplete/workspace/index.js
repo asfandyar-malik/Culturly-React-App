@@ -25,16 +25,19 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
     if (code) {
       authenticateWorkspaceUsingAuth({ code })
         .then((response) => {
+          const isNewInstalled = response.is_new_installed;
           localStorage.setItem(AUTHORIZATION_KEY, response.token);
-          getUserDetail().then((response) => {
-            message.success(
-              "Congratulations!! Your workspace has been succesfully connected"
-            );
-            setAccountData(response);
+          getUserDetail().then((userResponse) => {
+            if (isNewInstalled) {
+              message.success(
+                "Congratulations!! Your workspace has been succesfully connected"
+              );
+            }
+            setAccountData(userResponse);
             history.push({
               pathname: INDEX_ROUTE,
               state: {
-                is_new_user: true,
+                is_new_installed: isNewInstalled,
               },
             });
           });

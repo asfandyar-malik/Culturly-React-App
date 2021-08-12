@@ -40,6 +40,7 @@ const CreateAdminModal = ({ visible, onClose }) => {
   return (
     <Modal
       okText="Proceed"
+      cancelText="Skip"
       visible={visible}
       confirmLoading={saving}
       onCancel={() => onClose()}

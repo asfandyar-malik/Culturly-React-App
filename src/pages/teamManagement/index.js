@@ -14,6 +14,7 @@ import {
 import { useLocation } from "react-router";
 import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
+import { isEmpty } from "_dash";
 import { getWorkspaceTeams, deleteWorkspaceTeam, getSurveys } from "actions";
 
 import AccountHook from "hooks/account";
@@ -25,6 +26,7 @@ import "./style.scss";
 const TeamManagement = ({ accountData }) => {
   const location = useLocation();
   const { member = {} } = accountData;
+  const isLoggedIn = !isEmpty(accountData);
 
   let [teams, setTeams] = useState([]);
   const [surveys, setSurveys] = useState([]);
@@ -34,7 +36,7 @@ const TeamManagement = ({ accountData }) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
 
-  const isNewUser = location.state?.is_new_user || false;
+  const isNewInstalled = location.state?.is_new_installed || false;
   const hasWriteAccess = member?.is_admin || member?.is_manager;
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const TeamManagement = ({ accountData }) => {
   }, [createModalVisible]);
 
   useEffect(() => {
-    if (isNewUser) {
+    if (isNewInstalled) {
       if (member?.is_admin) {
         setAddAdminModalVisible(true);
       } else {
@@ -54,19 +56,21 @@ const TeamManagement = ({ accountData }) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isNewUser]);
+  }, [isNewInstalled]);
 
   useEffect(() => {
-    getWorkspaceTeams().then((response) => {
-      const { data } = response;
-      setLoading(false);
-      setTeams(data.results);
-      setCreateTeam(data.can_create_team);
-    });
-    getSurveys().then((response) => {
-      setSurveys(response.data.results);
-    });
-  }, []);
+    if (isLoggedIn) {
+      getWorkspaceTeams().then((response) => {
+        const { data } = response;
+        setLoading(false);
+        setTeams(data.results);
+        setCreateTeam(data.can_create_team);
+      });
+      getSurveys().then((response) => {
+        setSurveys(response.data.results);
+      });
+    }
+  }, [isLoggedIn]);
 
   function onAdminAddModalClose() {
     setAddAdminModalVisible(false);
