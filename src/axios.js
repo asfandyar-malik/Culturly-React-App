@@ -7,7 +7,7 @@ let headers = {
 const axiosInstance = axios.create({
   headers,
   timeout: 60000,
-  baseURL: "http://localhost:8000/api/v1/",
+  baseURL: `${process.env.REACT_APP_API_HOST}/api/v1/`,
 });
 
 export default axiosInstance;
