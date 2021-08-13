@@ -7,6 +7,7 @@ import {
   ApartmentOutlined,
   ExperimentOutlined,
   MacCommandOutlined,
+  PlaySquareOutlined
 } from "@ant-design/icons";
 
 import AppLayout from "layouts/appLayout";
@@ -189,7 +190,7 @@ export const ROUTES = [
   {
     key: "online-events",
     title: "Online Events",
-    icon: <MacCommandOutlined />,
+    icon: <PlaySquareOutlined />,
     path: EVENT_RECOMMENDATION_ROUTE,
     roles: ["admin", "manager", "member"],
   },
