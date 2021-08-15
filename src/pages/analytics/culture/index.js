@@ -159,8 +159,8 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           fill: true,
           label: CATEGORY_GRAPH_LABEL[key],
           data: dataPoints,
-          borderColor: BAR_GRAPH_BORDER_COLORS,
-          backgroundColor: BAR_GRAPH_BACKGROUND_COLORS,
+          borderColor: BAR_GRAPH_BORDER_COLORS[key],
+          backgroundColor: BAR_GRAPH_BACKGROUND_COLORS[key],
           borderWidth: 1,
           barThickness: 15,
         };
@@ -297,7 +297,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   }
 
   function formatValue(val) {
-    return val ? parseFloat(val.toFixed(2)) : val;
+    return val ? parseFloat(Math.round(val)) : Math.round(val || 0);
   }
 
   function getBadgeColor(val) {
@@ -560,18 +560,6 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                   }
                   className="site-collapse-custom-panel"
                 >
-                  <Row justify="space-between" className="text-xl mb-4">
-                    <Col>Total no. of responses</Col>
-                    <Col className="font-medium">
-                      {categoryData.total_responses || 0}
-                    </Col>
-                  </Row>
-                  <Row justify="space-between" className="text-xl mb-4">
-                    <Col>Number of people answering</Col>
-                    <Col className="font-medium">{`${
-                      categoryData.total_member_responses || 0
-                    }/${totalTeamMembers}`}</Col>
-                  </Row>
                   {(categoryData?.questions || []).map((item) => {
                     const { score } = item;
                     return (

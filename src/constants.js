@@ -42,7 +42,7 @@ export const SURVEY_TYPE_DISPLAY_MAPPING = {
 export const CATEGORY_GRAPH_COLOR = {
   all: "#7d68eb",
   belonging: "#27cdec",
-  engagement: "#00d6e0",
+  engagement: "#fc4c8a",
   "well-being": "#25ddcc",
   feedback: "#57e2b4",
   "personal-growth": "#82e599",
@@ -63,27 +63,29 @@ export const CATEGORY_GRAPH_LABEL = {
   satisfaction: "Satisfaction",
 };
 
-export const BAR_GRAPH_BACKGROUND_COLORS = [
-  "rgba(255, 99, 132, 0.2)",
-  "rgba(255, 159, 64, 0.2)",
-  "rgba(255, 205, 86, 0.2)",
-  "rgba(75, 192, 192, 0.2)",
-  "rgba(54, 162, 235, 0.2)",
-  "rgba(153, 102, 255, 0.2)",
-  "rgba(201, 203, 207, 0.2)",
-  "rgba(202, 194, 247, 0.2)",
-];
+export const BAR_GRAPH_BACKGROUND_COLORS = {
+  all: "rgba(125, 104, 235, 0.2)",
+  belonging: "rgba(39, 205, 236, 0.2)",
+  engagement: "rgba(252, 76, 138, 0.2)",
+  "well-being": "rgba(37, 221, 204, 0.2)",
+  feedback: "rgba(87, 226, 180, 0.2)",
+  "personal-growth": "rgba(130, 229, 153, 0.2)",
+  recognition: "rgba(213, 228, 108, 0.2)",
+  relationships: "rgba(255, 222, 98, 0.2)",
+  satisfaction: "rgba(255, 222, 98, 0.2)",
+};
 
-export const BAR_GRAPH_BORDER_COLORS = [
-  "rgb(255, 99, 132)",
-  "rgb(255, 159, 64)",
-  "rgb(255, 205, 86)",
-  "rgb(75, 192, 192)",
-  "rgb(54, 162, 235)",
-  "rgb(153, 102, 255)",
-  "rgb(201, 203, 207)",
-  "rgb(202, 194, 247)",
-];
+export const BAR_GRAPH_BORDER_COLORS = {
+  all: "#7d68eb",
+  belonging: "#27cdec",
+  engagement: "#fc4c8a",
+  "well-being": "#25ddcc",
+  feedback: "#57e2b4",
+  "personal-growth": "#82e599",
+  recognition: "#ace680",
+  relationships: "#d5e46c",
+  satisfaction: "#ffde62",
+};
 
 export const LINE_CHART_OPTIONS = {
   interaction: {
@@ -97,8 +99,8 @@ export const LINE_CHART_OPTIONS = {
       position: "none",
       labels: {
         usePointStyle: true,
-        boxWidth: 8
-      }
+        boxWidth: 8,
+      },
     },
     tooltip: {
       callbacks: {
@@ -150,8 +152,8 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
       position: "bottom",
       labels: {
         usePointStyle: true,
-        boxWidth: 8
-      }
+        boxWidth: 8,
+      },
     },
     tooltip: {
       callbacks: {
@@ -168,7 +170,7 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
     position: "bottom",
     labels: {
       usePointStyle: true,
-      boxWidth: 8
+      boxWidth: 8,
     },
   },
   scales: {
@@ -211,8 +213,8 @@ export const LINE_COUNT_CHART_OPTIONS = {
       position: "none",
       labels: {
         usePointStyle: true,
-        boxWidth: 8
-      }
+        boxWidth: 8,
+      },
     },
     tooltip: {
       callbacks: {
