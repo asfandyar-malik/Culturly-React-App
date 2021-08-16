@@ -44,7 +44,7 @@ pipelines:
               # CI=true in default variables for Bitbucket Pipelines https://support.atlassian.com/bitbucket-cloud/docs/variables-in-pipelines/
               # npm test
               - unset CI
-              - npm run build
+              - npm run build:stage
             artifacts:
               - build/**
         - step:
