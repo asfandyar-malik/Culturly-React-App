@@ -33,7 +33,7 @@ pipelines:
           caches:
             - node
   branches:
-    master:
+    stage:
       - parallel:
         - step:
             name: Build and Test
@@ -54,8 +54,8 @@ pipelines:
               # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
               - pipe: atlassian/git-secrets-scan:0.4.3
       - step:
-          name: Deploy to Production
-          deployment: Production
+          name: Deploy to Stage
+          deployment: Stage
           #trigger: manual
           clone:
             enabled: false
