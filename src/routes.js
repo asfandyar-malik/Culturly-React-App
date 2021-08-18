@@ -117,6 +117,26 @@ export const LOGGED_IN_ROUTES = [
     component: RenderRoutes,
     routes: [
       {
+        path: "/events/",
+        name: "event-layout",
+        component: EventLayout,
+        roles: ["admin", "manager", "member"],
+        routes: [
+          {
+            exact: true,
+            name: "events",
+            path: EVENTS_ROUTE,
+            component: EventsComponent,
+          },
+          {
+            exact: true,
+            name: "event-detail",
+            path: EVENT_DETAIL_ROUTE,
+            component: EventDetailComponent,
+          },
+        ],
+      },
+      {
         path: "/",
         name: "layout",
         component: AppLayout,
@@ -204,26 +224,6 @@ export const LOGGED_IN_ROUTES = [
             path: MESSAGING_ROUTE,
             component: MessagingComponent,
             roles: ["admin", "manager", "member"],
-          },
-        ],
-      },
-      {
-        path: "/events/",
-        name: "event-layout",
-        component: EventLayout,
-        roles: ["admin", "manager", "member"],
-        routes: [
-          {
-            exact: true,
-            name: "events",
-            path: EVENTS_ROUTE,
-            component: EventsComponent,
-          },
-          {
-            exact: true,
-            name: "event-detail",
-            path: EVENT_DETAIL_ROUTE,
-            component: EventDetailComponent,
           },
         ],
       },
