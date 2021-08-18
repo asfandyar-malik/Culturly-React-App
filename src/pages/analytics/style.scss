@@ -7,6 +7,13 @@
       background-color: rgba(250, 173, 20, 0.27);
     }
   }
+
+  .culture-col {
+    .ant-card:first-child {
+      background-color: #7e68eb80;
+    }
+  }
+
   .ant-badge {
     .ant-badge-status-dot {
       width: 1.2rem;
@@ -31,4 +38,23 @@
   .empty-container {
     height: 32rem;
   }
+}
+
+.ant-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+
+  .ant-checkbox {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+}
+
+.ant-popover-arrow {
+  display: none;
+}
+
+.ant-select-arrow {
+  color: #000;
 }

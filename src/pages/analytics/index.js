@@ -6,7 +6,10 @@ import { getWorkspaceTeams, getSurveyQuestionCategories } from "actions";
 import CultureAnalyticsCard from "./culture";
 import HappinessAnalyticsCard from "./happiness";
 
+import { Tabs } from "antd";
 import "./style.scss";
+
+const { TabPane } = Tabs;
 
 const Analytics = () => {
   const [teams, setTeams] = useState([]);
@@ -24,6 +27,7 @@ const Analytics = () => {
 
   return (
     <div className="analytics-container max-container">
+      
       <Select
         value={selectedTeam}
         style={{ width: 300 }}
@@ -39,11 +43,23 @@ const Analytics = () => {
           );
         })}
       </Select>
-      <HappinessAnalyticsCard selectedTeam={selectedTeam} />
-      <CultureAnalyticsCard
-        categories={categories}
-        selectedTeam={selectedTeam}
-      />
+
+      <br></br>
+      <br></br>
+
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Happiness" key="1">
+          <HappinessAnalyticsCard selectedTeam={selectedTeam} />
+        </TabPane>
+        <TabPane tab="Culture" key="2">
+          <CultureAnalyticsCard
+            categories={categories}
+            selectedTeam={selectedTeam}
+          />
+        </TabPane>
+      </Tabs>
+
+     
     </div>
   );
 };

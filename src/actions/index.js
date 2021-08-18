@@ -22,30 +22,24 @@ export const updateSlackMember = (memberId, payload) => {
   return instance.patch(path, payload);
 };
 
+export const bulkSetSlackMemberAdmin = (payload) => {
+  return instance.post(endpoints.SLACK_BULK_SET_ADMIN_API_PATH, payload);
+};
+
+export const getLeaderboardScore = (teamId, endTs, startTs) => {
+  let path = endpoints.WORKPSACE_TEAM_LEADERBOARD_SCORE_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  path = path.concat("&end_date=", endTs);
+  path = path.concat("&start_date=", startTs);
+  return instance.get(path);
+};
+
 export const getSurveys = () => {
   return instance.get(endpoints.SURVEYS_BASE_API_PATH);
 };
 
 export const getSurveyQuestionCategories = () => {
   return instance.get(endpoints.SURVEY_QUESTION_CATEGORIES_API_PATH);
-};
-
-export const updateSurveyForWorkspace = (payload, objectId = null) => {
-  let path = null;
-  let method = null;
-  if (objectId) {
-    path = endpoints.WORKSPACE_SURVEY_DETAIL_API_PATH;
-    path = path.replace("{}", objectId);
-    method = "PATCH";
-  } else {
-    method = "POST";
-    path = endpoints.WORKSPACE_SURVEY_BASE_API_PATH;
-  }
-  return instance.request({
-    method: method,
-    url: path,
-    data: payload,
-  });
 };
 
 export const authenticateWorkspaceUsingAuth = (payload) => {
@@ -160,20 +154,34 @@ export const getHappinessGraph = (teamId, startTs, endTs) => {
   return instance.get(path);
 };
 
-export const getEngagementScore = (teamId, startTs, endTs) => {
+export const getCultureScore = (teamId) => {
   let path = endpoints.WORKPSACE_TEAM_CULTURE_SCORE_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  return instance.get(path);
+};
+
+export const getCultureScorePerCategory = (teamId, startTs, endTs) => {
+  let path = endpoints.WORKPSACE_TEAM_CULTURE_SCORE_PER_CATEGORY_API_PATH;
   path = path.concat("?team_id=", teamId);
   path = path.concat("&end_date=", endTs);
   path = path.concat("&start_date=", startTs);
   return instance.get(path);
 };
 
-export const getEngagementGraph = (teamId, startTs, endTs, category) => {
+export const getCultureGraph = (teamId, startTs, endTs, category) => {
   let path = endpoints.WORKPSACE_TEAM_CULTURE_GRAPH_API_PATH;
   path = path.concat("?team_id=", teamId);
   path = path.concat("&end_date=", endTs);
   path = path.concat("&start_date=", startTs);
   path = path.concat("&category_slug=", category);
+  return instance.get(path);
+};
+
+export const getAllCultureGraph = (teamId, startTs, endTs) => {
+  let path = endpoints.WORKPSACE_TEAM_CULTURE_ALL_GRAPH_API_PATH;
+  path = path.concat("?team_id=", teamId);
+  path = path.concat("&end_date=", endTs);
+  path = path.concat("&start_date=", startTs);
   return instance.get(path);
 };
 
@@ -191,6 +199,10 @@ export const getEventRecommendations = () => {
 
 export const getEventRecommendationSections = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_SECTIONS_API_PATH);
+};
+
+export const getCourseRecommendationSections = () => {
+  return instance.get(endpoints.COURSE_RECOMMENDATION_SECTIONS_API_PATH);
 };
 
 export const getEventRecommendationCateogries = () => {

@@ -25,23 +25,26 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
     if (code) {
       authenticateWorkspaceUsingAuth({ code })
         .then((response) => {
+          const isNewInstalled = response.is_new_installed;
           localStorage.setItem(AUTHORIZATION_KEY, response.token);
-          getUserDetail().then((response) => {
-            message.success(
-              "Congratulations!! Your workspace has been succesfully connected"
-            );
-            setAccountData(response);
+          getUserDetail().then((userResponse) => {
+            if (isNewInstalled) {
+              message.success(
+                "Congratulations!! Your workspace has been succesfully connected"
+              );
+            }
+            setAccountData(userResponse);
             history.push({
               pathname: INDEX_ROUTE,
               state: {
-                is_new_user: true,
+                is_new_installed: isNewInstalled,
               },
             });
           });
         })
-        .catch((err) => {
-          const { error } = err.response.data;
-          setErrorStatusCode(err.response.status);
+        .catch((err = {}) => {
+          const { error } = err?.response?.data;
+          setErrorStatusCode(err?.response?.status);
           setError(`Look like something went wrong, ${error}`);
           setLoading(false);
         });
@@ -49,6 +52,7 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
       setError("Look like something went wrong");
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
   return (
@@ -63,9 +67,9 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
           </>
         ) : error ? (
           <>
-            <img src={notConnectedImg} className="error-img" />
-            {errorStatusCode === 401 ? (
-              <>
+            <img src={notConnectedImg} alt="error" className="error-img" />
+            <Choose>
+              <When condition={errorStatusCode === 401}>
                 <p className="text-3xl medium">Insufficient Permissions !</p>
                 <p className="text-xl mb-8">
                   Please check if you are admin of your Slack workspace.
@@ -75,14 +79,15 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
                   to install the slack app. Once installed, the admin can make
                   you an admin for Culturly App, so you can view all dashboards.
                 </p>
-              </>
-            ) : (
-              <p className="text-xl">{error}</p>
-            )}
+              </When>
+              <Otherwise>
+                <p className="text-xl">{error}</p>
+              </Otherwise>
+            </Choose>
           </>
         ) : (
           <>
-            <img src={connectedImg} className="success-img" />
+            <img src={connectedImg} className="success-img" alt="Success" />
             <p className="text-3xl medium">Authentication Success</p>
             <p className="text-xl">
               Congratulations, you hve succesfully authenticated yourself.

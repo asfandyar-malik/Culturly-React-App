@@ -4,7 +4,7 @@ import { Avatar, Layout, Menu, Space, Dropdown, Row, Col } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
 import { AUTHORIZATION_KEY } from "../../constants";
-import { ROUTES, INDEX_ROUTE, SETTINGS_ROUTE } from "routes";
+import { ROUTES, INDEX_ROUTE, SETTINGS_ROUTE, MEMBERS_ROUTE } from "routes";
 
 import AccountHook from "hooks/account";
 import siderImage from "images/sider.png";
@@ -20,10 +20,23 @@ const { Header, Content, Sider } = Layout;
 const AppLayout = ({ accountData, setAccountData, routes }) => {
   const history = useHistory();
   const { pathname } = useLocation();
+
   const [selectedMenu, setSelectedMenu] = useState({});
+  const [sideBarRoutes, setSideBarRoutes] = useState([]);
 
   useEffect(() => {
-    ROUTES.forEach((item) => {
+    const { member = {} } = accountData;
+    if (member.is_admin) {
+      setSideBarRoutes(ROUTES.filter((item) => item.roles.includes("admin")));
+    } else if (member.is_manager) {
+      setSideBarRoutes(ROUTES.filter((item) => item.roles.includes("manager")));
+    } else {
+      setSideBarRoutes(ROUTES.filter((item) => item.roles.includes("member")));
+    }
+  }, [accountData]);
+
+  useEffect(() => {
+    sideBarRoutes.forEach((item) => {
       const matchedPath = matchPath(pathname, {
         path: item.path,
         exact: true,
@@ -34,7 +47,8 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
         }
       }
     });
-  }, [pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, sideBarRoutes]);
 
   const onLogout = () => {
     setAccountData({});
@@ -43,7 +57,7 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
   };
 
   const onMenuItemClick = (menutItem) => {
-    const item = ROUTES.find((i) => i.key === menutItem.key);
+    const item = sideBarRoutes.find((i) => i.key === menutItem.key);
     if (item.path) {
       history.push(item.path);
     } else {
@@ -58,16 +72,18 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
           <img src={culturlyLogo} alt="logo" />
         </div>
         <Menu theme="light" mode="inline" selectedKeys={[selectedMenu.key]}>
-          {ROUTES.map((item) => {
-            return (
-              <Menu.Item key={item.key} onClick={onMenuItemClick}>
-                <Space>
-                  {item.icon}
-                  {item.title}
-                </Space>
-              </Menu.Item>
-            );
-          })}
+          {sideBarRoutes
+            .filter((item) => !item.isHidden)
+            .map((item) => {
+              return (
+                <Menu.Item key={item.key} onClick={onMenuItemClick}>
+                  <Space>
+                    {item.icon}
+                    {item.title}
+                  </Space>
+                </Menu.Item>
+              );
+            })}
         </Menu>
         <img className="sider-img" src={siderImage} alt="logo" />
       </Sider>
@@ -81,6 +97,9 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
               <Dropdown
                 overlay={
                   <Menu>
+                    <Menu.Item onClick={() => history.push(MEMBERS_ROUTE)}>
+                      Management
+                    </Menu.Item>
                     <Menu.Item onClick={() => history.push(SETTINGS_ROUTE)}>
                       Settings
                     </Menu.Item>
