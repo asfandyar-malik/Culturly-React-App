@@ -201,6 +201,22 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
   },
 };
 
+export const BAR_CHART_OPTION = {
+  ...MULTIPLE_LINE_CHART_OPTIONS,
+  scales: {
+    x: {
+      offset: true,
+      grid: {
+        display: false,
+      },
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 12,
+      },
+    },
+  },
+};
+
 export const LINE_COUNT_CHART_OPTIONS = {
   interaction: {
     mode: "index",
