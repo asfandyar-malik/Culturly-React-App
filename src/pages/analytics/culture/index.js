@@ -117,7 +117,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
         setCultureGraphData(response.data);
       }
     );
-  }, [selectedCategory, cultureGraphMonth]);
+  }, [selectedCategory, cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     if (allCultureGraphData.categories) {
@@ -215,7 +215,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       setAllCultureGraphData(data);
       message.success({ content: "Data loaded successfully", key: "loader" });
     });
-  }, [cultureGraphMonth]);
+  }, [cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     if (cultureCountChartElement) {
