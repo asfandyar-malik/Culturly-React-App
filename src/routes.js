@@ -7,7 +7,7 @@ import {
   ApartmentOutlined,
   ExperimentOutlined,
   MacCommandOutlined,
-  PlaySquareOutlined
+  PlaySquareOutlined,
 } from "@ant-design/icons";
 
 import AppLayout from "layouts/appLayout";
@@ -209,6 +209,7 @@ export const ROUTES = [
     roles: ["admin"],
   },
   {
+    isHidden: true,
     key: "event-feedback",
     title: "Event feedback",
     icon: <SmileOutlined />,
@@ -216,6 +217,7 @@ export const ROUTES = [
     roles: ["admin", "manager"],
   },
   {
+    isHidden: true,
     key: "event-poll",
     title: "Event poll",
     path: EVENT_POLL_ROUTE,

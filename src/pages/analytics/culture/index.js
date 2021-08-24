@@ -29,6 +29,7 @@ import {
   LINE_COUNT_CHART_OPTIONS,
   CATEGORY_GRAPH_COLOR,
   MULTIPLE_LINE_CHART_OPTIONS,
+  BAR_CHART_OPTION,
   CATEGORY_GRAPH_LABEL,
   BAR_GRAPH_BACKGROUND_COLORS,
   BAR_GRAPH_BORDER_COLORS,
@@ -60,7 +61,8 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   const [cultureCountChartElement, setCultureCountChartElement] = useState("");
   const [allCultureChartElement, setAllCultureChartElement] = useState("");
   const [cultureGraphFilter, setCultureGraphFilter] = useState([]);
-  const [chartType, setChartType] = useState("line");
+  const [chartType, setChartType] = useState("bar");
+  const [disableGraphDropdown, setDisableGraphDropdown] = useState(false);
 
   useEffect(() => {
     setCultureGraphFilter(["Average"]);
@@ -115,7 +117,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
         setCultureGraphData(response.data);
       }
     );
-  }, [selectedCategory, cultureGraphMonth]);
+  }, [selectedCategory, cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     if (allCultureGraphData.categories) {
@@ -152,6 +154,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
           label: CATEGORY_GRAPH_LABEL[key],
           data: dataPoints,
           borderColor: CATEGORY_GRAPH_COLOR[key],
+          pointBackgroundColor: CATEGORY_GRAPH_COLOR[key],
           backgroundColor: "#27cdec02",
         };
 
@@ -168,6 +171,9 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
         allDataSets.push(chartType === "line" ? lineDataset : chartDataset);
       });
 
+      labels.size === 1 && setChartType("bar");
+      setDisableGraphDropdown(labels.size === 1);
+
       const chartAllCultureRef = allCultureChartRef.current.getContext("2d");
 
       const allLineChart = new Chart(chartAllCultureRef, {
@@ -182,7 +188,8 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
             }
           }),
         },
-        options: MULTIPLE_LINE_CHART_OPTIONS,
+        options:
+          chartType === "line" ? MULTIPLE_LINE_CHART_OPTIONS : BAR_CHART_OPTION,
       });
       setAllCultureChartElement(allLineChart);
     }
@@ -208,7 +215,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       setAllCultureGraphData(data);
       message.success({ content: "Data loaded successfully", key: "loader" });
     });
-  }, [cultureGraphMonth]);
+  }, [cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     if (cultureCountChartElement) {
@@ -259,7 +266,7 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       }
 
       const countLineChart = new Chart(countChartRef, {
-        type: "line",
+        type: chartType,
         data: {
           labels,
           datasets: [
@@ -269,7 +276,9 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
               data: dataPointsCounts,
               borderColor: "#7d68eb",
               pointBackgroundColor: "#7d68eb",
-              backgroundColor: "#7d68eb67",
+              backgroundColor: "rgba(125, 104, 235, 0.4)",
+              borderWidth: 1,
+              barThickness: 15,
             },
             {
               fill: true,
@@ -277,16 +286,19 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
               data: dataPointsUniqueUserCounts,
               borderColor: "#30CAEC",
               pointBackgroundColor: "#30CAEC",
-              backgroundColor: "#30CAEC67",
+              backgroundColor: "rgba(48, 202, 236, 0.4)",
+              borderWidth: 1,
+              barThickness: 15,
             },
           ],
         },
-        options: LINE_COUNT_CHART_OPTIONS,
+        options:
+          chartType === "line" ? LINE_COUNT_CHART_OPTIONS : BAR_CHART_OPTION,
       });
 
       setCultureCountChartElement(countLineChart);
     }
-  }, [cultureGraphData]);
+  }, [cultureGraphData, chartType]);
 
   function handleCategorySelect(check, name) {
     if (check) {
@@ -439,6 +451,8 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                   onChange={(type) => setChartType(type)}
                   defaultValue={"line"}
                   suffixIcon={<CaretDownOutlined />}
+                  disabled={disableGraphDropdown}
+                  value={chartType}
                 >
                   <Select.Option value={"line"}>Line Graph</Select.Option>
                   <Select.Option value={"bar"}>Bar Graph</Select.Option>
