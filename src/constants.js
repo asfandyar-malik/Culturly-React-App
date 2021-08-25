@@ -165,14 +165,6 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
       },
     },
   },
-  legend: {
-    display: true,
-    position: "bottom",
-    labels: {
-      usePointStyle: true,
-      boxWidth: 8,
-    },
-  },
   scales: {
     x: {
       grid: {
@@ -204,6 +196,13 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
 export const BAR_CHART_OPTION = {
   ...MULTIPLE_LINE_CHART_OPTIONS,
   plugins: {
+    legend: {
+      position: "bottom",
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8,
+      },
+    },
     tooltip: {
       callbacks: {
         label: function (context) {
