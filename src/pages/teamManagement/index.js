@@ -144,13 +144,15 @@ const TeamManagement = ({ accountData }) => {
         <If condition={hasWriteAccess}>
           <Row justify="end">
             <Col>
-              <Button
-                type="primary"
-                disabled={!canCreateTeam}
-                onClick={handleCreateTeam}
-              >
-                Create team
-              </Button>
+              <Tooltip title="Only managers and admins can create team">
+                <Button
+                  type="primary"
+                  disabled={!canCreateTeam}
+                  onClick={handleCreateTeam}
+                >
+                  Create team
+                </Button>
+              </Tooltip>
             </Col>
           </Row>
         </If>
