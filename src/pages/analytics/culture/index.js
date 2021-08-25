@@ -18,11 +18,14 @@ import {
   Button,
   Checkbox,
   message,
+  Radio,
 } from "antd";
 import {
   InfoCircleOutlined,
   QuestionCircleOutlined,
   CaretDownOutlined,
+  BarChartOutlined,
+  LineChartOutlined,
 } from "@ant-design/icons";
 
 import {
@@ -323,6 +326,27 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
     return color;
   }
 
+  const graphOptions = [
+    {
+      label: (
+        <div>
+          <LineChartOutlined />
+          &nbsp;&nbsp; Line Graph
+        </div>
+      ),
+      value: "line",
+    },
+    {
+      label: (
+        <div>
+          <BarChartOutlined />
+          &nbsp;&nbsp; Bar Graph
+        </div>
+      ),
+      value: "bar",
+    },
+  ];
+
   return (
     <Row>
       <Col span={24} className="mt-16 culture-col">
@@ -447,16 +471,13 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
                     Select Categories <CaretDownOutlined />
                   </Button>
                 </Popover>
-                <Select
-                  onChange={(type) => setChartType(type)}
-                  defaultValue={"line"}
-                  suffixIcon={<CaretDownOutlined />}
+                <Radio.Group
+                  options={graphOptions}
+                  onChange={(e) => setChartType(e.target.value)}
+                  defaultValue={"bar"}
+                  optionType="button"
                   disabled={disableGraphDropdown}
-                  value={chartType}
-                >
-                  <Select.Option value={"line"}>Line Graph</Select.Option>
-                  <Select.Option value={"bar"}>Bar Graph</Select.Option>
-                </Select>
+                />
               </Space>
             </Col>
           </Row>
