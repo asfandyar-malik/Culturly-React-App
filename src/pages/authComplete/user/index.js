@@ -56,7 +56,7 @@ const UserOAuthComplete = ({ setAccountData }) => {
           </>
         ) : !isEmpty(errorData) ? (
           <>
-            <img src={notConnectedImg} className="error-img" />
+            <img src={notConnectedImg} className="error-img" alt="error" />
             <Choose>
               <When condition={errorStatusCode === 401}>
                 <p className="text-3xl medium">Insufficient Permissions !</p>
@@ -90,7 +90,7 @@ const UserOAuthComplete = ({ setAccountData }) => {
           </>
         ) : (
           <>
-            <img src={connectedImg} className="success-img" />
+            <img src={connectedImg} className="success-img" alt="success" />
             <p className="text-3xl medium">Authentication Success</p>
             <p className="text-xl">
               Congratulations, you hve succesfully authenticated yourself.

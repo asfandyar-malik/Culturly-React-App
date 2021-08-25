@@ -15,13 +15,7 @@ import { useLocation } from "react-router";
 import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { isEmpty } from "_dash";
-import {
-  getWorkspaceTeams,
-  deleteWorkspaceTeam,
-  getSurveys,
-  getWorkspaceRemainingTeamMembers,
-  getWorkspaceRemainingTeamManagers,
-} from "actions";
+import { getWorkspaceTeams, deleteWorkspaceTeam, getSurveys } from "actions";
 
 import AccountHook from "hooks/account";
 import CreateTeamModal from "./createModal";
@@ -39,8 +33,6 @@ const TeamManagement = ({ accountData }) => {
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState({});
   const [canCreateTeam, setCreateTeam] = useState(false);
-  const [members, setMembers] = useState([]);
-  const [managers, setManagers] = useState([]);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
 
@@ -48,7 +40,8 @@ const TeamManagement = ({ accountData }) => {
   const hasWriteAccess = member?.is_admin || member?.is_manager;
 
   useEffect(() => {
-    if (createModalVisible) {
+    if (!createModalVisible) {
+      setSelectedTeam({});
     }
   }, [createModalVisible]);
 
@@ -78,34 +71,6 @@ const TeamManagement = ({ accountData }) => {
       });
     }
   }, [isLoggedIn]);
-
-  function handleCreateTeam() {
-    message.loading({
-      content: "Loading members and managers...",
-      duration: 0,
-      key: "loader",
-    });
-    getWorkspaceRemainingTeamMembers().then((response) => {
-      if (response.data && response.data.length > 0) {
-        message.success({
-          content: "Members and managers loaded",
-          duration: 3,
-          key: "loader",
-        });
-        setMembers(response.data);
-        setCreateModalVisible(true);
-      } else {
-        message.error({
-          content: "No team member available",
-          duration: 3,
-          key: "loader",
-        });
-      }
-    });
-    getWorkspaceRemainingTeamManagers().then((response) => {
-      setManagers(response.data);
-    });
-  }
 
   function onAdminAddModalClose() {
     setAddAdminModalVisible(false);
@@ -147,7 +112,7 @@ const TeamManagement = ({ accountData }) => {
               <Button
                 type="primary"
                 disabled={!canCreateTeam}
-                onClick={handleCreateTeam}
+                onClick={() => setCreateModalVisible(true)}
               >
                 Create team
               </Button>
@@ -250,8 +215,6 @@ const TeamManagement = ({ accountData }) => {
       </div>
       <CreateTeamModal
         surveys={surveys}
-        members={members}
-        managers={managers}
         selectedTeam={selectedTeam}
         visible={createModalVisible}
         onUpdateTeam={(data) => onTeamCreate(data)}

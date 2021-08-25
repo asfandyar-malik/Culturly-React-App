@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, Steps } from "antd";
 
-import { createWorkspaceTeam, updateWorkspaceTeam } from "actions";
+import {
+  createWorkspaceTeam,
+  updateWorkspaceTeam,
+  getWorkspaceRemainingTeamMembers,
+  getWorkspaceRemainingTeamManagers,
+} from "actions";
 
 import AccountHook from "hooks/account";
 import TeamMemberSelectionStep from "./memberSelection";
@@ -20,13 +25,27 @@ const CreateTeamModal = ({
   selectedTeam,
   onUpdateTeam,
   onClose,
-  members,
-  managers,
 }) => {
   const timezone = accountData?.workspace?.timezone;
+
+  const [members, setMembers] = useState([]);
+  const [managers, setManagers] = useState([]);
   const [saving, setSaving] = useState(false);
   const [teamDetail, setTeamDetail] = useState({});
   const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    if (visible) {
+      getWorkspaceRemainingTeamMembers().then((response) => {
+        setMembers(response.data);
+      });
+      getWorkspaceRemainingTeamManagers().then((response) => {
+        setManagers(response.data);
+      });
+    } else {
+      setCurrentStep(0);
+    }
+  }, [visible]);
 
   useEffect(() => {
     setTeamDetail(selectedTeam);

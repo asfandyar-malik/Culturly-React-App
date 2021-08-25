@@ -210,22 +210,6 @@ export const ROUTES = [
   },
   {
     isHidden: true,
-    key: "event-feedback",
-    title: "Event feedback",
-    icon: <SmileOutlined />,
-    path: EVENT_FEEDBACK_ROUTE,
-    roles: ["admin", "manager"],
-  },
-  {
-    isHidden: true,
-    key: "event-poll",
-    title: "Event poll",
-    path: EVENT_POLL_ROUTE,
-    icon: <MacCommandOutlined />,
-    roles: ["admin", "manager"],
-  },
-  {
-    isHidden: true,
     key: "settings",
     title: "Settings",
     path: SETTINGS_ROUTE,
