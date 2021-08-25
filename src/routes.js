@@ -101,6 +101,7 @@ export const LOGGED_IN_ROUTES = [
         exact: true,
         name: "leaderboard",
         path: LEADERBOARD_ROUTE,
+        is_leaderboard_enabled: true,
         component: LeaderboardComponent,
         roles: ["admin", "manager", "member"],
       },
@@ -170,6 +171,7 @@ export const ROUTES = [
     title: "Leaderboard",
     path: LEADERBOARD_ROUTE,
     icon: <ApartmentOutlined />,
+    is_leaderboard_enabled: true,
     roles: ["admin", "manager", "member"],
   },
   {

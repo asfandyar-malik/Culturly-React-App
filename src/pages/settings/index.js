@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Form, message, Select } from "antd";
+import { Button, Form, message, Select, Switch } from "antd";
 
 import { getTimezones, updateWorkspace } from "actions";
 
@@ -20,7 +20,10 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
     getTimezones().then((response) => {
       setTimezones(response.data);
     });
-    form.setFieldsValue({ timezone: workspace.timezone });
+    form.setFieldsValue({
+      timezone: workspace.timezone,
+      is_leaderboard_enabled: workspace.is_leaderboard_enabled,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -29,8 +32,8 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
     updateWorkspace(workspace.id, values)
       .then((response) => {
         accountData.workspace = response.data;
-        setAccountData(accountData);
         setSaving(false);
+        setAccountData({ ...accountData });
         message.success("Settings saved");
       })
       .catch((err) => {
@@ -61,6 +64,13 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
             );
           })}
         </Select>
+      </Form.Item>
+      <Form.Item
+        valuePropName="checked"
+        label="Enable leaderboard"
+        name="is_leaderboard_enabled"
+      >
+        <Switch disabled={!hasWriteAccess} />
       </Form.Item>
       <If condition={hasWriteAccess}>
         <Form.Item noStyle>
