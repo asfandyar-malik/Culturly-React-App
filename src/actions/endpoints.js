@@ -1,9 +1,11 @@
 export const TIMEZONES_API_PATH = "timezones/";
+export const COUNTRIES_API_PATH = "countries/";
 
 // USER API's
 
 export const USER_DETAIL_API_PATH = "user/";
 export const USER_LOGOUT_API_PATH = "logout/";
+export const USER_PROFILE_UPDATE_API_PATH = `${USER_DETAIL_API_PATH}update_profile/`;
 
 // USER AUTH API's
 

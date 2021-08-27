@@ -91,12 +91,20 @@ export const getUserDetail = () => {
   });
 };
 
+export const updateProfile = (payload) => {
+  return instance.patch(endpoints.USER_PROFILE_UPDATE_API_PATH, payload);
+};
+
 export const userLogout = () => {
   return instance.post(endpoints.USER_LOGOUT_API_PATH);
 };
 
 export const getTimezones = () => {
   return instance.get(endpoints.TIMEZONES_API_PATH);
+};
+
+export const getCountries = () => {
+  return instance.get(endpoints.COUNTRIES_API_PATH);
 };
 
 export const updateWorkspace = (workspaceId, payload) => {
