@@ -11,7 +11,6 @@ import {
   Tooltip,
   Badge,
   Collapse,
-  Select,
   Empty,
   Progress,
   Popover,
@@ -55,7 +54,6 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
   const [loading, setLoading] = useState(true);
   const [cultureScore, setCultureScore] = useState({});
   const [cultureItems, setCultureItems] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
   const [overallcultureScore, setOverallcultureScore] = useState(0);
   const [cultureGraphMonth, setcultureGraphMonth] = useState(moment());
@@ -115,12 +113,10 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
       endTs = cultureGraphMonth.endOf("month").utc(true).format("X");
       startTs = cultureGraphMonth.startOf("month").utc(true).format("X");
     }
-    getCultureGraph(selectedTeam, startTs, endTs, selectedCategory).then(
-      (response) => {
-        setCultureGraphData(response.data);
-      }
-    );
-  }, [selectedCategory, cultureGraphMonth, selectedTeam]);
+    getCultureGraph(selectedTeam, startTs, endTs, "").then((response) => {
+      setCultureGraphData(response.data);
+    });
+  }, [cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     if (allCultureGraphData.categories) {
@@ -392,31 +388,14 @@ const CultureAnalyticsCard = ({ categories = [], selectedTeam }) => {
 
         <Card
           extra={
-            <Space size={16}>
-              <Select
-                style={{ width: 175 }}
-                value={selectedCategory}
-                placeholder="Select a category"
-                onChange={(value) => setSelectedCategory(value)}
-              >
-                <Select.Option value="">All</Select.Option>
-                {categories.map((item) => {
-                  return (
-                    <Select.Option value={item.slug} key={item.slug}>
-                      {item.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-              <DatePicker
-                format="MMM"
-                picker="month"
-                style={{ width: 200 }}
-                value={cultureGraphMonth}
-                disabledDate={disabledFutureDate}
-                onChange={(value) => setcultureGraphMonth(value)}
-              />
-            </Space>
+            <DatePicker
+              format="MMM"
+              picker="month"
+              style={{ width: 200 }}
+              value={cultureGraphMonth}
+              disabledDate={disabledFutureDate}
+              onChange={(value) => setcultureGraphMonth(value)}
+            />
           }
         >
           <Row justify="space-between">
