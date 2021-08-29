@@ -26,6 +26,8 @@ import {
 import AccountHook from "hooks/account";
 import CreateTeamModal from "./createModal";
 import CreateAdminModal from "components/createAdminModal";
+import { OnBoardingDataConsumer } from "context/onBoardingData";
+import { setOnBoardingData } from "reducers/onBoardingReducer";
 
 import "./style.scss";
 
@@ -43,9 +45,27 @@ const TeamManagement = ({ accountData }) => {
   const [managers, setManagers] = useState([]);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
+  const [onBoarding, setOnBoarding] = useState(false);
 
   const isNewInstalled = location.state?.is_new_installed || false;
   const hasWriteAccess = member?.is_admin || member?.is_manager;
+
+  const [onBoardingData, dispatch] = OnBoardingDataConsumer();
+
+  useEffect(() => {
+    if (onBoardingData && onBoardingData.startOnBoarding) {
+      if (onBoardingData.step === 3) {
+        setCreateModalVisible(true);
+        setOnBoarding(true);
+      } else {
+        setCreateModalVisible(false);
+        setOnBoarding(false);
+      }
+    } else {
+      setOnBoarding(false);
+      setCreateModalVisible(false);
+    }
+  }, [onBoardingData]);
 
   useEffect(() => {
     if (createModalVisible) {
@@ -78,6 +98,15 @@ const TeamManagement = ({ accountData }) => {
       });
     }
   }, [isLoggedIn]);
+
+  function handleOnBoarding() {
+    dispatch(
+      setOnBoardingData({
+        startOnBoarding: true,
+        step: onBoardingData.step + 1,
+      })
+    );
+  }
 
   function handleCreateTeam() {
     message.loading({
@@ -258,6 +287,8 @@ const TeamManagement = ({ accountData }) => {
         visible={createModalVisible}
         onUpdateTeam={(data) => onTeamCreate(data)}
         onClose={() => setCreateModalVisible(false)}
+        onBoarding={onBoarding}
+        handleOnBoarding={handleOnBoarding}
       />
       <CreateAdminModal
         visible={addAdminModalVisible}

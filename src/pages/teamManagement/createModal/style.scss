@@ -1,6 +1,7 @@
 @import "../../../styles/variable.scss";
 
 .team-create-modal {
+  position: relative;
   .survey-selection-form {
     .survey-group-card {
       margin-bottom: 1.6rem;
@@ -46,6 +47,22 @@
           border-bottom: 0;
         }
       }
+    }
+  }
+}
+
+.disable {
+  .ant-modal-content {
+    .ant-modal-close {
+      pointer-events: none;
+    }
+
+    .ant-modal-header {
+      pointer-events: none;
+    }
+
+    .ant-modal-body {
+      pointer-events: none;
     }
   }
 }
