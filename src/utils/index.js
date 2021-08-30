@@ -2,10 +2,12 @@ import dayjs from "dayjs";
 import moment from "moment";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(advancedFormat);
 dayjs.extend(customParseFormat);
 
 export const getWeekDays = (startDate, endDate) => {
@@ -46,9 +48,14 @@ export const getWeeksInMonth = (year, month) => {
     weeks.push({
       num: count,
       weekName: `Week ${count}`,
+      endDay: endDate.format("D"),
       startDay: startDate.format("D"),
       endDate: endDate.format("YYYY-MM-DD"),
       startDate: startDate.format("YYYY-MM-DD"),
+      format: `Week (${startDate.format("Do MMM")} - ${endDate
+        // .clone()
+        // .subtract(1, "day")
+        .format("Do MMM")})`,
     });
     count += 1;
     startDate = endDate.add(1, "days");

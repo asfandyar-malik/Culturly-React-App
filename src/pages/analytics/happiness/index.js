@@ -103,8 +103,8 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
             (i) => moment(i.day).format("DD-MMM") === dayItem.weekDay
           ) || {};
         labels.push(dayItem[labelKey]);
-        dataPoints.push(item.avg || 0);
-        dataPointsCounts.push(item.count || 0);
+        dataPoints.push(item.avg);
+        dataPointsCounts.push(item.count);
       });
 
       const lineChart = new Chart(chartRef, {

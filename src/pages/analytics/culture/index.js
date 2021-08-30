@@ -172,7 +172,8 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 ) || {};
 
               if (item.avg) {
-                labels.add(week.weekName);
+                // labels.add(week.weekName);
+                labels.add(week.format);
                 dataPoints.push(item.avg);
               }
             });
@@ -250,7 +251,8 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
               (i) => moment(i.week).format("D") === week.startDay
             ) || {};
           if (item.avg) {
-            labels.push(week.weekName);
+            // labels.push(week.weekName);
+            labels.push(week.format);
             dataPointsCounts.push(item.count || 0);
             dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
           }
