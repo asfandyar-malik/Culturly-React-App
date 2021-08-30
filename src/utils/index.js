@@ -8,7 +8,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-function getWeekDays(startDate, endDate) {
+export const getWeekDays = (startDate, endDate) => {
   const weekDays = [];
   let delta = endDate.diff(startDate, "days");
   while (delta >= 0) {
@@ -24,7 +24,7 @@ function getWeekDays(startDate, endDate) {
     delta -= 1;
   }
   return weekDays;
-}
+};
 
 export const getFormatTimezoneTime = (timeString, tz) => {
   return dayjs.utc(timeString, "HH:mm:ss").tz(tz).format("HH:mm");
@@ -64,18 +64,6 @@ export const getMonthsBetweenDates = (startDate, endDate) => {
     startDate = startDate.add(1, "month");
   }
   return months;
-};
-
-export const getWeekDaysOfMonth = (year, month) => {
-  const endDate = dayjs(`${year}-${month}`).endOf("month");
-  let startDate = dayjs(`${year}-${month}`).startOf("month");
-  return getWeekDays(startDate, endDate);
-};
-
-export const getWeekDaysOfWeek = (year, month, day) => {
-  const endDate = dayjs(`${year}-${month}-${day}`).endOf("week");
-  let startDate = dayjs(`${year}-${month}-${day}`).startOf("week");
-  return getWeekDays(startDate, endDate);
 };
 
 export const disabledFutureDate = (current) => {
