@@ -497,7 +497,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
             </Space>
           </Tooltip>
 
-          <div>
+          <div className="mt-8">
             <Choose>
               <When condition={cultureGraphData.length}>
                 <canvas ref={cultureCountChartRef} height={320} />

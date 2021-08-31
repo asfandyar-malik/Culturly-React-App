@@ -241,7 +241,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
             </Choose>
           </div>
           <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
-            <Space size={6} className="mt-16">
+            <Space size={6} className="mt-32 mb-16">
               <span>Response Rate</span>
               <QuestionCircleOutlined />
             </Space>
