@@ -6,8 +6,9 @@ export const getSlackConfiguration = () => {
   return instance.get(endpoints.SLACK_CONFIGURATION_API_PATH);
 };
 
-export const getSlackMembers = () => {
-  return instance.get(endpoints.SLACK_MEMBERS_BASE_API_PATH);
+export const getSlackMembers = (page = 1) => {
+  const path = endpoints.SLACK_MEMBERS_BASE_API_PATH.concat("?page=", page);
+  return instance.get(path);
 };
 
 export const updateSlackMember = (memberId, payload) => {
@@ -18,6 +19,10 @@ export const updateSlackMember = (memberId, payload) => {
 
 export const bulkSetSlackMemberAdmin = (payload) => {
   return instance.post(endpoints.SLACK_BULK_SET_ADMIN_API_PATH, payload);
+};
+
+export const getAllSlackMembers = () => {
+  return instance.get(endpoints.SLACK_ALL_MEMBERS_API_PATH);
 };
 
 export const getLeaderboardScore = (teamId, endTs, startTs) => {

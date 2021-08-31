@@ -67,7 +67,7 @@ const TeamManagement = ({ accountData }) => {
         setCreateTeam(data.can_create_team);
       });
       getSurveys().then((response) => {
-        setSurveys(response.data.results);
+        setSurveys(response.data);
       });
     }
   }, [isLoggedIn]);
