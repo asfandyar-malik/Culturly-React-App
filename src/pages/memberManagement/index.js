@@ -10,12 +10,15 @@ import {
   Dropdown,
   Tooltip,
   Button,
+  Input,
+  Select,
 } from "antd";
 import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { getSlackMembers, updateSlackMember } from "actions";
 
 import AccountHook from "hooks/account";
+import useDebounce from "hooks/debounce";
 
 import "./style.scss";
 
@@ -23,22 +26,46 @@ const MemberManagement = ({ accountData }) => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
-  const [paginating, setPaginating] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [paginating, setPaginating] = useState(false);
+  const [isAdminFilter, setIsAdminFilter] = useState("");
+  const [isManagerFilter, setIsManagerFilter] = useState("");
 
   const hasWriteAccess = accountData?.member?.is_admin;
+  const debouncedSearchTerm = useDebounce(searchTerm, 700);
 
-  useEffect(() => {
+  function getMembers(page = currentPage) {
     setPaginating(true);
-    getSlackMembers(currentPage).then((response) => {
+    const queryParams = {
+      page,
+      search: searchTerm,
+      ...(isAdminFilter ? { is_admin: isAdminFilter } : {}),
+      ...(isManagerFilter ? { is_manager: isManagerFilter } : {}),
+    };
+    const queryString = new URLSearchParams(queryParams).toString();
+    if (page === 1) {
+      setLoading(true);
+    }
+    getSlackMembers(queryString).then((response) => {
       const { data } = response;
       setLoading(false);
       setPaginating(false);
+      setCurrentPage(page);
       setHasMore(!!data.next);
-      setMembers([...members, ...data.results]);
+      if (page === 1) {
+        setMembers(data.results);
+      } else {
+        setMembers([...members, ...data.results]);
+      }
     });
+  }
+
+  useEffect(() => {
+    getMembers(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [debouncedSearchTerm, isAdminFilter, isManagerFilter]);
 
   function updateMemberItem(member) {
     const index = members.findIndex((item) => item.id === member.id);
@@ -77,6 +104,44 @@ const MemberManagement = ({ accountData }) => {
 
   return (
     <div className="member-management max-container">
+      <Row className="mb-16" justify="space-between">
+        <Col>
+          <Input.Search
+            allowClear
+            size="large"
+            disabled={loading}
+            style={{ width: 300 }}
+            placeholder="Search by member name"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Col>
+        <Col>
+          <Space size={16}>
+            <Select
+              size="large"
+              defaultValue=""
+              disabled={loading}
+              style={{ width: 175 }}
+              onChange={(value) => setIsManagerFilter(value)}
+            >
+              <Select.Option value="">All</Select.Option>
+              <Select.Option value="true">Is manager</Select.Option>
+              <Select.Option value="false">Is not manager</Select.Option>
+            </Select>
+            <Select
+              size="large"
+              defaultValue=""
+              disabled={loading}
+              style={{ width: 150 }}
+              onChange={(value) => setIsAdminFilter(value)}
+            >
+              <Select.Option value="">All</Select.Option>
+              <Select.Option value="true">Is admin</Select.Option>
+              <Select.Option value="false">Is not admin</Select.Option>
+            </Select>
+          </Space>
+        </Col>
+      </Row>
       <List
         loading={loading}
         dataSource={members}
@@ -154,7 +219,7 @@ const MemberManagement = ({ accountData }) => {
         <Button
           loading={paginating}
           className="load-more"
-          onClick={() => setCurrentPage(currentPage + 1)}
+          onClick={() => getMembers(currentPage + 1)}
         >
           Load more
         </Button>

@@ -6,8 +6,8 @@ export const getSlackConfiguration = () => {
   return instance.get(endpoints.SLACK_CONFIGURATION_API_PATH);
 };
 
-export const getSlackMembers = (page = 1) => {
-  const path = endpoints.SLACK_MEMBERS_BASE_API_PATH.concat("?page=", page);
+export const getSlackMembers = (queryString = "") => {
+  const path = endpoints.SLACK_MEMBERS_BASE_API_PATH.concat("?", queryString);
   return instance.get(path);
 };
 
