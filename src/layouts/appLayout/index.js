@@ -34,7 +34,7 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
     } else {
       routes = ROUTES.filter((item) => item.roles.includes("member"));
     }
-    if (!accountData.workspace.is_leaderboard_enabled) {
+    if (!accountData?.workspace?.is_leaderboard_enabled) {
       routes = routes.filter((item) => !item.is_leaderboard_enabled);
     }
     setSideBarRoutes(routes);
