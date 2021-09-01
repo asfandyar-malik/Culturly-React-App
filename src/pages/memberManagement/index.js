@@ -124,9 +124,9 @@ const MemberManagement = ({ accountData }) => {
               style={{ width: 175 }}
               onChange={(value) => setIsManagerFilter(value)}
             >
-              <Select.Option value="">All</Select.Option>
-              <Select.Option value="true">Is manager</Select.Option>
-              <Select.Option value="false">Is not manager</Select.Option>
+              <Select.Option value="">Manager Filter</Select.Option>
+              <Select.Option value="true">Manager</Select.Option>
+              <Select.Option value="false">Not Manager</Select.Option>
             </Select>
             <Select
               size="large"
@@ -135,9 +135,9 @@ const MemberManagement = ({ accountData }) => {
               style={{ width: 150 }}
               onChange={(value) => setIsAdminFilter(value)}
             >
-              <Select.Option value="">All</Select.Option>
-              <Select.Option value="true">Is admin</Select.Option>
-              <Select.Option value="false">Is not admin</Select.Option>
+              <Select.Option value="">Admin Filter</Select.Option>
+              <Select.Option value="true">Admin</Select.Option>
+              <Select.Option value="false">Not Admin</Select.Option>
             </Select>
           </Space>
         </Col>

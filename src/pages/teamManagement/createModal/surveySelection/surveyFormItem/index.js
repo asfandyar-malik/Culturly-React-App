@@ -24,7 +24,7 @@ const SurveyFormItem = ({ showDay, dayItemName, timeItemName, timezone }) => {
           <Space size={6}>
             <span>Schedule</span>
             <Tooltip
-              title="All members are sent these surveys at this time, 
+              title="All members are sent these checkins at this time, 
             in their timezone e.g Team member in Europe & China both 
             receive it at 10:00 their time"
             >
