@@ -41,7 +41,7 @@ const CreateAdminModal = ({ visible, onClose }) => {
       confirmLoading={saving}
       onCancel={() => onClose()}
       onOk={() => form.submit()}
-      title="Who are the admins of your account?"
+      title="Add Admins to your account?"
     >
       <Form
         form={form}
@@ -51,7 +51,7 @@ const CreateAdminModal = ({ visible, onClose }) => {
         <Form.Item
           name="member_ids"
           className="no-margin"
-          label="Share permissions to view and edit data in your account with some of your team members"
+          label="Add admins who can edit and configure this account"
         >
           <Select
             showSearch
