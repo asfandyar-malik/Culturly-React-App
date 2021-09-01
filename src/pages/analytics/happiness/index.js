@@ -17,23 +17,22 @@ import {
   LINE_CHART_OPTIONS,
   LINE_COUNT_CHART_OPTIONS,
 } from "../../../constants";
-import {
-  getWeekDaysOfWeek,
-  getWeekDaysOfMonth,
-  disabledFutureDate,
-} from "utils";
+import { roundOff } from "_dash";
+import { getWeekDays, disabledFutureDate } from "utils";
 import { getHappinessScore, getHappinessGraph } from "actions";
 
 const HappinessAnalyticsCard = ({ selectedTeam }) => {
   const happinessChartRef = useRef(null);
   const happinessCountChartRef = useRef(null);
+
   const [happinessScore, setHappinessScore] = useState({});
   const [happinessGraphWeek, setHappinessGraphWeek] = useState();
+  const [happinessGraphData, setHappinessGraphData] = useState([]);
   const [happinessGraphMonth, setHappinessGraphMonth] = useState(moment());
+
   const [happinessChartElement, setHappinessChartElement] = useState("");
   const [happinessCountChartElement, setHappinessCountChartElement] =
     useState("");
-  const [happinessGraphData, setHappinessGraphData] = useState([]);
 
   useEffect(() => {
     getHappinessScore(selectedTeam).then((response) => {
@@ -48,22 +47,21 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
   }
 
   useEffect(() => {
-    if (happinessGraphMonth) {
-      const endTs = happinessGraphMonth.endOf("month").format("X");
-      const startTs = happinessGraphMonth.startOf("month").format("X");
-      setHappinessGraphWeek();
+    if (happinessGraphWeek || happinessGraphMonth) {
+      let endTs = "";
+      let startTs = "";
+      if (happinessGraphWeek) {
+        endTs = happinessGraphWeek.endOf("week").format("X");
+        startTs = happinessGraphWeek.startOf("week").format("X");
+      }
+      if (happinessGraphMonth) {
+        endTs = happinessGraphMonth.endOf("month").format("X");
+        startTs = happinessGraphMonth.startOf("month").format("X");
+      }
       getHappinessGraphData(startTs, endTs);
     }
-  }, [selectedTeam, happinessGraphMonth]);
-
-  useEffect(() => {
-    if (happinessGraphWeek) {
-      const endTs = happinessGraphWeek.endOf("week").format("X");
-      const startTs = happinessGraphWeek.startOf("week").format("X");
-      setHappinessGraphMonth();
-      getHappinessGraphData(startTs, endTs);
-    }
-  }, [selectedTeam, happinessGraphWeek]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTeam, happinessGraphMonth, happinessGraphWeek]);
 
   useEffect(() => {
     if (happinessChartElement) {
@@ -74,43 +72,39 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
     }
     if (happinessGraphData.length) {
       let weekDays = [];
-      const labels = [];
       let labelKey = "";
+
+      const labels = [];
       const dataPoints = [];
       const dataPointsCounts = [];
+
       const chartRef = happinessChartRef.current.getContext("2d");
       const countChartRef = happinessCountChartRef.current.getContext("2d");
 
       if (happinessGraphMonth) {
-        weekDays = getWeekDaysOfMonth(
-          happinessGraphMonth.format("YYYY"),
-          happinessGraphMonth.format("M")
-        );
         labelKey = "weekDay";
+        weekDays = getWeekDays(
+          happinessGraphMonth.clone().startOf("month"),
+          happinessGraphMonth.clone().endOf("month")
+        );
       }
 
       if (happinessGraphWeek) {
-        weekDays = getWeekDaysOfWeek(
-          happinessGraphWeek.format("YYYY"),
-          happinessGraphWeek.format("M"),
-          happinessGraphWeek.format("D")
-        );
         labelKey = "dayName";
+        weekDays = getWeekDays(
+          happinessGraphWeek.clone().startOf("week"),
+          happinessGraphWeek.clone().endOf("week")
+        );
       }
 
       weekDays.forEach((dayItem) => {
-
-        // happinessGraphData.forEach((i)=> {
-        //   console.log("momentDay: " + moment(i.day).format("DD-MMM"))
-        // });
-
         const item =
           happinessGraphData.find(
             (i) => moment(i.day).format("DD-MMM") === dayItem.weekDay
           ) || {};
         labels.push(dayItem[labelKey]);
-        dataPoints.push(item.avg || 0);
-        dataPointsCounts.push(item.count || 0);
+        dataPoints.push(item.avg);
+        dataPointsCounts.push(item.count);
       });
 
       const lineChart = new Chart(chartRef, {
@@ -120,11 +114,11 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
           datasets: [
             {
               fill: true,
-              label: "Happiness Score",
               data: dataPoints,
               borderColor: "#30CAEC",
+              label: "Happiness Score",
+              backgroundColor: "#30CAEC30",
               pointBackgroundColor: "#30CAEC",
-              backgroundColor: "#30CAEC30"
             },
           ],
         },
@@ -138,11 +132,11 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
           datasets: [
             {
               fill: true,
-              label: "Number of Responses",
               data: dataPointsCounts,
               borderColor: "#ffde62",
-              pointBackgroundColor: "#ffde62",
+              label: "Number of Responses",
               backgroundColor: "#ffde6267",
+              pointBackgroundColor: "#ffde62",
             },
           ],
         },
@@ -152,15 +146,12 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       setHappinessChartElement(lineChart);
       setHappinessCountChartElement(countLineChart);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [happinessGraphData]);
-
-  function formatValue(val) {
-    return val ? parseFloat(val.toFixed(2)) : val;
-  }
 
   return (
     <Row>
-      <Col span={24} className="mt-16 happiness-col">
+      <Col span={24} className="mt-12 happiness-col">
         <Card
           title={
             <Tooltip
@@ -179,7 +170,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
               <Progress
                 type="circle"
                 format={(percent) => `${percent}%`}
-                percent={formatValue(happinessScore.current_week_score)}
+                percent={roundOff(happinessScore.current_week_score)}
               />
             </Col>
             <Col>
@@ -193,13 +184,13 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
                 <Card>
                   <p className="text-xl medium">Last week</p>
                   <p className="text-5xl medium">
-                    {formatValue(happinessScore.last_week_score)}%
+                    {roundOff(happinessScore.last_week_score)}%
                   </p>
                 </Card>
                 <Card>
                   <p className="text-xl medium">Avg. last month</p>
                   <p className="text-5xl medium">
-                    {formatValue(happinessScore.last_month_score)}%
+                    {roundOff(happinessScore.last_month_score)}%
                   </p>
                 </Card>
               </Space>
@@ -207,7 +198,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
           </Row>
         </Card>
         <Card
-          className="no-header-border"
+          className="no-top-border"
           extra={
             <Space size={16}>
               <DatePicker
@@ -217,7 +208,10 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
                 style={{ width: 200 }}
                 value={happinessGraphMonth}
                 disabledDate={disabledFutureDate}
-                onChange={(value) => setHappinessGraphMonth(value)}
+                onChange={(value) => {
+                  setHappinessGraphWeek();
+                  setHappinessGraphMonth(value);
+                }}
               />
               <DatePicker
                 picker="week"
@@ -226,7 +220,10 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
                 style={{ width: 200 }}
                 value={happinessGraphWeek}
                 disabledDate={disabledFutureDate}
-                onChange={(value) => setHappinessGraphWeek(value)}
+                onChange={(value) => {
+                  setHappinessGraphMonth();
+                  setHappinessGraphWeek(value);
+                }}
               />
             </Space>
           }
@@ -243,22 +240,12 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-
-          <br></br>
-          <br></br>
-          <br></br>
           <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
-            <Space size={6}>
+            <Space size={6} className="mt-32 mb-16">
               <span>Response Rate</span>
               <QuestionCircleOutlined />
             </Space>
           </Tooltip>
-
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-
           <div>
             <Choose>
               <When condition={happinessGraphData.length}>

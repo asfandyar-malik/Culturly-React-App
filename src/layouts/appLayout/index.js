@@ -43,14 +43,19 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
   }, [onBoardingData]);
 
   useEffect(() => {
+    let routes = [];
     const { member = {} } = accountData;
     if (member.is_admin) {
-      setSideBarRoutes(ROUTES.filter((item) => item.roles.includes("admin")));
+      routes = ROUTES.filter((item) => item.roles.includes("admin"));
     } else if (member.is_manager) {
-      setSideBarRoutes(ROUTES.filter((item) => item.roles.includes("manager")));
+      routes = ROUTES.filter((item) => item.roles.includes("manager"));
     } else {
-      setSideBarRoutes(ROUTES.filter((item) => item.roles.includes("member")));
+      routes = ROUTES.filter((item) => item.roles.includes("member"));
     }
+    if (!accountData?.workspace?.is_leaderboard_enabled) {
+      routes = routes.filter((item) => !item.is_leaderboard_enabled);
+    }
+    setSideBarRoutes(routes);
   }, [accountData]);
 
   useEffect(() => {

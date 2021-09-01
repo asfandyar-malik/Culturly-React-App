@@ -20,7 +20,6 @@ import {
   deleteWorkspaceTeam,
   getSurveys,
   getWorkspaceRemainingTeamMembers,
-  getWorkspaceRemainingTeamManagers,
 } from "actions";
 
 import AccountHook from "hooks/account";
@@ -41,11 +40,10 @@ const TeamManagement = ({ accountData }) => {
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState({});
   const [canCreateTeam, setCreateTeam] = useState(false);
-  const [members, setMembers] = useState([]);
-  const [managers, setManagers] = useState([]);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
   const [onBoarding, setOnBoarding] = useState(false);
+  const [members, setMembers] = useState([]);
 
   const isNewInstalled = location.state?.is_new_installed || false;
   const hasWriteAccess = member?.is_admin || member?.is_manager;
@@ -68,7 +66,8 @@ const TeamManagement = ({ accountData }) => {
   }, [onBoardingData]);
 
   useEffect(() => {
-    if (createModalVisible) {
+    if (!createModalVisible) {
+      setSelectedTeam({});
     }
   }, [createModalVisible]);
 
@@ -94,7 +93,7 @@ const TeamManagement = ({ accountData }) => {
         setCreateTeam(data.can_create_team);
       });
       getSurveys().then((response) => {
-        setSurveys(response.data.results);
+        setSurveys(response.data);
       });
     }
   }, [isLoggedIn]);
@@ -130,9 +129,6 @@ const TeamManagement = ({ accountData }) => {
           key: "loader",
         });
       }
-    });
-    getWorkspaceRemainingTeamManagers().then((response) => {
-      setManagers(response.data);
     });
   }
 
@@ -281,14 +277,13 @@ const TeamManagement = ({ accountData }) => {
       </div>
       <CreateTeamModal
         surveys={surveys}
-        members={members}
-        managers={managers}
         selectedTeam={selectedTeam}
         visible={createModalVisible}
         onUpdateTeam={(data) => onTeamCreate(data)}
         onClose={() => setCreateModalVisible(false)}
         onBoarding={onBoarding}
         handleOnBoarding={handleOnBoarding}
+        members={members}
       />
       <CreateAdminModal
         visible={addAdminModalVisible}

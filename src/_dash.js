@@ -15,7 +15,7 @@ export const isEmptyObj = (obj) => {
   return true;
 };
 
-export const groupBy = (xs, f) => {
+export const groupBy = (xs = [], f) => {
   return xs.reduce(
     (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
     {}
@@ -23,5 +23,5 @@ export const groupBy = (xs, f) => {
 };
 
 export const roundOff = (value) => {
-  return Math.round(value * 100) / 100;
+  return value ? Math.round(value * 100) / 100 : value;
 };

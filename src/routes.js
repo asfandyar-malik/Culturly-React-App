@@ -101,6 +101,7 @@ export const LOGGED_IN_ROUTES = [
         exact: true,
         name: "leaderboard",
         path: LEADERBOARD_ROUTE,
+        is_leaderboard_enabled: true,
         component: LeaderboardComponent,
         roles: ["admin", "manager", "member"],
       },
@@ -170,6 +171,7 @@ export const ROUTES = [
     title: "Leaderboard",
     path: LEADERBOARD_ROUTE,
     icon: <ApartmentOutlined />,
+    is_leaderboard_enabled: true,
     roles: ["admin", "manager", "member"],
   },
   {
@@ -207,22 +209,6 @@ export const ROUTES = [
     path: SENTIMENT_ROUTE,
     icon: <ExperimentOutlined />,
     roles: ["admin"],
-  },
-  {
-    isHidden: true,
-    key: "event-feedback",
-    title: "Event feedback",
-    icon: <SmileOutlined />,
-    path: EVENT_FEEDBACK_ROUTE,
-    roles: ["admin", "manager"],
-  },
-  {
-    isHidden: true,
-    key: "event-poll",
-    title: "Event poll",
-    path: EVENT_POLL_ROUTE,
-    icon: <MacCommandOutlined />,
-    roles: ["admin", "manager"],
   },
   {
     isHidden: true,

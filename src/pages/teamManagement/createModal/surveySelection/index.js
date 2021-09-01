@@ -24,7 +24,8 @@ const TeamSurveySelectionStep = ({
   useEffect(() => {
     let initalValues = {};
     const teamSurveys = teamDetail.surveys || [];
-    const surveyGroup = groupBy(surveys, (c) => c.survey_type);
+
+    const surveyGroup = groupBy(surveys?.results, (c) => c.survey_type);
     const pulseSurveys = groupBy(teamSurveys, (c) => c.is_pulse_check)["true"];
 
     if (pulseSurveys && pulseSurveys.length) {
@@ -49,7 +50,7 @@ const TeamSurveySelectionStep = ({
       }
     }
 
-    surveys.map((item) => {
+    (surveys?.results || []).map((item) => {
       const surveyItem = teamSurveys.find((i) => i.survey.id === item.id) || {};
       const surveyTime = getFormatTimezoneTime(
         surveyItem.survey_time || item.survey_time,
