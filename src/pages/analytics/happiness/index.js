@@ -16,6 +16,7 @@ import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import {
   LINE_CHART_OPTIONS,
   LINE_COUNT_CHART_OPTIONS,
+  MIN_ANONYMITY_RESPONSE_COUNT,
 } from "../../../constants";
 import { roundOff } from "_dash";
 import { getWeekDays, disabledFutureDate } from "utils";
@@ -29,6 +30,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
   const [happinessGraphWeek, setHappinessGraphWeek] = useState();
   const [happinessGraphData, setHappinessGraphData] = useState([]);
   const [happinessGraphMonth, setHappinessGraphMonth] = useState(moment());
+  const [happinessFilterGraphData, setHappinessFilterGraphData] = useState([]);
 
   const [happinessChartElement, setHappinessChartElement] = useState("");
   const [happinessCountChartElement, setHappinessCountChartElement] =
@@ -42,7 +44,11 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
 
   function getHappinessGraphData(startTs, endTs) {
     getHappinessGraph(selectedTeam, startTs, endTs).then((response) => {
-      setHappinessGraphData(response.data);
+      const { data } = response;
+      setHappinessGraphData(data);
+      setHappinessFilterGraphData(
+        data.filter((item) => item.count > MIN_ANONYMITY_RESPONSE_COUNT)
+      );
     });
   }
 
@@ -70,7 +76,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
     if (happinessCountChartElement) {
       happinessCountChartElement.destroy();
     }
-    if (happinessGraphData.length) {
+    if (happinessFilterGraphData.length) {
       let weekDays = [];
       let labelKey = "";
 
@@ -99,7 +105,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
 
       weekDays.forEach((dayItem) => {
         const item =
-          happinessGraphData.find(
+          happinessFilterGraphData.find(
             (i) => moment(i.day).format("DD-MMM") === dayItem.weekDay
           ) || {};
         labels.push(dayItem[labelKey]);
@@ -147,7 +153,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       setHappinessCountChartElement(countLineChart);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [happinessGraphData]);
+  }, [happinessFilterGraphData]);
 
   return (
     <Row>
@@ -230,12 +236,19 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
         >
           <div>
             <Choose>
-              <When condition={happinessGraphData.length}>
+              <When condition={happinessFilterGraphData.length}>
                 <canvas ref={happinessChartRef} height={320} />
               </When>
               <Otherwise>
                 <div className="empty-container vertical-center">
-                  <Empty description="No happinesss score available to display" />
+                  <Choose>
+                    <When condition={happinessGraphData.length}>
+                      <Empty description="Not enough data to mantain anonymity" />
+                    </When>
+                    <Otherwise>
+                      <Empty description="No happinesss score available to display" />
+                    </Otherwise>
+                  </Choose>
                 </div>
               </Otherwise>
             </Choose>
@@ -248,12 +261,19 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
           </Tooltip>
           <div>
             <Choose>
-              <When condition={happinessGraphData.length}>
+              <When condition={happinessFilterGraphData.length}>
                 <canvas ref={happinessCountChartRef} height={320} />
               </When>
               <Otherwise>
                 <div className="empty-container vertical-center">
-                  <Empty description="No happiness rate available to display" />
+                  <Choose>
+                    <When condition={happinessGraphData.length}>
+                      <Empty description="Not enough data to mantain anonymity" />
+                    </When>
+                    <Otherwise>
+                      <Empty description="No happiness rate available to display" />
+                    </Otherwise>
+                  </Choose>
                 </div>
               </Otherwise>
             </Choose>

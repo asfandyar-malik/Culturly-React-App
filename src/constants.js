@@ -1,4 +1,5 @@
 export const AUTHORIZATION_KEY = "culturly_token";
+export const MIN_ANONYMITY_RESPONSE_COUNT = 5;
 
 export const SURVEY_DAY_OPTIONS = [
   {
