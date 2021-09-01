@@ -35,6 +35,7 @@ import {
   BAR_GRAPH_BORDER_COLORS,
   LINE_COUNT_CHART_OPTIONS,
   BAR_GRAPH_BACKGROUND_COLORS,
+  MIN_ANONYMITY_RESPONSE_COUNT,
 } from "../../../constants";
 import {
   getWeeksInMonth,
@@ -44,7 +45,6 @@ import {
 import {
   getCultureScore,
   getCultureGraph,
-  getAllCultureGraph,
   getSurveyQuestionCategories,
   getCultureScorePerCategory,
 } from "actions";
@@ -58,7 +58,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
   const [chartType, setChartType] = useState("bar");
   const [cultureScore, setCultureScore] = useState({});
   const [cultureItems, setCultureItems] = useState({});
-  const [cultureGraphData, setCultureGraphData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [cultureGraphFilter, setCultureGraphFilter] = useState([]);
   const [overallcultureScore, setOverallcultureScore] = useState(0);
   const [allCultureGraphData, setAllCultureGraphData] = useState([]);
@@ -66,6 +66,9 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
   const [disableGraphDropdown, setDisableGraphDropdown] = useState(false);
   const [allCultureChartElement, setAllCultureChartElement] = useState("");
   const [cultureCountChartElement, setCultureCountChartElement] = useState("");
+  const [cultureResponseGraphData, setCultureResponseGraphData] = useState([]);
+  const [cultureResponseFilterGraphData, setCultureResponseFilterGraphData] =
+    useState([]);
 
   const isBarChart = chartType === "bar";
 
@@ -132,39 +135,40 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         );
       }
     );
-
-    getAllCultureGraph(selectedTeam, startTs, endTs).then((response) => {
-      const { data } = response;
-      setAllCultureGraphData(data);
-    });
   }, [cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
-    let endTs = moment().endOf("month").utc(true).format("X");
-    let startTs = moment()
-      .subtract(1, "years")
-      .startOf("month")
-      .utc(true)
-      .format("X");
-    if (cultureGraphMonth) {
-      endTs = cultureGraphMonth.endOf("month").utc(true).format("X");
-      startTs = cultureGraphMonth.startOf("month").utc(true).format("X");
+    const { startTs, endTs } = getRange();
+    getCultureGraph(selectedTeam, startTs, endTs, selectedCategory).then(
+      (response) => {
+        const { data } = response;
+        const responseData = data?.categories?.all?.results || [];
+        setAllCultureGraphData(data);
+        setCultureResponseGraphData(responseData);
+        setCultureResponseFilterGraphData(
+          responseData.filter(
+            (item) => item.user_response_count > MIN_ANONYMITY_RESPONSE_COUNT
+          )
+        );
+      }
+    );
+  }, [selectedCategory, cultureGraphMonth, selectedTeam]);
+
+  useEffect(() => {
+    const { categories = {} } = allCultureGraphData;
+
+    if (allCultureChartElement) {
+      allCultureChartElement.destroy();
     }
-    getCultureGraph(selectedTeam, startTs, endTs, "").then((response) => {
-      setCultureGraphData(response.data);
-    });
-  }, [cultureGraphMonth, selectedTeam]);
 
-  useEffect(() => {
-    if (allCultureGraphData.categories) {
+    if (
+      cultureResponseFilterGraphData.length &&
+      Object.keys(categories).filter((item) => item !== "all").length
+    ) {
       let labels = new Set();
       const allDataSets = [];
 
-      if (allCultureChartElement) {
-        allCultureChartElement.destroy();
-      }
-
-      Object.keys(allCultureGraphData.categories).forEach((key) => {
+      Object.keys(categories).forEach((key) => {
         const dataPoints = [];
 
         if (cultureGraphMonth) {
@@ -173,15 +177,14 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
             cultureGraphMonth.format("M")
           );
 
-          if (allCultureGraphData.categories[key].results.length) {
+          if (categories[key].results.length) {
             weeks.forEach((week) => {
               const item =
-                allCultureGraphData.categories[key].results.find(
+                categories[key].results.find(
                   (i) => moment(i.week).format("D") === week.startDay
                 ) || {};
 
               if (item.avg) {
-                // labels.add(week.weekName);
                 labels.add(week.format);
                 dataPoints.push(item.avg);
               }
@@ -235,20 +238,25 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
 
       setAllCultureChartElement(allLineChart);
     }
-  }, [cultureGraphFilter, cultureGraphMonth, allCultureGraphData, chartType]);
+  }, [
+    chartType,
+    cultureGraphMonth,
+    cultureGraphFilter,
+    allCultureGraphData,
+    cultureResponseFilterGraphData,
+  ]);
 
   useEffect(() => {
     if (cultureCountChartElement) {
       cultureCountChartElement.destroy();
     }
 
-    if (cultureGraphData.length) {
+    if (cultureResponseFilterGraphData.length) {
       const labels = [];
       const dataPointsCounts = [];
       const dataPointsUniqueUserCounts = [];
 
       const countChartRef = cultureCountChartRef.current.getContext("2d");
-
       if (cultureGraphMonth) {
         const weeks = getWeeksInMonth(
           cultureGraphMonth.format("YYYY"),
@@ -256,14 +264,13 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         );
         weeks.forEach((week) => {
           const item =
-            cultureGraphData.find(
+            cultureResponseFilterGraphData.find(
               (i) => moment(i.week).format("D") === week.startDay
             ) || {};
           if (item.avg) {
-            // labels.push(week.weekName);
             labels.push(week.format);
-            dataPointsCounts.push(item.count || 0);
-            dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
+            dataPointsCounts.push(item.response_count || 0);
+            dataPointsUniqueUserCounts.push(item.user_response_count || 0);
           }
         });
       } else {
@@ -273,15 +280,15 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         );
         months.forEach((month) => {
           const item =
-            cultureGraphData.find(
+            cultureResponseFilterGraphData.find(
               (i) =>
                 moment(i.month).format("MM-YYYY") ===
                 moment(month).format("MM-YYYY")
             ) || {};
           if (item.avg) {
             labels.push(moment(month).format("MMM YYYY"));
-            dataPointsCounts.push(item.count || 0);
-            dataPointsUniqueUserCounts.push(item.uniqueUsers || 0);
+            dataPointsCounts.push(item.response_count || 0);
+            dataPointsUniqueUserCounts.push(item.user_response_count || 0);
           }
         });
       }
@@ -318,7 +325,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
 
       setCultureCountChartElement(countLineChart);
     }
-  }, [cultureGraphData, chartType]);
+  }, [cultureResponseFilterGraphData, chartType]);
 
   function handleCategoryChange(isChecked, name) {
     if (isChecked) {
@@ -484,12 +491,26 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
 
           <div>
             <Choose>
-              <When condition={allCultureGraphData?.categories}>
+              <When
+                condition={
+                  cultureResponseFilterGraphData.length &&
+                  Object.keys(allCultureGraphData?.categories || {}).filter(
+                    (item) => item !== "all"
+                  ).length
+                }
+              >
                 <canvas ref={allCultureChartRef} height={320} />
               </When>
               <Otherwise>
                 <div className="empty-container vertical-center">
-                  <Empty description="No data available to display" />
+                  <Choose>
+                    <When condition={cultureResponseGraphData.length}>
+                      <Empty description="Not enough data to mantain anonymity" />
+                    </When>
+                    <Otherwise>
+                      <Empty description="No data available to display" />
+                    </Otherwise>
+                  </Choose>
                 </div>
               </Otherwise>
             </Choose>
@@ -506,12 +527,19 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
 
           <div className="mt-8">
             <Choose>
-              <When condition={cultureGraphData.length}>
+              <When condition={cultureResponseFilterGraphData.length}>
                 <canvas ref={cultureCountChartRef} height={320} />
               </When>
               <Otherwise>
                 <div className="empty-container vertical-center">
-                  <Empty description="No happiness rate available to display" />
+                  <Choose>
+                    <When condition={cultureResponseGraphData.length}>
+                      <Empty description="Not enough data to mantain anonymity" />
+                    </When>
+                    <Otherwise>
+                      <Empty description="No data available to display" />
+                    </Otherwise>
+                  </Choose>
                 </div>
               </Otherwise>
             </Choose>

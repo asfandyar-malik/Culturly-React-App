@@ -35,11 +35,12 @@ export const getFormatTimezoneTime = (timeString, tz) => {
 export const getWeeksInMonth = (year, month) => {
   let count = 1;
   const weeks = [];
-  const date = dayjs(`${year}-${month}`);
+  const date = dayjs(`${year}-${month}`).startOf("week");
   const totalDays = parseInt(date.endOf("month").format("D"));
+
   let endDate = date;
-  let startDate = date;
   let remainingDays = totalDays;
+  let startDate = date.format("d") === "0" ? date.add(1, "days") : date;
 
   while (remainingDays > 0) {
     let daysToMinus = endDate.endOf("week").add(1, "days").diff(date, "days");
