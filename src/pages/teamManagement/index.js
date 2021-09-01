@@ -190,8 +190,8 @@ const TeamManagement = ({ accountData }) => {
               <Col span={6}>Team name</Col>
               <Col span={6}>
                 <Tooltip
-                  title="Members receive Mood Check Survey and Culture check Survey on Slack. 
-              One member can be part of only one Team"
+                  title="An active member receives daily happiness and weekly culture checks. 
+                  A member can only be part of one team."
                 >
                   <Space size={6}>
                     <span>Members</span>
@@ -201,8 +201,8 @@ const TeamManagement = ({ accountData }) => {
               </Col>
               <Col span={6}>
                 <Tooltip
-                  title="Managers have access to create Teams, Edit Surveys, Edit user access, 
-              View Analytics etc"
+                  title="A manager can see analytics for the indiviual team he/she 
+                  is managing. Also, a manager can book activities for the team using Culturly recommendations."
                 >
                   <Space size={6}>
                     <span>Managers</span>

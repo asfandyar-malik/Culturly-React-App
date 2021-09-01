@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Select, Space, Avatar } from "antd";
+import { Modal, Form, Select, Space, Avatar, Tooltip } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import { getAllSlackMembers, bulkSetSlackMemberAdmin } from "actions";
 
@@ -41,7 +42,20 @@ const CreateAdminModal = ({ visible, onClose }) => {
       confirmLoading={saving}
       onCancel={() => onClose()}
       onOk={() => form.submit()}
-      title="Who are the admins of your account?"
+      title={
+        <Space>
+          Who are the admins of your account?{" "}
+          <Tooltip
+            title="Admins have administrative rights. This means that they can do 
+          changes in Culturly, manager members and see culture analytics for the company 
+          level and for all indiviual teams. Note: In most cases, administrators are members 
+          from HR, People & Culture, Office Managers or C-Level managers. <-- Note 
+          has to be written in italic/"
+          >
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </Space>
+      }
     >
       <Form
         form={form}
@@ -51,7 +65,8 @@ const CreateAdminModal = ({ visible, onClose }) => {
         <Form.Item
           name="member_ids"
           className="no-margin"
-          label="Share permissions to view and edit data in your account with some of your team members"
+          label="Select your administrators. Admin rights include to view 
+          analytics for all teams."
         >
           <Select
             showSearch
