@@ -204,6 +204,7 @@ export const ROUTES = [
     roles: ["admin", "manager", "member"],
   },
   {
+    isHidden: true,
     key: "sentiment",
     title: "Sentiment",
     path: SENTIMENT_ROUTE,

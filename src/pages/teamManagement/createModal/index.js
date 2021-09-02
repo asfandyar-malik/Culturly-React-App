@@ -82,8 +82,8 @@ const CreateTeamModal = ({
     >
       <Steps current={currentStep}>
         <Step title="Team Management" />
-        <Step title="Employee Management" />
-        <Step title="Manager Management" />
+        <Step title="Employees" />
+        <Step title="Managers" />
         <Step title="Check-In Management" />
       </Steps>
       <div className="mt-24">
