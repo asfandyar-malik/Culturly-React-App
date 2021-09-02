@@ -12,7 +12,6 @@ import RouteWithSubRoutes from "components/routeWithSubRoutes";
 import "./styles/style.scss";
 
 const AppRouter = ({ accountData, setAccountData }) => {
-  const isLoggedIn = !isEmpty(accountData);
   const { member = {} } = accountData;
 
   const [loading, setLoading] = useState(true);
@@ -33,7 +32,7 @@ const AppRouter = ({ accountData, setAccountData }) => {
   useEffect(() => {
     let newRoutes = [];
     if (!loading) {
-      if (isLoggedIn) {
+      if (!isEmpty(accountData)) {
         // TODO: refactor this make more scalable
         newRoutes = LOGGED_IN_ROUTES;
         // let childRoutes = LOGGED_IN_ROUTES[0].routes;
@@ -62,7 +61,7 @@ const AppRouter = ({ accountData, setAccountData }) => {
       setCurrentRoutes(newRoutes);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn, loading]);
+  }, [accountData, loading]);
 
   if (loading) {
     return (

@@ -23,5 +23,5 @@ export const groupBy = (xs, f) => {
 };
 
 export const roundOff = (value) => {
-  return Math.round(value * 100) / 100;
+  return value ? Math.round(value * 100) / 100 : value;
 };

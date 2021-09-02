@@ -75,3 +75,45 @@ pipelines:
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
                 DISTRIBUTION_ID: $AWS_CLOUD_FRONT_DISTRIBUTION_ID
+    master:
+      - parallel:
+        - step:
+            name: Build and Test
+            caches:
+              - node
+            script:
+              - npm install
+              # CI=true in default variables for Bitbucket Pipelines https://support.atlassian.com/bitbucket-cloud/docs/variables-in-pipelines/
+              # npm test
+              - unset CI
+              - npm run build
+            artifacts:
+              - build/**
+        - step:
+            name: Security Scan
+            script:
+              # Run a security scan for sensitive data.
+              # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+              - pipe: atlassian/git-secrets-scan:0.4.3
+      - step:
+          name: Deploy to Production
+          deployment: production
+          #trigger: manual
+          clone:
+            enabled: false
+          script:
+            # sync your files to S3
+            - pipe: atlassian/aws-s3-deploy:0.4.4
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                S3_BUCKET: $AWS_BUCKET_NAME
+                LOCAL_PATH: 'build'
+            # triggering a distribution invalidation to refresh the CDN caches
+            - pipe: atlassian/aws-cloudfront-invalidate:0.1.1
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                DISTRIBUTION_ID: $AWS_CLOUD_FRONT_DISTRIBUTION_ID

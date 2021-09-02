@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Form, Select, Space, Avatar } from "antd";
 
-import { getSlackMembers, bulkSetSlackMemberAdmin } from "actions";
+import { getAllSlackMembers, bulkSetSlackMemberAdmin } from "actions";
 
 const CreateAdminModal = ({ visible, onClose }) => {
   const [form] = Form.useForm();
@@ -16,12 +16,8 @@ const CreateAdminModal = ({ visible, onClose }) => {
 
   useEffect(() => {
     if (visible) {
-      getSlackMembers().then((response) => {
-        setMembers(
-          response.data.results.filter(
-            (item) => item.is_active && !item.is_admin
-          )
-        );
+      getAllSlackMembers().then((response) => {
+        setMembers(response.data.filter((item) => !item.is_admin));
       });
     }
   }, [visible]);
@@ -45,7 +41,7 @@ const CreateAdminModal = ({ visible, onClose }) => {
       confirmLoading={saving}
       onCancel={() => onClose()}
       onOk={() => form.submit()}
-      title="Who are the admins of your account?"
+      title="Add Admins to your account?"
     >
       <Form
         form={form}
@@ -55,7 +51,7 @@ const CreateAdminModal = ({ visible, onClose }) => {
         <Form.Item
           name="member_ids"
           className="no-margin"
-          label="Share permissions to view and edit data in your account with some of your team members"
+          label="Add admins who can edit and configure this account"
         >
           <Select
             showSearch
@@ -64,15 +60,12 @@ const CreateAdminModal = ({ visible, onClose }) => {
             optionFilterProp="label"
           >
             {members.map((item) => {
+              const name = item.display_name || item.name;
               return (
-                <Select.Option
-                  key={item.id}
-                  value={item.id}
-                  label={item.display_name}
-                >
+                <Select.Option key={item.id} value={item.id} label={name}>
                   <Space>
                     <Avatar src={item.avatar} />
-                    <p>{item.display_name}</p>
+                    <p>{name}</p>
                   </Space>
                 </Select.Option>
               );

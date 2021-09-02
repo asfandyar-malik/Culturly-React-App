@@ -27,6 +27,7 @@ const CreateTeamModal = ({
   onClose,
 }) => {
   const timezone = accountData?.workspace?.timezone;
+
   const [members, setMembers] = useState([]);
   const [managers, setManagers] = useState([]);
   const [saving, setSaving] = useState(false);
@@ -77,12 +78,13 @@ const CreateTeamModal = ({
       title="Create new team"
       onCancel={() => onClose()}
       className="team-create-modal"
+      destroyOnClose={true}
     >
       <Steps current={currentStep}>
-        <Step title="Basic information" />
-        <Step title="Member management" />
-        <Step title="Manager management" />
-        <Step title="Surveys" />
+        <Step title="Team Management" />
+        <Step title="Employee Management" />
+        <Step title="Manager Management" />
+        <Step title="Check-In Management" />
       </Steps>
       <div className="mt-24">
         <Choose>

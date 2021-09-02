@@ -1,9 +1,11 @@
 export const TIMEZONES_API_PATH = "timezones/";
+export const COUNTRIES_API_PATH = "countries/";
 
 // USER API's
 
 export const USER_DETAIL_API_PATH = "user/";
 export const USER_LOGOUT_API_PATH = "logout/";
+export const USER_PROFILE_UPDATE_API_PATH = `${USER_DETAIL_API_PATH}update_profile/`;
 
 // USER AUTH API's
 
@@ -20,6 +22,7 @@ export const SURVEYS_BASE_API_PATH = "slack_bot/surveys/";
 export const SLACK_MEMBERS_BASE_API_PATH = "slack_bot/members/";
 export const SLACK_CONFIGURATION_API_PATH = "slack_bot/configuration/";
 export const SLACK_MEMBER_DETAIL_API_PATH = `${SLACK_MEMBERS_BASE_API_PATH}{}/`;
+export const SLACK_ALL_MEMBERS_API_PATH = `${SLACK_MEMBERS_BASE_API_PATH}all_members/`;
 export const SLACK_BULK_SET_ADMIN_API_PATH = `${SLACK_MEMBERS_BASE_API_PATH}bulk_set_admins/`;
 export const WORKSPACE_TEAMS_BASE_API_PATH = "slack_bot/teams/";
 export const WORKSPACE_TEAM_UPDATE_API_PATH = "slack_bot/teams/{}/";

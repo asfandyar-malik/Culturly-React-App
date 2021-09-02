@@ -1,4 +1,5 @@
 export const AUTHORIZATION_KEY = "culturly_token";
+export const MIN_ANONYMITY_RESPONSE_COUNT = 2;
 
 export const SURVEY_DAY_OPTIONS = [
   {
@@ -196,6 +197,33 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
         callback: function (value, index, values) {
           return `${value}%`;
         },
+      },
+    },
+  },
+};
+
+export const BAR_CHART_OPTION = {
+  ...MULTIPLE_LINE_CHART_OPTIONS,
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return `${context.dataset.label}: ${parseFloat(
+            context.parsed.y.toFixed(2)
+          )}`;
+        },
+      },
+    },
+  },
+  scales: {
+    x: {
+      offset: true,
+      grid: {
+        display: false,
+      },
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 12,
       },
     },
   },

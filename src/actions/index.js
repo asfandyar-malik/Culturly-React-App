@@ -12,8 +12,9 @@ export const getSlackConfiguration = () => {
   return instance.get(endpoints.SLACK_CONFIGURATION_API_PATH);
 };
 
-export const getSlackMembers = () => {
-  return instance.get(endpoints.SLACK_MEMBERS_BASE_API_PATH);
+export const getSlackMembers = (queryString = "") => {
+  const path = endpoints.SLACK_MEMBERS_BASE_API_PATH.concat("?", queryString);
+  return instance.get(path);
 };
 
 export const updateSlackMember = (memberId, payload) => {
@@ -24,6 +25,10 @@ export const updateSlackMember = (memberId, payload) => {
 
 export const bulkSetSlackMemberAdmin = (payload) => {
   return instance.post(endpoints.SLACK_BULK_SET_ADMIN_API_PATH, payload);
+};
+
+export const getAllSlackMembers = () => {
+  return instance.get(endpoints.SLACK_ALL_MEMBERS_API_PATH);
 };
 
 export const getLeaderboardScore = (teamId, endTs, startTs) => {
@@ -97,12 +102,20 @@ export const getUserDetail = () => {
   });
 };
 
+export const updateProfile = (payload) => {
+  return instance.patch(endpoints.USER_PROFILE_UPDATE_API_PATH, payload);
+};
+
 export const userLogout = () => {
   return instance.post(endpoints.USER_LOGOUT_API_PATH);
 };
 
 export const getTimezones = () => {
   return instance.get(endpoints.TIMEZONES_API_PATH);
+};
+
+export const getCountries = () => {
+  return instance.get(endpoints.COUNTRIES_API_PATH);
 };
 
 export const updateWorkspace = (workspaceId, payload) => {

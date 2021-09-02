@@ -1,33 +1,27 @@
+import { Select, Tabs } from "antd";
 import { useEffect, useState } from "react";
-import { Select } from "antd";
 
-import { getWorkspaceTeams, getSurveyQuestionCategories } from "actions";
+import { getWorkspaceTeams } from "actions";
 
 import CultureAnalyticsCard from "./culture";
 import HappinessAnalyticsCard from "./happiness";
 
-import { Tabs } from "antd";
 import "./style.scss";
 
 const { TabPane } = Tabs;
 
 const Analytics = () => {
   const [teams, setTeams] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState("");
 
   useEffect(() => {
     getWorkspaceTeams("name,id").then((response) => {
       setTeams(response.data.results);
     });
-    getSurveyQuestionCategories().then((response) => {
-      setCategories(response.data);
-    });
   }, []);
 
   return (
     <div className="analytics-container max-container">
-      
       <Select
         value={selectedTeam}
         style={{ width: 300 }}
@@ -43,23 +37,16 @@ const Analytics = () => {
           );
         })}
       </Select>
-
-      <br></br>
-      <br></br>
-
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Happiness" key="1">
-          <HappinessAnalyticsCard selectedTeam={selectedTeam} />
-        </TabPane>
-        <TabPane tab="Culture" key="2">
-          <CultureAnalyticsCard
-            categories={categories}
-            selectedTeam={selectedTeam}
-          />
-        </TabPane>
-      </Tabs>
-
-     
+      <div className="mt-20">
+        <Tabs defaultActiveKey="happiness">
+          <TabPane tab="Happiness" key="happiness">
+            <HappinessAnalyticsCard selectedTeam={selectedTeam} />
+          </TabPane>
+          <TabPane tab="Culture" key="culture">
+            <CultureAnalyticsCard selectedTeam={selectedTeam} />
+          </TabPane>
+        </Tabs>
+      </div>
     </div>
   );
 };

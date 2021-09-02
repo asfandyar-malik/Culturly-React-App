@@ -244,6 +244,7 @@ export const ROUTES = [
     title: "Leaderboard",
     path: LEADERBOARD_ROUTE,
     icon: <ApartmentOutlined />,
+    is_leaderboard_enabled: true,
     roles: ["admin", "manager", "member"],
   },
   {
