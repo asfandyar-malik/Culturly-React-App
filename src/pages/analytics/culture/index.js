@@ -348,7 +348,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
       <Col span={24} className="mt-12 culture-col">
         <Card
           title={
-            <Tooltip title="your Culture Score is calculated using the weekly culture check">
+            <Tooltip title="Your Culture Score is calculated using the weekly culture check">
               <Space>
                 <span>Culture score</span>
                 <QuestionCircleOutlined />
