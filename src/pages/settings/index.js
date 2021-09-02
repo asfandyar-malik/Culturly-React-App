@@ -9,8 +9,13 @@ import {
   Avatar,
   Row,
   Col,
+  Tooltip,
 } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 import {
   getTimezones,
@@ -124,13 +129,34 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
           </Form.Item>
           <Form.Item
             valuePropName="checked"
-            label="Enable leaderboard"
+            label={
+              <Space>
+                Enable leaderboard{" "}
+                <Tooltip
+                  title="Enabling the user board will show the users who are most active 
+                with their feedback without compromising on their anonymity. It is an optional feature"
+                >
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </Space>
+            }
             name="is_leaderboard_enabled"
           >
             <Switch disabled={!hasWriteAccess} />
           </Form.Item>
+
           <If condition={hasWriteAccess}>
-            <p className="text-2xl medium mb-12">Offices</p>
+            <Space className="mb-12">
+              <p className="text-2xl medium">Offices</p>{" "}
+              <Tooltip
+                title="If you got multiple (virtual) office locations, you can select those here. This 
+              allows you in the analytic section to filter based on office locations. Note: Team members have to 
+              select the office they belong in their profile section or via Slack <-- The note part has to be written 
+              in Italic."
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </Space>
             <Form.List name="offices">
               {(fields, { add, remove }) => (
                 <>

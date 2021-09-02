@@ -124,7 +124,7 @@ const MemberManagement = ({ accountData }) => {
               style={{ width: 175 }}
               onChange={(value) => setIsManagerFilter(value)}
             >
-              <Select.Option value="">Manager Filter</Select.Option>
+              <Select.Option value="">All</Select.Option>
               <Select.Option value="true">Manager</Select.Option>
               <Select.Option value="false">Not Manager</Select.Option>
             </Select>
@@ -135,7 +135,7 @@ const MemberManagement = ({ accountData }) => {
               style={{ width: 150 }}
               onChange={(value) => setIsAdminFilter(value)}
             >
-              <Select.Option value="">Admin Filter</Select.Option>
+              <Select.Option value="">All</Select.Option>
               <Select.Option value="true">Admin</Select.Option>
               <Select.Option value="false">Not Admin</Select.Option>
             </Select>
@@ -149,12 +149,34 @@ const MemberManagement = ({ accountData }) => {
         header={
           <Row gutter={32}>
             <Col span={5}>Member Name</Col>
-            <Col span={4}>Status</Col>
-            <Col span={3}>Admin</Col>
             <Col span={4}>
               <Tooltip
-                title="Managers have access to create Teams, Edit Surveys, 
-            Edit user access, View Analytics etc "
+                title="An active user receives happiness and culture checks.
+                A user can be set inactive to exclude him/her (for a specific time) 
+                from the check ins."
+              >
+                <Space size={6}>
+                  <span>Status</span>
+                  <QuestionCircleOutlined />
+                </Space>
+              </Tooltip>
+            </Col>
+            <Col span={3}>
+              <Tooltip
+                title="An admin can see analytics for the company level and for all
+                indiviual teams, Also, an admin can book activities for the company 
+                using Culturly recommendations."
+              >
+                <Space size={6}>
+                  <span>Admin</span>
+                  <QuestionCircleOutlined />
+                </Space>
+              </Tooltip>
+            </Col>
+            <Col span={4}>
+              <Tooltip
+                title="A manager can see analytics for the indiviual team he/she is managing. 
+                Also, a manager can book activities for the team using Culturly recommendations."
               >
                 <Space size={6}>
                   <span>Manager</span>
@@ -162,7 +184,17 @@ const MemberManagement = ({ accountData }) => {
                 </Space>
               </Tooltip>
             </Col>
-            <Col span={5}>Team</Col>
+            <Col span={5}>
+              <Tooltip
+                title="A user can only be part of one team. To ensure anonymous results, this team has to larger 
+                than 5, otherwise the data can only be seen on a company level"
+              >
+                <Space size={6}>
+                  <span>Team</span>
+                  <QuestionCircleOutlined />
+                </Space>
+              </Tooltip>
+            </Col>
           </Row>
         }
         renderItem={(item) => (

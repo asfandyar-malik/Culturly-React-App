@@ -348,10 +348,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
       <Col span={24} className="mt-12 culture-col">
         <Card
           title={
-            <Tooltip
-              title="Culture Score is calculated from Weekly Survey checks. Weekly survey checks are sent
-              4 times a month and include 9 questions in total in 8 different Culture categories.  "
-            >
+            <Tooltip title="your Culture Score is calculated using the weekly culture check">
               <Space>
                 <span>Culture score</span>
                 <QuestionCircleOutlined />
@@ -371,7 +368,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
               <div className="mb-12">
                 <Space>
                   <span>How does score compare?</span>
-                  <Tooltip title="You view here your Culture score from previous months">
+                  <Tooltip title="A comparison to your Culture Score of the previous month">
                     <InfoCircleOutlined className="info-icon" />
                   </Tooltip>
                 </Space>
@@ -424,12 +421,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         >
           <Row justify="space-between">
             <Col>
-              <Tooltip title="Response rate shows us the frequency of inputted information by team members.">
-                <Space>
-                  <p>All Culture Categories</p>
-                  <QuestionCircleOutlined />
-                </Space>
-              </Tooltip>
+              <p>All Culture Categories</p>
             </Col>
             <Col>
               <Space size={15}>
@@ -517,7 +509,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         </Card>
 
         <Card className="no-top-border">
-          <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
+          <Tooltip title="The response rate displays how actively team members share responses">
             <Space>
               <span>Response Rate</span>
               <QuestionCircleOutlined />
@@ -550,8 +542,9 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
           loading={loading}
           title={
             <Tooltip
-              title="Culturly score is calcuated from the response to Culture Check, which is a 
-              weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact."
+              title="The Culture Check displays all 32 scientific questions that are sent to each 
+              team member to calculate the culture score. The questions change weekly to guanrantee
+               variation and are repeated monthly to guarantee a scientific data analysis"
             >
               <Space>
                 <span>Culture score</span>

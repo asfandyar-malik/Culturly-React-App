@@ -160,10 +160,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       <Col span={24} className="mt-12 happiness-col">
         <Card
           title={
-            <Tooltip
-              title="Happiness score is calculated from Mood Check survey. Mood check is 
-              sent daily to each team member asking them, how they are feeling "
-            >
+            <Tooltip title="Your Happiness score is calculated using the daily happiness check">
               <Space size={6}>
                 <span>Happiness score</span>
                 <QuestionCircleOutlined />
@@ -181,10 +178,12 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
             </Col>
             <Col>
               <div className="mb-12">
-                <span>How does score compare?</span>
-                <Tooltip title="You view here your happiness score from previous weeks and previous month">
-                  <InfoCircleOutlined className="info-icon" />
-                </Tooltip>
+                <Space>
+                  <span>How does score compare?</span>
+                  <Tooltip title="A comparison to your Happiness Score of the previous month and previous week">
+                    <InfoCircleOutlined className="info-icon" />
+                  </Tooltip>
+                </Space>
               </div>
               <Space>
                 <Card>
@@ -253,7 +252,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-          <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
+          <Tooltip title="The Response Rate displays how actively team members share responses">
             <Space size={6} className="mt-32 mb-16">
               <span>Response Rate</span>
               <QuestionCircleOutlined />
