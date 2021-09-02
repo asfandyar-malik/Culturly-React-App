@@ -242,10 +242,10 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
                 <div className="empty-container vertical-center">
                   <Choose>
                     <When condition={happinessGraphData.length}>
-                      <Empty description="Not enough data to mantain anonymity" />
+                      <Empty description="Not enough data to mantain anonymity in this time period" />
                     </When>
                     <Otherwise>
-                      <Empty description="No happinesss score available to display" />
+                      <Empty description="No happinesss score available to display in this time period" />
                     </Otherwise>
                   </Choose>
                 </div>

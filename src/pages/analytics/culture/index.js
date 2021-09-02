@@ -496,10 +496,10 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 <div className="empty-container vertical-center">
                   <Choose>
                     <When condition={cultureResponseGraphData.length}>
-                      <Empty description="Not enough data to mantain anonymity" />
+                      <Empty description="Not enough data to mantain anonymity in this time period" />
                     </When>
                     <Otherwise>
-                      <Empty description="No data available to display" />
+                      <Empty description="No data available to display for this time period" />
                     </Otherwise>
                   </Choose>
                 </div>
@@ -525,10 +525,10 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 <div className="empty-container vertical-center">
                   <Choose>
                     <When condition={cultureResponseGraphData.length}>
-                      <Empty description="Not enough data to mantain anonymity" />
+                      <Empty description="Not enough data to mantain anonymity in this time period" />
                     </When>
                     <Otherwise>
-                      <Empty description="No data available to display" />
+                      <Empty description="No data available to display for this time period" />
                     </Otherwise>
                   </Choose>
                 </div>
