@@ -13,9 +13,6 @@ import culturlyLogo from "images/culturly.jpeg";
 
 import RenderRoutes from "components/renderRoutes";
 
-import { OnBoardingDataConsumer } from "context/onBoardingData";
-import OnBoarding from "components/onBoarding";
-
 import "./style.scss";
 
 const { Header, Content, Sider } = Layout;
@@ -24,23 +21,8 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
   const history = useHistory();
   const { pathname } = useLocation();
 
-  const [onBoardingData] = OnBoardingDataConsumer();
-
   const [selectedMenu, setSelectedMenu] = useState({});
   const [sideBarRoutes, setSideBarRoutes] = useState([]);
-  const [dropdownProps, setDropdownProps] = useState({});
-
-  useEffect(() => {
-    if (onBoardingData && onBoardingData.startOnBoarding) {
-      if (onBoardingData.step === 1 || onBoardingData.step === 2) {
-        setDropdownProps({ visible: true });
-      } else {
-        setDropdownProps({ visible: false });
-      }
-    } else {
-      setDropdownProps({});
-    }
-  }, [onBoardingData]);
 
   useEffect(() => {
     let routes = [];
@@ -90,7 +72,6 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
 
   return (
     <>
-      {onBoardingData.startOnBoarding && <OnBoarding />}
       <Layout className="app-layout">
         <Sider theme="light" width={240} id="ant-layout-sider">
           <div className="company-logo">
@@ -120,30 +101,15 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
               </Col>
               <Col>
                 <Dropdown
-                  {...dropdownProps}
                   overlay={
                     <Menu>
-                      <Menu.Item
-                        onClick={() =>
-                          !onBoardingData.startOnBoarding &&
-                          history.push(MEMBERS_ROUTE)
-                        }
-                      >
+                      <Menu.Item onClick={() => history.push(MEMBERS_ROUTE)}>
                         Management
                       </Menu.Item>
-                      <Menu.Item
-                        onClick={() =>
-                          !onBoardingData.startOnBoarding &&
-                          history.push(SETTINGS_ROUTE)
-                        }
-                      >
+                      <Menu.Item onClick={() => history.push(SETTINGS_ROUTE)}>
                         Settings
                       </Menu.Item>
-                      <Menu.Item
-                        onClick={!onBoardingData.startOnBoarding && onLogout}
-                      >
-                        Logout
-                      </Menu.Item>
+                      <Menu.Item onClick={onLogout}>Logout</Menu.Item>
                     </Menu>
                   }
                 >

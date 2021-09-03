@@ -7,22 +7,12 @@ import {
   accountDataReducer,
   initialState as accountData,
 } from "./reducers/accountDataReducer";
-import {
-  onBoardingDataReducer,
-  initialState as onBoardingData,
-} from "./reducers/onBoardingReducer";
 
 import { AccountDataProvider } from "./context/accountData";
-import { OnBoardingDataProvider } from "./context/onBoardingData";
 
 ReactDOM.render(
   <AccountDataProvider initialState={accountData} reducer={accountDataReducer}>
-    <OnBoardingDataProvider
-      initialState={onBoardingData}
-      reducer={onBoardingDataReducer}
-    >
-      <AppRouter />
-    </OnBoardingDataProvider>
+    <AppRouter />
   </AccountDataProvider>,
   document.getElementById("root")
 );

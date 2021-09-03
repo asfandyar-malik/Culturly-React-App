@@ -11,17 +11,12 @@ import AccountHook from "hooks/account";
 import connectedImg from "assets/images/connected.svg";
 import notConnectedImg from "assets/images/not_connected.svg";
 
-import { OnBoardingDataConsumer } from "context/onBoardingData";
-import { setOnBoardingData } from "reducers/onBoardingReducer";
-
 import "../style.scss";
 
 const UserOAuthComplete = ({ setAccountData }) => {
   const history = useHistory();
   const params = new URLSearchParams(history.location.search);
   const code = params.get("code");
-
-  const [_, dispatch] = OnBoardingDataConsumer();
 
   const [loading, setLoading] = useState(true);
   const [errorData, setErrorData] = useState({});
@@ -34,12 +29,6 @@ const UserOAuthComplete = ({ setAccountData }) => {
           localStorage.setItem(AUTHORIZATION_KEY, response.token);
           getUserDetail().then((response) => {
             setAccountData(response);
-            dispatch(
-              setOnBoardingData({
-                startOnBoarding: true,
-                step: 1,
-              })
-            );
             history.push(INDEX_ROUTE);
           });
         })

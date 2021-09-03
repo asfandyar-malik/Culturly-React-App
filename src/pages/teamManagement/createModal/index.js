@@ -26,8 +26,6 @@ const CreateTeamModal = ({
   onUpdateTeam,
   onClose,
   members,
-  onBoarding,
-  handleOnBoarding,
 }) => {
   const timezone = accountData?.workspace?.timezone;
 
@@ -76,13 +74,9 @@ const CreateTeamModal = ({
       visible={visible}
       title="Create new team"
       onCancel={() => {
-        if (onBoarding) {
-          handleOnBoarding();
-        } else {
-          onClose();
-        }
+        onClose();
       }}
-      className={onBoarding ? "team-create-modal disable" : "team-create-modal"}
+      className="team-create-modal"
       destroyOnClose={true}
     >
       <Steps current={currentStep}>
