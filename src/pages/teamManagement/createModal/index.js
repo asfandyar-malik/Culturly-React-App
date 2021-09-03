@@ -89,7 +89,7 @@ const CreateTeamModal = ({
         <Step
           title={
             <Space>
-              Basic information
+              Team Management
               <Tooltip
                 title="Select all teams in your company. You can 
               add additional teams that are not listed here."
@@ -102,7 +102,7 @@ const CreateTeamModal = ({
         <Step
           title={
             <Space>
-              Member management
+              Employees
               <Tooltip
                 title="Allocate employees to the team they belong to. In 
                 the analytic section, you can later filter based on indiviual teams."
@@ -115,7 +115,7 @@ const CreateTeamModal = ({
         <Step
           title={
             <Space>
-              Manager management
+              Managers
               <Tooltip
                 title="Allocate managers to the team they are managing. Managers can see 
                 analytics and book activities for their indiviual team."
@@ -128,7 +128,7 @@ const CreateTeamModal = ({
         <Step
           title={
             <Space>
-              Surveys
+              Check-In
               <Tooltip
                 title="Manage the timing of the check-ins that are sent to team members. Culture 
                 checks are sent on a weekly basis and happiness checks are sent on a daily basis.

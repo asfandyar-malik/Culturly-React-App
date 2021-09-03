@@ -51,7 +51,7 @@ const TeamBasicInformationStep = ({ saving, teamDetail, onProceed }) => {
                   onChange={(e) => setCustomItemValue(e.target.value)}
                 />
                 <a onClick={() => addItem()}>
-                  <PlusOutlined /> Add item
+                  <PlusOutlined /> Add team
                 </a>
               </div>
             </div>

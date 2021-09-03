@@ -372,7 +372,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
       <Col span={24} className="mt-12 culture-col">
         <Card
           title={
-            <Tooltip title="your Culture Score is calculated using the weekly culture check">
+            <Tooltip title="Your Culture Score is calculated using the weekly culture check">
               <Space>
                 <span>Culture score</span>
                 <QuestionCircleOutlined />
@@ -507,10 +507,10 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 <div className="empty-container vertical-center">
                   <Choose>
                     <When condition={cultureResponseGraphData.length}>
-                      <Empty description="Not enough data to mantain anonymity" />
+                      <Empty description="Not enough data to mantain anonymity in this time period" />
                     </When>
                     <Otherwise>
-                      <Empty description="No data available to display" />
+                      <Empty description="No data available to display for this time period" />
                     </Otherwise>
                   </Choose>
                 </div>
@@ -536,10 +536,10 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 <div className="empty-container vertical-center">
                   <Choose>
                     <When condition={cultureResponseGraphData.length}>
-                      <Empty description="Not enough data to mantain anonymity" />
+                      <Empty description="Not enough data to mantain anonymity in this time period" />
                     </When>
                     <Otherwise>
-                      <Empty description="No data available to display" />
+                      <Empty description="No data available to display for this time period" />
                     </Otherwise>
                   </Choose>
                 </div>

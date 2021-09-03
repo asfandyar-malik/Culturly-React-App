@@ -90,7 +90,7 @@ const WorkspaceOAuthComplete = ({ setAccountData }) => {
             <img src={connectedImg} className="success-img" alt="Success" />
             <p className="text-3xl medium">Authentication Success</p>
             <p className="text-xl">
-              Congratulations, you hve succesfully authenticated yourself.
+              Congratulations, you have succesfully authenticated yourself.
             </p>
           </>
         )}
