@@ -44,13 +44,19 @@ const CreateAdminModal = ({ visible, onClose }) => {
       onOk={() => form.submit()}
       title={
         <Space>
-          Who are the admins of your account?{" "}
+          Who are the admins of your account?
           <Tooltip
-            title="Admins have administrative rights. This means that they can do 
-          changes in Culturly, manager members and see culture analytics for the company 
-          level and for all indiviual teams. Note: In most cases, administrators are members 
-          from HR, People & Culture, Office Managers or C-Level managers. <-- Note 
-          has to be written in italic/"
+            title={
+              <div>
+                Admins have administrative rights. This means that they can do
+                changes in Culturly, manager members and see culture analytics
+                for the company level and for all indiviual teams. Note: In most
+                cases, administrators are members from
+                <i>
+                  HR, People & Culture, Office Managers or C-Level managers.
+                </i>
+              </div>
+            }
           >
             <QuestionCircleOutlined />
           </Tooltip>

@@ -149,10 +149,15 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
             <Space className="mb-12">
               <p className="text-2xl medium">Offices</p>{" "}
               <Tooltip
-                title="If you got multiple (virtual) office locations, you can select those here. This 
-              allows you in the analytic section to filter based on office locations. Note: Team members have to 
-              select the office they belong in their profile section or via Slack <-- The note part has to be written 
-              in Italic."
+                title={
+                  <div>
+                    If you got multiple (virtual) office locations, you can
+                    select those here. This allows you in the analytic section
+                    to filter based on office locations. Note: Team members have
+                    to select the office they belong in their{" "}
+                    <i>profile section or via Slack</i>.
+                  </div>
+                }
               >
                 <QuestionCircleOutlined />
               </Tooltip>

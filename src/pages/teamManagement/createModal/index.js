@@ -124,10 +124,14 @@ const CreateTeamModal = ({
             <Space>
               Check-In
               <Tooltip
-                title="Manage the timing of the check-ins that are sent to team members. Culture 
-                checks are sent on a weekly basis and happiness checks are sent on a daily basis.
-                Note: Average time to answer all checkins in 52s on a weekly basis. 
-                <-- Note has to be written in Italic."
+                title={
+                  <div>
+                    Manage the timing of the check-ins that are sent to team
+                    members. Culture checks are sent on a weekly basis and
+                    happiness checks are sent on a daily basis. Note: Average
+                    time to answer all checkins in 52s on a <i>weekly basis</i>.
+                  </div>
+                }
               >
                 <QuestionCircleOutlined />
               </Tooltip>
