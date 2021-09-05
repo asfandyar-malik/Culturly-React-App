@@ -131,7 +131,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
             valuePropName="checked"
             label={
               <Space>
-                Enable leaderboard{" "}
+                <p className="text-2xl medium">Enable leaderboard </p>{" "}
                 <Tooltip
                   title="Enabling the user board will show the users who are most active 
                 with their feedback without compromising on their anonymity. It is an optional feature"
