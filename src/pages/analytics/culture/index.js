@@ -56,7 +56,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
 
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [chartType, setChartType] = useState("bar");
+  const [chartType, setChartType] = useState("line");
   const [cultureScore, setCultureScore] = useState({});
   const [cultureItems, setCultureItems] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -471,7 +471,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
                   <Radio.Group
                     options={graphOptions}
                     onChange={(e) => setChartType(e.target.value)}
-                    defaultValue={"bar"}
+                    defaultValue={"line"}
                     optionType="button"
                     disabled={disableGraphDropdown}
                   />
