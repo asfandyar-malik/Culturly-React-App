@@ -16,13 +16,14 @@ import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import {
   LINE_CHART_OPTIONS,
   LINE_COUNT_CHART_OPTIONS,
-  MIN_ANONYMITY_RESPONSE_COUNT,
 } from "../../../constants";
 import { roundOff } from "_dash";
 import { getWeekDays, disabledFutureDate } from "utils";
 import { getHappinessScore, getHappinessGraph } from "actions";
 
-const HappinessAnalyticsCard = ({ selectedTeam }) => {
+import AccountHook from "hooks/account";
+
+const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
   const happinessChartRef = useRef(null);
   const happinessCountChartRef = useRef(null);
 
@@ -36,6 +37,9 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
   const [happinessCountChartElement, setHappinessCountChartElement] =
     useState("");
 
+  const anonymityThreshold =
+    accountData?.workspace?.minimum_anonymity_threshold;
+
   useEffect(() => {
     getHappinessScore(selectedTeam).then((response) => {
       setHappinessScore(response.data);
@@ -47,7 +51,7 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
       const { data } = response;
       setHappinessGraphData(data);
       setHappinessFilterGraphData(
-        data.filter((item) => item.count > MIN_ANONYMITY_RESPONSE_COUNT)
+        data.filter((item) => item.count >= anonymityThreshold)
       );
     });
   }
@@ -283,4 +287,4 @@ const HappinessAnalyticsCard = ({ selectedTeam }) => {
   );
 };
 
-export default HappinessAnalyticsCard;
+export default AccountHook(HappinessAnalyticsCard);

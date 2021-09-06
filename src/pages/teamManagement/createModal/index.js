@@ -124,7 +124,7 @@ const CreateTeamModal = ({
         <Step
           title={
             <Space>
-              Check-In 
+              Check-In
               <Tooltip
                 title="Manage the timing of the check-ins that are sent to team members. Culture 
                 checks are sent on a weekly basis and happiness checks are sent on a daily basis.

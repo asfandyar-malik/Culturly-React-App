@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   Tooltip,
+  InputNumber,
 } from "antd";
 import {
   MinusCircleOutlined,
@@ -55,6 +56,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
       offices: workspace.offices,
       timezone: workspace.timezone,
       is_leaderboard_enabled: workspace.is_leaderboard_enabled,
+      minimum_anonymity_threshold: workspace.minimum_anonymity_threshold,
     });
     profileForm.setFieldsValue({
       member: {
@@ -144,8 +146,13 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
           >
             <Switch disabled={!hasWriteAccess} />
           </Form.Item>
-
           <If condition={hasWriteAccess}>
+            <Form.Item
+              name="minimum_anonymity_threshold"
+              label="Minimum Anonymity threshold"
+            >
+              <InputNumber className="w-full" min={2} />
+            </Form.Item>
             <Space className="mb-12">
               <p className="text-2xl medium">Offices</p>{" "}
               <Tooltip

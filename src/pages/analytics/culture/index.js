@@ -32,7 +32,6 @@ import {
   BAR_GRAPH_BORDER_COLORS,
   LINE_COUNT_CHART_OPTIONS,
   BAR_GRAPH_BACKGROUND_COLORS,
-  MIN_ANONYMITY_RESPONSE_COUNT,
 } from "../../../constants";
 import {
   getWeeksInMonth,
@@ -46,7 +45,9 @@ import {
   getCultureScorePerCategory,
 } from "actions";
 
-const CultureAnalyticsCard = ({ selectedTeam }) => {
+import AccountHook from "hooks/account";
+
+const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
   const allCultureChartRef = useRef(null);
   const cultureCountChartRef = useRef(null);
 
@@ -68,6 +69,8 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
     useState([]);
 
   const isBarChart = chartType === "bar";
+  const anonymityThreshold =
+    accountData?.workspace?.minimum_anonymity_threshold;
 
   function getRange() {
     let endTs = moment().endOf("month").utc(true).format("X");
@@ -144,7 +147,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         setCultureResponseGraphData(responseData);
         setCultureResponseFilterGraphData(
           responseData.filter(
-            (item) => item.user_response_count > MIN_ANONYMITY_RESPONSE_COUNT
+            (item) => item.user_response_count >= anonymityThreshold
           )
         );
       }
@@ -180,10 +183,12 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 categories[key].results.find(
                   (i) => moment(i.week).format("D") === week.startDay
                 ) || {};
+              labels.add(week.format);
 
-              if (item.avg) {
-                labels.add(week.format);
+              if (item.avg && item.user_response_count >= anonymityThreshold) {
                 dataPoints.push(item.avg);
+              } else {
+                dataPoints.push(0);
               }
             });
           }
@@ -254,6 +259,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
       const dataPointsUniqueUserCounts = [];
 
       const countChartRef = cultureCountChartRef.current.getContext("2d");
+
       if (cultureGraphMonth) {
         const weeks = getWeeksInMonth(
           cultureGraphMonth.format("YYYY"),
@@ -264,28 +270,14 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
             cultureResponseFilterGraphData.find(
               (i) => moment(i.week).format("D") === week.startDay
             ) || {};
-          if (item.avg) {
-            labels.push(week.format);
+          labels.push(week.format);
+
+          if (item.avg && item.user_response_count >= anonymityThreshold) {
             dataPointsCounts.push(item.response_count || 0);
             dataPointsUniqueUserCounts.push(item.user_response_count || 0);
-          }
-        });
-      } else {
-        const months = getMonthsBetweenDates(
-          moment().subtract(1, "years").startOf("month"),
-          moment().endOf("month")
-        );
-        months.forEach((month) => {
-          const item =
-            cultureResponseFilterGraphData.find(
-              (i) =>
-                moment(i.month).format("MM-YYYY") ===
-                moment(month).format("MM-YYYY")
-            ) || {};
-          if (item.avg) {
-            labels.push(moment(month).format("MMM YYYY"));
-            dataPointsCounts.push(item.response_count || 0);
-            dataPointsUniqueUserCounts.push(item.user_response_count || 0);
+          } else {
+            dataPointsCounts.push(0);
+            dataPointsUniqueUserCounts.push(0);
           }
         });
       }
@@ -613,4 +605,4 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
   );
 };
 
-export default CultureAnalyticsCard;
+export default AccountHook(CultureAnalyticsCard);
