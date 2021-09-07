@@ -132,8 +132,8 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
           <Form.Item
             valuePropName="checked"
             label={
-              <Space>
-                <p className="text-2xl medium">Enable leaderboard </p>{" "}
+              <Space size={12}>
+                <p className="text-2xl medium">Enable leaderboard </p>
                 <Tooltip
                   title="Enabling the user board will show the users who are most active 
                 with their feedback without compromising on their anonymity. It is an optional feature"
@@ -153,8 +153,8 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
             >
               <InputNumber className="w-full" min={2} />
             </Form.Item>
-            <Space className="mb-12">
-              <p className="text-2xl medium">Offices</p>{" "}
+            <Space className="mb-12" size={12}>
+              <p className="text-2xl medium">Offices</p>
               <Tooltip
                 title={
                   <div>

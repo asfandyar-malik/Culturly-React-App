@@ -5,6 +5,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import {
   createWorkspaceTeam,
   updateWorkspaceTeam,
+  getWorkspaceRemainingTeamMembers,
   getWorkspaceRemainingTeamManagers,
 } from "actions";
 
@@ -25,17 +26,20 @@ const CreateTeamModal = ({
   selectedTeam,
   onUpdateTeam,
   onClose,
-  members,
 }) => {
   const timezone = accountData?.workspace?.timezone;
 
   const [managers, setManagers] = useState([]);
+  const [members, setMembers] = useState([]);
   const [saving, setSaving] = useState(false);
   const [teamDetail, setTeamDetail] = useState({});
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     if (visible) {
+      getWorkspaceRemainingTeamMembers().then((response) => {
+        setMembers(response.data);
+      });
       getWorkspaceRemainingTeamManagers().then((response) => {
         setManagers(response.data);
       });
@@ -72,12 +76,10 @@ const CreateTeamModal = ({
       width={1000}
       footer={null}
       visible={visible}
-      title="Create new team"
-      onCancel={() => {
-        onClose();
-      }}
-      className="team-create-modal"
       destroyOnClose={true}
+      title="Create new team"
+      onCancel={() => onClose()}
+      className="team-create-modal"
     >
       <Steps current={currentStep}>
         <Step
@@ -125,12 +127,12 @@ const CreateTeamModal = ({
               Check-In
               <Tooltip
                 title={
-                  <div>
+                  <p>
                     Manage the timing of the check-ins that are sent to team
                     members. Culture checks are sent on a weekly basis and
                     happiness checks are sent on a daily basis. Note: Average
                     time to answer all checkins in 52s on a <i>weekly basis</i>.
-                  </div>
+                  </p>
                 }
               >
                 <QuestionCircleOutlined />

@@ -16,7 +16,6 @@ import {
   Popover,
   Button,
   Checkbox,
-  message,
   Radio,
 } from "antd";
 import {
@@ -36,11 +35,7 @@ import {
   LINE_COUNT_CHART_OPTIONS,
   BAR_GRAPH_BACKGROUND_COLORS,
 } from "../../../constants";
-import {
-  getWeeksInMonth,
-  disabledFutureDate,
-  getMonthsBetweenDates,
-} from "utils";
+import { getWeeksInMonth, disabledFutureDate } from "utils";
 import {
   getCultureScore,
   getCultureGraph,
@@ -59,7 +54,6 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
   const [chartType, setChartType] = useState("line");
   const [cultureScore, setCultureScore] = useState({});
   const [cultureItems, setCultureItems] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [cultureGraphFilter, setCultureGraphFilter] = useState([]);
   const [overallcultureScore, setOverallcultureScore] = useState(0);
   const [allCultureGraphData, setAllCultureGraphData] = useState([]);
@@ -126,7 +120,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
         const { data } = response;
         Object.keys(data.categories).forEach((key) => {
           (data.categories[key]?.questions || []).forEach((item) => {
-            if (item.score) {
+            if (typeof item.score !== "undefined") {
               totalResponses += 1;
               totalScore += item.score;
             }
@@ -142,20 +136,18 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
 
   useEffect(() => {
     const { startTs, endTs } = getRange();
-    getCultureGraph(selectedTeam, startTs, endTs, selectedCategory).then(
-      (response) => {
-        const { data } = response;
-        const responseData = data?.categories?.all?.results || [];
-        setAllCultureGraphData(data);
-        setCultureResponseGraphData(responseData);
-        setCultureResponseFilterGraphData(
-          responseData.filter(
-            (item) => item.user_response_count >= anonymityThreshold
-          )
-        );
-      }
-    );
-  }, [selectedCategory, cultureGraphMonth, selectedTeam]);
+    getCultureGraph(selectedTeam, startTs, endTs).then((response) => {
+      const { data } = response;
+      const responseData = data?.categories?.all?.results || [];
+      setAllCultureGraphData(data);
+      setCultureResponseGraphData(responseData);
+      setCultureResponseFilterGraphData(
+        responseData.filter(
+          (item) => item.user_response_count >= anonymityThreshold
+        )
+      );
+    });
+  }, [cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     const { categories = {} } = allCultureGraphData;
@@ -191,7 +183,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
               if (item.avg && item.user_response_count >= anonymityThreshold) {
                 dataPoints.push(item.avg);
               } else {
-                dataPoints.push(0);
+                dataPoints.push(NaN);
               }
             });
           }
@@ -279,8 +271,8 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
             dataPointsCounts.push(item.response_count || 0);
             dataPointsUniqueUserCounts.push(item.user_response_count || 0);
           } else {
-            dataPointsCounts.push(0);
-            dataPointsUniqueUserCounts.push(0);
+            dataPointsCounts.push(NaN);
+            dataPointsUniqueUserCounts.push(NaN);
           }
         });
       }
@@ -337,27 +329,6 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
     }
     return color;
   }
-
-  const graphOptions = [
-    {
-      label: (
-        <div>
-          <LineChartOutlined />
-          &nbsp;&nbsp; Line Graph
-        </div>
-      ),
-      value: "line",
-    },
-    {
-      label: (
-        <div>
-          <BarChartOutlined />
-          &nbsp;&nbsp; Bar Graph
-        </div>
-      ),
-      value: "bar",
-    },
-  ];
 
   return (
     <Row>
@@ -469,11 +440,30 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
                 </Popover>
                 <Space>
                   <Radio.Group
-                    options={graphOptions}
-                    onChange={(e) => setChartType(e.target.value)}
-                    defaultValue={"line"}
                     optionType="button"
+                    defaultValue="line"
+                    options={[
+                      {
+                        label: (
+                          <Space size={12}>
+                            <LineChartOutlined />
+                            <p>Line Graph</p>
+                          </Space>
+                        ),
+                        value: "line",
+                      },
+                      {
+                        label: (
+                          <Space size={12}>
+                            <BarChartOutlined />
+                            <p>Bar Graph</p>
+                          </Space>
+                        ),
+                        value: "bar",
+                      },
+                    ]}
                     disabled={disableGraphDropdown}
+                    onChange={(e) => setChartType(e.target.value)}
                   />
                   <Tooltip title="Display results in a line chart or bar chart">
                     <QuestionCircleOutlined />

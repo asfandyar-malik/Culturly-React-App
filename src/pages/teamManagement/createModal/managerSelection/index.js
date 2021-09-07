@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Col, Row, Space, Button, Tooltip, message } from "antd";
+import { Col, Row, Space, Button, Tooltip, message, Input } from "antd";
 import {
   DeleteOutlined,
   PlusCircleOutlined,
@@ -33,7 +33,25 @@ const TeamManagerSelectionStep = ({
       );
       setFilterManagers([...newManagers]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedManagers]);
+
+  function onSearch(value) {
+    let newManagers = [...allManagers];
+    newManagers = newManagers.filter(
+      (item) => !selectedManagers.map((i) => i.id).includes(item.id)
+    );
+    if (value) {
+      const searchManagers = newManagers.filter(
+        (item) =>
+          item.name.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+          item.display_name.toLowerCase().indexOf(value.toLowerCase()) >= 0
+      );
+      setFilterManagers([...searchManagers]);
+    } else {
+      setFilterManagers([...newManagers]);
+    }
+  }
 
   const onDeselectManager = (member) => {
     const index = selectedManagers.findIndex((item) => item.id === member.id);
@@ -78,6 +96,14 @@ const TeamManagerSelectionStep = ({
   return (
     <Row gutter={24}>
       <Col span={8}>
+        <Input.Search
+          size="large"
+          className="mb-24"
+          style={{ width: "240px" }}
+          placeholder="Enter to search managers"
+          onSearch={(value) => onSearch(value)}
+          onChange={(e) => onSearch(e.target.value)}
+        />
         <div className="mb-12">
           <Tooltip
             title="Managers have access to viewing Analytics, managing Team members, 
@@ -88,53 +114,61 @@ const TeamManagerSelectionStep = ({
               <QuestionCircleOutlined />
             </Space>
           </Tooltip>
-          {filterManagers.length ? (
-            filterManagers.map((item) => {
-              return (
-                <Space className="member-list-item" key={item.id}>
-                  <div>
-                    <Space>
-                      <img src={item.avatar} />
-                      <p>{item.display_name || item.name}</p>
-                    </Space>
-                  </div>
-                  <div>
-                    <PlusCircleOutlined
-                      onClick={() =>
-                        setSelectedManagers([...selectedManagers, item])
-                      }
-                    />
-                  </div>
-                </Space>
-              );
-            })
-          ) : (
-            <p>No members</p>
-          )}
+          <Choose>
+            <When condition={filterManagers.length}>
+              {filterManagers.map((item) => {
+                const name = item.display_name || item.name;
+                return (
+                  <Space className="member-list-item" key={item.id}>
+                    <div>
+                      <Space>
+                        <img src={item.avatar} alt={name} />
+                        <p>{name}</p>
+                      </Space>
+                    </div>
+                    <div>
+                      <PlusCircleOutlined
+                        onClick={() =>
+                          setSelectedManagers([...selectedManagers, item])
+                        }
+                      />
+                    </div>
+                  </Space>
+                );
+              })}
+            </When>
+            <Otherwise>
+              <p>No members</p>
+            </Otherwise>
+          </Choose>
         </div>
       </Col>
       <Col span={16}>
         <div>
           <p>Managers</p>
-          {selectedManagers.length ? (
-            selectedManagers.map((item) => {
-              return (
-                <Space className="member-list-item" key={item.id}>
-                  <div>
-                    <Space>
-                      <img src={item.avatar} />
-                      <p>{item.display_name || item.name}</p>
-                    </Space>
-                  </div>
-                  <div>
-                    <DeleteOutlined onClick={() => onDeselectManager(item)} />
-                  </div>
-                </Space>
-              );
-            })
-          ) : (
-            <p>No managers selected</p>
-          )}
+          <Choose>
+            <When condition={selectedManagers.length}>
+              {selectedManagers.map((item) => {
+                const name = item.display_name || item.name;
+                return (
+                  <Space className="member-list-item" key={item.id}>
+                    <div>
+                      <Space>
+                        <img src={item.avatar} alt={name} />
+                        <p>{name}</p>
+                      </Space>
+                    </div>
+                    <div>
+                      <DeleteOutlined onClick={() => onDeselectManager(item)} />
+                    </div>
+                  </Space>
+                );
+              })}
+            </When>
+            <Otherwise>
+              <p>No managers selected</p>
+            </Otherwise>
+          </Choose>
         </div>
         <Space size={20} className="mt-20">
           <Button

@@ -133,6 +133,10 @@ export const getWorkspaceTeams = (fields) => {
   return instance.get(path);
 };
 
+export const getCanCreateWorkspaceTeam = () => {
+  return instance.get(endpoints.CAN_CREATE_WORKSPACE_TEAM_API_PATH);
+};
+
 export const createWorkspaceTeam = (payload) => {
   return instance.post(endpoints.WORKSPACE_TEAMS_BASE_API_PATH, payload);
 };

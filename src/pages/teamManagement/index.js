@@ -16,10 +16,10 @@ import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { isEmpty } from "_dash";
 import {
+  getSurveys,
   getWorkspaceTeams,
   deleteWorkspaceTeam,
-  getSurveys,
-  getWorkspaceRemainingTeamMembers,
+  getCanCreateWorkspaceTeam,
 } from "actions";
 
 import AccountHook from "hooks/account";
@@ -40,10 +40,15 @@ const TeamManagement = ({ accountData }) => {
   const [canCreateTeam, setCreateTeam] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
-  const [members, setMembers] = useState([]);
 
   const isNewInstalled = location.state?.is_new_installed || false;
   const hasWriteAccess = member?.is_admin || member?.is_manager;
+
+  function checkCanCreate() {
+    getCanCreateWorkspaceTeam().then((response) => {
+      setCreateTeam(response.data.can_create_team);
+    });
+  }
 
   useEffect(() => {
     if (!createModalVisible) {
@@ -70,38 +75,13 @@ const TeamManagement = ({ accountData }) => {
         const { data } = response;
         setLoading(false);
         setTeams(data.results);
-        setCreateTeam(data.can_create_team);
       });
       getSurveys().then((response) => {
         setSurveys(response.data);
       });
+      checkCanCreate();
     }
   }, [isLoggedIn]);
-
-  function handleCreateTeam() {
-    message.loading({
-      content: "Loading members and managers...",
-      duration: 0,
-      key: "loader",
-    });
-    getWorkspaceRemainingTeamMembers().then((response) => {
-      if (response.data && response.data.length > 0) {
-        message.success({
-          content: "Members and managers loaded",
-          duration: 3,
-          key: "loader",
-        });
-        setMembers(response.data);
-        setCreateModalVisible(true);
-      } else {
-        message.error({
-          content: "No team member available",
-          duration: 3,
-          key: "loader",
-        });
-      }
-    });
-  }
 
   function onAdminAddModalClose() {
     setAddAdminModalVisible(false);
@@ -115,6 +95,7 @@ const TeamManagement = ({ accountData }) => {
     } else {
       teams = [newTeam, ...teams];
     }
+    checkCanCreate();
     setTeams([...teams]);
   }
 
@@ -122,6 +103,7 @@ const TeamManagement = ({ accountData }) => {
     deleteWorkspaceTeam(team.id).then((response) => {
       const index = teams.findIndex((item) => item.id === team.id);
       if (index > -1) {
+        checkCanCreate();
         teams.splice(index, 1);
         setTeams([...teams]);
         message.success("Team deleted");
@@ -144,7 +126,7 @@ const TeamManagement = ({ accountData }) => {
                 <Button
                   type="primary"
                   disabled={!canCreateTeam}
-                  onClick={handleCreateTeam}
+                  onClick={() => setCreateModalVisible(true)}
                 >
                   Create team
                 </Button>
@@ -252,7 +234,6 @@ const TeamManagement = ({ accountData }) => {
         visible={createModalVisible}
         onUpdateTeam={(data) => onTeamCreate(data)}
         onClose={() => setCreateModalVisible(false)}
-        members={members}
       />
       <CreateAdminModal
         visible={addAdminModalVisible}

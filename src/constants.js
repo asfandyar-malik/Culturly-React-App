@@ -106,9 +106,9 @@ export const LINE_CHART_OPTIONS = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}%`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }%`;
         },
       },
     },
@@ -159,9 +159,9 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}%`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }%`;
         },
       },
     },
@@ -207,9 +207,9 @@ export const BAR_CHART_OPTION = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }`;
         },
       },
     },
@@ -246,9 +246,9 @@ export const LINE_COUNT_CHART_OPTIONS = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }`;
         },
       },
     },

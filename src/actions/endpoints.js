@@ -26,6 +26,7 @@ export const SLACK_ALL_MEMBERS_API_PATH = `${SLACK_MEMBERS_BASE_API_PATH}all_mem
 export const SLACK_BULK_SET_ADMIN_API_PATH = `${SLACK_MEMBERS_BASE_API_PATH}bulk_set_admins/`;
 export const WORKSPACE_TEAMS_BASE_API_PATH = "slack_bot/teams/";
 export const WORKSPACE_TEAM_UPDATE_API_PATH = "slack_bot/teams/{}/";
+export const CAN_CREATE_WORKSPACE_TEAM_API_PATH = "slack_bot/teams/can_create_team/";
 export const WORKPSACE_TEAM_LEADERBOARD_SCORE_API_PATH =
   "slack_bot/teams/leaderboard_score/";
 export const WORKPSACE_TEAM_HAPPINESS_SCORE_API_PATH =
