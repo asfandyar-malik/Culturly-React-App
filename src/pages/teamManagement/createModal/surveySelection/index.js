@@ -25,7 +25,7 @@ const TeamSurveySelectionStep = ({
     let initalValues = {};
     const teamSurveys = teamDetail.surveys || [];
 
-    const surveyGroup = groupBy(surveys?.results, (c) => c.survey_type);
+    const surveyGroup = groupBy(surveys, (c) => c.survey_type);
     const pulseSurveys = groupBy(teamSurveys, (c) => c.is_pulse_check)["true"];
 
     if (pulseSurveys && pulseSurveys.length) {
@@ -50,7 +50,7 @@ const TeamSurveySelectionStep = ({
       }
     }
 
-    (surveys?.results || []).map((item) => {
+    (surveys || []).forEach((item) => {
       const surveyItem = teamSurveys.find((i) => i.survey.id === item.id) || {};
       const surveyTime = getFormatTimezoneTime(
         surveyItem.survey_time || item.survey_time,
@@ -78,7 +78,7 @@ const TeamSurveySelectionStep = ({
     const { pulse, ...happinessValues } = values;
     const pulseSurveys = surveyGroup.pulse;
 
-    Object.keys(happinessValues).map((key) => {
+    Object.keys(happinessValues).forEach((key) => {
       const item = values[key];
       const surveyTime = getWorkspaceUTCTime(item.survey_time);
       surveyArray.push({
@@ -92,7 +92,7 @@ const TeamSurveySelectionStep = ({
       });
     });
 
-    Object.keys(pulseSurveys).map((key) => {
+    Object.keys(pulseSurveys).forEach((key) => {
       const item = pulseSurveys[key];
       const surveyTime = getWorkspaceUTCTime(pulse.survey_time);
       const surveyItem =
