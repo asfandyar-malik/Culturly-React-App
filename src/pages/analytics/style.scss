@@ -1,16 +1,6 @@
+@import "../../styles/variable.scss";
+
 .analytics-container {
-  .happiness-col {
-    .ant-card:first-child {
-      background-color: rgba(250, 173, 20, 0.27);
-    }
-  }
-
-  .culture-col {
-    .ant-card:first-child {
-      background-color: #7e68eb80;
-    }
-  }
-
   .ant-badge {
     .ant-badge-status-dot {
       width: 1.2rem;
@@ -21,9 +11,20 @@
     }
   }
   .ant-collapse {
+    border-radius: 8px;
     .ant-collapse-header {
       font-weight: 600;
       text-transform: capitalize;
+    }
+    .ant-collapse-item {
+      border-bottom-color: $BORDER_COLOR;
+      &:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+      &:last-child {
+        border-bottom: 0;
+        border-radius: 0 0 8px 8px;
+      }
     }
   }
   .empty-container {
@@ -33,5 +34,28 @@
     &.no-top-border {
       border-top: 0;
     }
+    &.no-bottom-border {
+      border-bottom: 0;
+    }
+  }
+  .header-card {
+    box-shadow: 0px 21px 73px rgba(48, 202, 236, 0.07);
+  }
+  .ant-progress {
+    &.ant-progress-circle {
+      .ant-progress-inner {
+        box-shadow: 0px 47.76px 55.72px rgba(52, 149, 239, 0.25);
+      }
+      .ant-progress-text {
+        font-weight: 700;
+        color: $PRIMARY_COLOR;
+      }
+    }
+  }
+  .analytic-card {
+    border: 0;
+    border-radius: 12px;
+    color: $PRIMARY_COLOR;
+    box-shadow: 0px 18px 79px rgba(0, 0, 0, 0.05);
   }
 }

@@ -1,6 +1,8 @@
+@import "../../styles/variable.scss";
+
 .settings-view {
   .delete-icon {
     font-size: 1.8rem;
-    color: #30caec;
+    color: $PRIMARY_COLOR;
   }
 }

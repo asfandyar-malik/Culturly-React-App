@@ -10,6 +10,7 @@ import {
   DatePicker,
   Tooltip,
   Empty,
+  Form,
 } from "antd";
 import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
@@ -143,10 +144,10 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
             {
               fill: true,
               data: dataPointsCounts,
-              borderColor: "#ffde62",
+              borderColor: "#7D68EB",
               label: "Number of Responses",
-              backgroundColor: "#ffde6267",
-              pointBackgroundColor: "#ffde62",
+              backgroundColor: "#7D68EB30",
+              pointBackgroundColor: "#7D68EB",
             },
           ],
         },
@@ -163,9 +164,10 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
     <Row>
       <Col span={24} className="mt-12 happiness-col">
         <Card
+          className="header-card"
           title={
             <Tooltip title="Your Happiness score is calculated using the daily happiness check">
-              <Space size={6}>
+              <Space size={6} className="text-xl medium">
                 <span>Happiness score</span>
                 <QuestionCircleOutlined />
               </Space>
@@ -181,7 +183,7 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
               />
             </Col>
             <Col>
-              <div className="mb-12">
+              <div className="mb-12 text-right text-xl medium">
                 <Space>
                   <span>How does score compare?</span>
                   <Tooltip title="A comparison to your Happiness Score of the previous month and previous week">
@@ -189,14 +191,14 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
                   </Tooltip>
                 </Space>
               </div>
-              <Space>
-                <Card>
+              <Space size={16}>
+                <Card className="analytic-card">
                   <p className="text-xl medium">Last week</p>
                   <p className="text-5xl medium">
                     {roundOff(happinessScore.last_week_score)}%
                   </p>
                 </Card>
-                <Card>
+                <Card className="analytic-card">
                   <p className="text-xl medium">Avg. last month</p>
                   <p className="text-5xl medium">
                     {roundOff(happinessScore.last_month_score)}%
@@ -209,32 +211,40 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
         <Card
           className="no-top-border"
           extra={
-            <Space size={16}>
-              <DatePicker
-                format="MMM"
-                picker="month"
-                allowClear={false}
-                style={{ width: 200 }}
-                value={happinessGraphMonth}
-                disabledDate={disabledFutureDate}
-                onChange={(value) => {
-                  setHappinessGraphWeek();
-                  setHappinessGraphMonth(value);
-                }}
-              />
-              <DatePicker
-                picker="week"
-                format="DD-MMM"
-                allowClear={false}
-                style={{ width: 200 }}
-                value={happinessGraphWeek}
-                disabledDate={disabledFutureDate}
-                onChange={(value) => {
-                  setHappinessGraphMonth();
-                  setHappinessGraphWeek(value);
-                }}
-              />
-            </Space>
+            <Form>
+              <Space size={16}>
+                <Form.Item className="no-margin">
+                  <DatePicker
+                    size="large"
+                    format="MMM"
+                    picker="month"
+                    allowClear={false}
+                    style={{ width: 200 }}
+                    value={happinessGraphMonth}
+                    disabledDate={disabledFutureDate}
+                    onChange={(value) => {
+                      setHappinessGraphWeek();
+                      setHappinessGraphMonth(value);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item className="no-margin">
+                  <DatePicker
+                    size="large"
+                    picker="week"
+                    format="DD-MMM"
+                    allowClear={false}
+                    style={{ width: 200 }}
+                    value={happinessGraphWeek}
+                    disabledDate={disabledFutureDate}
+                    onChange={(value) => {
+                      setHappinessGraphMonth();
+                      setHappinessGraphWeek(value);
+                    }}
+                  />
+                </Form.Item>
+              </Space>
+            </Form>
           }
         >
           <div>
@@ -256,12 +266,18 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-          <Tooltip title="The Response Rate displays how actively team members share responses">
-            <Space size={6} className="mt-32 mb-16">
-              <span>Response Rate</span>
-              <QuestionCircleOutlined />
-            </Space>
-          </Tooltip>
+        </Card>
+        <Card
+          className="no-top-border"
+          title={
+            <Tooltip title="The Response Rate displays how actively team members share responses">
+              <Space size={6} className="text-xl medium">
+                <span>Response Rate</span>
+                <QuestionCircleOutlined />
+              </Space>
+            </Tooltip>
+          }
+        >
           <div>
             <Choose>
               <When condition={happinessFilterGraphData.length}>

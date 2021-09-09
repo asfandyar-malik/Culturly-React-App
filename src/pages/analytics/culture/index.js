@@ -17,6 +17,7 @@ import {
   Button,
   Checkbox,
   Radio,
+  Form,
 } from "antd";
 import {
   CaretDownOutlined,
@@ -31,7 +32,6 @@ import {
   BAR_CHART_OPTION,
   CATEGORY_GRAPH_LABEL,
   CATEGORY_GRAPH_COLOR,
-  BAR_GRAPH_BORDER_COLORS,
   LINE_COUNT_CHART_OPTIONS,
   BAR_GRAPH_BACKGROUND_COLORS,
 } from "../../../constants";
@@ -202,9 +202,9 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
           fill: true,
           borderWidth: 1,
           data: dataPoints,
-          barThickness: 15,
+          barThickness: 16,
+          borderColor: "#ffffff",
           label: CATEGORY_GRAPH_LABEL[key],
-          borderColor: BAR_GRAPH_BORDER_COLORS[key],
           backgroundColor: BAR_GRAPH_BACKGROUND_COLORS[key],
         };
 
@@ -287,20 +287,22 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
               borderWidth: 1,
               barThickness: 15,
               data: dataPointsCounts,
-              borderColor: "#7d68eb",
+              borderColor: "#ffffff",
               label: "Number of responses",
-              pointBackgroundColor: "#7d68eb",
-              backgroundColor: "rgba(125, 104, 235, 0.4)",
+              pointBackgroundColor: "#7721F1",
+              backgroundColor: `rgba(119, 33, 241, ${
+                isBarChart ? "1" : "0.3"
+              })`,
             },
             {
               fill: true,
               borderWidth: 1,
               barThickness: 15,
-              borderColor: "#30CAEC",
-              pointBackgroundColor: "#30CAEC",
+              borderColor: "#ffffff",
+              pointBackgroundColor: "#FD625D",
               data: dataPointsUniqueUserCounts,
               label: "Number of People answering",
-              backgroundColor: "rgba(48, 202, 236, 0.4)",
+              backgroundColor: `rgba(253, 98, 93, ${isBarChart ? "1" : "0.3"})`,
             },
           ],
         },
@@ -334,9 +336,10 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
     <Row>
       <Col span={24} className="mt-12 culture-col">
         <Card
+          className="header-card"
           title={
             <Tooltip title="Your Culture Score is calculated using the weekly culture check">
-              <Space>
+              <Space className="text-xl medium">
                 <span>Culture score</span>
                 <QuestionCircleOutlined />
               </Space>
@@ -347,12 +350,14 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
             <Col>
               <Progress
                 type="circle"
+                strokeWidth={10}
+                strokeColor="#7D68EB"
                 format={(percent) => `${percent}%`}
                 percent={roundOff(cultureScore.current_month_score)}
               />
             </Col>
             <Col>
-              <div className="mb-12">
+              <div className="mb-12 text-xl medium">
                 <Space>
                   <span>How does score compare?</span>
                   <Tooltip title="A comparison to your Culture Score of the previous month">
@@ -360,8 +365,8 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
                   </Tooltip>
                 </Space>
               </div>
-              <Space>
-                <Card>
+              <Space size={16}>
+                <Card className="analytic-card">
                   <p className="text-xl medium">Avg. last month</p>
                   <p className="text-5xl medium">
                     {roundOff(cultureScore.last_month_score)}%
@@ -374,23 +379,26 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
 
         <Card
           className="no-top-border"
+          title={<p className="text-xl medium">All Culture Categories</p>}
           extra={
-            <DatePicker
-              format="MMM"
-              picker="month"
-              style={{ width: 200 }}
-              value={cultureGraphMonth}
-              disabledDate={disabledFutureDate}
-              onChange={(value) => setcultureGraphMonth(value)}
-            />
+            <Form>
+              <Form.Item className="no-margin">
+                <DatePicker
+                  size="large"
+                  format="MMM"
+                  picker="month"
+                  style={{ width: 200 }}
+                  value={cultureGraphMonth}
+                  disabledDate={disabledFutureDate}
+                  onChange={(value) => setcultureGraphMonth(value)}
+                />
+              </Form.Item>
+            </Form>
           }
         >
-          <Row justify="space-between">
-            <Col>
-              <p>All Culture Categories</p>
-            </Col>
-            <Col>
-              <Space size={15}>
+          <Row justify="end" className="mb-20">
+            <Col span={24} className="text-right">
+              <Space size={16}>
                 <Popover
                   placement="bottom"
                   content={
@@ -501,14 +509,17 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
           </div>
         </Card>
 
-        <Card className="no-top-border">
-          <Tooltip title="The response rate displays how actively team members share responses">
-            <Space>
-              <span>Response Rate</span>
-              <QuestionCircleOutlined />
-            </Space>
-          </Tooltip>
-
+        <Card
+          className="no-top-border"
+          title={
+            <Tooltip title="The response rate displays how actively team members share responses">
+              <Space className="text-xl medium">
+                <span>Response Rate</span>
+                <QuestionCircleOutlined />
+              </Space>
+            </Tooltip>
+          }
+        >
           <div className="mt-8">
             <Choose>
               <When condition={cultureResponseFilterGraphData.length}>
@@ -539,14 +550,14 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
               team member to calculate the culture score. The questions change weekly to guanrantee
                variation and are repeated monthly to guarantee a scientific data analysis"
             >
-              <Space>
+              <Space className="text-xl medium">
                 <span>Culture score</span>
                 <QuestionCircleOutlined />
               </Space>
             </Tooltip>
           }
         >
-          <Row justify="space-between" className="text-2xl mb-12">
+          <Row justify="space-between" className="text-2xl mb-20">
             <Col className="font-medium">Overall culture score</Col>
             <Col className="font-medium">
               <Badge

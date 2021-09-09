@@ -65,15 +65,15 @@ export const CATEGORY_GRAPH_LABEL = {
 };
 
 export const BAR_GRAPH_BACKGROUND_COLORS = {
-  all: "rgba(125, 104, 235, 0.2)",
-  belonging: "rgba(39, 205, 236, 0.2)",
-  engagement: "rgba(252, 76, 138, 0.2)",
-  "well-being": "rgba(37, 221, 204, 0.2)",
-  feedback: "rgba(87, 226, 180, 0.2)",
-  "personal-growth": "rgba(130, 229, 153, 0.2)",
-  recognition: "rgba(213, 228, 108, 0.2)",
-  relationships: "rgba(255, 222, 98, 0.2)",
-  satisfaction: "rgba(255, 222, 98, 0.2)",
+  all: "#7721F1",
+  belonging: "#FD625D",
+  engagement: "#FFDE62",
+  feedback: "#727474",
+  recognition: "#1D2F34",
+  "well-being": "#25ddcc",
+  relationships: "#30CAEC",
+  satisfaction: "#ffde62",
+  "personal-growth": "#5BB854",
 };
 
 export const BAR_GRAPH_BORDER_COLORS = {
