@@ -41,15 +41,15 @@ export const SURVEY_TYPE_DISPLAY_MAPPING = {
 };
 
 export const CATEGORY_GRAPH_COLOR = {
-  all: "#7d68eb",
-  belonging: "#27cdec",
-  engagement: "#fc4c8a",
+  all: "#7721F1",
+  belonging: "#FD625D",
+  engagement: "#FFDE62",
+  feedback: "#727474",
+  recognition: "#1D2F34",
   "well-being": "#25ddcc",
-  feedback: "#57e2b4",
-  "personal-growth": "#82e599",
-  recognition: "#ace680",
-  relationships: "#d5e46c",
+  relationships: "#30CAEC",
   satisfaction: "#ffde62",
+  "personal-growth": "#5BB854",
 };
 
 export const CATEGORY_GRAPH_LABEL = {

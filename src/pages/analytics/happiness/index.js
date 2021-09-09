@@ -126,10 +126,10 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
             {
               fill: true,
               data: dataPoints,
-              borderColor: "#30CAEC",
+              borderColor: "#7D68EB",
               label: "Happiness Score",
-              backgroundColor: "#30CAEC30",
-              pointBackgroundColor: "#30CAEC",
+              backgroundColor: "#7D68EB30",
+              pointBackgroundColor: "#7D68EB",
             },
           ],
         },

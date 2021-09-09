@@ -192,7 +192,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
         const lineDataset = {
           fill: true,
           data: dataPoints,
-          backgroundColor: "#27cdec02",
+          backgroundColor: "#7D68EB02",
           label: CATEGORY_GRAPH_LABEL[key],
           borderColor: CATEGORY_GRAPH_COLOR[key],
           pointBackgroundColor: CATEGORY_GRAPH_COLOR[key],
@@ -285,7 +285,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
             {
               fill: true,
               borderWidth: 1,
-              barThickness: 15,
+              barThickness: 16,
               data: dataPointsCounts,
               borderColor: "#ffffff",
               label: "Number of responses",
@@ -297,7 +297,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
             {
               fill: true,
               borderWidth: 1,
-              barThickness: 15,
+              barThickness: 16,
               borderColor: "#ffffff",
               pointBackgroundColor: "#FD625D",
               data: dataPointsUniqueUserCounts,
