@@ -40,6 +40,8 @@ const TeamBasicInformationStep = ({ saving, teamDetail, onProceed }) => {
         ]}
       >
         <Select
+          size="large"
+          placeholder="Select category"
           dropdownClassName="team-selection-dropdown"
           dropdownRender={(menu) => (
             <div>

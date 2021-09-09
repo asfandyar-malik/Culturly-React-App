@@ -73,7 +73,7 @@ const CreateTeamModal = ({
 
   return (
     <Modal
-      width={1000}
+      width={900}
       footer={null}
       visible={visible}
       destroyOnClose={true}
@@ -141,7 +141,7 @@ const CreateTeamModal = ({
           }
         />
       </Steps>
-      <div className="mt-24">
+      <div className="steps-content">
         <Choose>
           <When condition={currentStep === 0}>
             <TeamBasicInformationStep
@@ -179,8 +179,8 @@ const CreateTeamModal = ({
             />
           </When>
           <Otherwise>
-            <div className="mar-t-24 text-center">
-              <p className="font-bold text-xl mar-b-12">
+            <div className="mt-24 text-center">
+              <p className="text-3xl mb-12">
                 Team created successfully
               </p>
               <Button onClick={() => onClose()}>Close</Button>

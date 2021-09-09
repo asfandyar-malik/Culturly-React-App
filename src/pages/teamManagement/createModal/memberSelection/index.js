@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Col, Row, Space, Button, Tooltip, message, Input } from "antd";
+import { Col, Row, Space, Button, Tooltip, message, Input, Avatar } from "antd";
 import {
   DeleteOutlined,
   PlusCircleOutlined,
@@ -92,88 +92,81 @@ const TeamMemberSelectionStep = ({
   }
 
   return (
-    <Row gutter={24}>
+    <Row gutter={32}>
       <Col span={8}>
+        <Tooltip
+          title="Members receive Mood Check Survey and Culture check Survey on Slack. 
+          One member can be part of only one Team"
+        >
+          <Space size={6}>
+            <p className="text-2xl">Select members</p>
+            <QuestionCircleOutlined />
+          </Space>
+        </Tooltip>
         <Input.Search
           size="large"
-          className="mb-24"
-          style={{ width: "240px" }}
+          className="mt-16 mb-16"
+          style={{ width: "100%" }}
           placeholder="Enter to search members"
           onSearch={(value) => onSearch(value)}
           onChange={(e) => onSearch(e.target.value)}
         />
-        <div>
-          <Tooltip
-            title="Members receive Mood Check Survey and Culture check Survey on Slack. 
-          One member can be part of only one Team"
-          >
-            <Space size={6}>
-              <span>Select members</span>
-              <QuestionCircleOutlined />
-            </Space>
-          </Tooltip>
-          <Choose>
-            <When condition={filterMembers.length}>
+        <Choose>
+          <When condition={filterMembers.length}>
+            <div className="members-list">
               {filterMembers.map((item) => {
                 const name = item.display_name || item.name;
                 return (
                   <Space className="member-list-item" key={item.id}>
-                    <div>
-                      <Space>
-                        <img src={item.avatar} alt={name} />
-                        <p>{name}</p>
-                      </Space>
-                    </div>
-                    <div>
-                      <PlusCircleOutlined
-                        onClick={() =>
-                          setSelectedMembers([...selectedMembers, item])
-                        }
-                      />
-                    </div>
+                    <Space>
+                      <Avatar size={44} src={item.avatar} />
+                      <p className="text-xl secondary medium">{name}</p>
+                    </Space>
+                    <PlusCircleOutlined
+                      onClick={() =>
+                        setSelectedMembers([...selectedMembers, item])
+                      }
+                    />
                   </Space>
                 );
               })}
-            </When>
-            <Otherwise>
-              <p>No members</p>
-            </Otherwise>
-          </Choose>
-        </div>
+            </div>
+          </When>
+          <Otherwise>
+            <p className="text-2xl secondary">No members</p>
+          </Otherwise>
+        </Choose>
       </Col>
       <Col span={16}>
-        <div className="mt-12">
-          <p>Members</p>
-          <Choose>
-            <When condition={selectedMembers.length}>
+        <p className="text-2xl">Selected members</p>
+        <Choose>
+          <When condition={selectedMembers.length}>
+            <div className="selected-item-list">
               {selectedMembers.map((item) => {
                 const name = item.display_name || item.name;
                 return (
                   <Space className="member-list-item" key={item.id}>
-                    <div>
-                      <Space>
-                        <img src={item.avatar} alt={name} />
-                        <p>{name}</p>
-                      </Space>
-                    </div>
-                    <div>
-                      <DeleteOutlined onClick={() => onDeselectMember(item)} />
-                    </div>
+                    <Space>
+                      <Avatar size={44} src={item.avatar} />
+                      <p className="text-xl secondary medium">{name}</p>
+                    </Space>
+                    <DeleteOutlined onClick={() => onDeselectMember(item)} />
                   </Space>
                 );
               })}
-            </When>
-            <Otherwise>
-              <p>No members selected</p>
-            </Otherwise>
-          </Choose>
-        </div>
-        <Space size={20} className="mt-20">
+            </div>
+          </When>
+          <Otherwise>
+            <p className="text-2xl secondary">No members selected</p>
+          </Otherwise>
+        </Choose>
+        <Space size={20} className="mt-24">
           <Button
-            type="primary"
             size="large"
+            type="primary"
             loading={saving}
             onClick={() => onSubmit()}
+            disabled={!selectedMembers.length}
           >
             Continue
           </Button>

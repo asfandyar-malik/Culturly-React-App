@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { Button, Card, Form, Space, Tooltip, Input } from "antd";
-
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, Space, Input } from "antd";
 
 import { isEmpty, groupBy } from "_dash";
 import { getFormatTimezoneTime } from "utils";
@@ -137,14 +135,6 @@ const TeamSurveySelectionStep = ({
                       key={item.id}
                       bordered={false}
                       className="survey-card"
-                      title={
-                        <Tooltip title={item.name}>
-                          <Space size={6}>
-                            <span>{item.name}</span>
-                            <QuestionCircleOutlined />
-                          </Space>
-                        </Tooltip>
-                      }
                     >
                       <SurveyFormItem
                         timezone={timezone}
@@ -171,7 +161,7 @@ const TeamSurveySelectionStep = ({
         );
       })}
       <Form.Item noStyle>
-        <Space size={20} className="mt-20">
+        <Space size={20} className="mt-24">
           <Button
             size="large"
             type="primary"

@@ -115,6 +115,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
           <Form.Item label="Timezone" name="timezone">
             <Select
               showSearch
+              size="large"
               disabled={!hasWriteAccess}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -151,7 +152,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
               name="minimum_anonymity_threshold"
               label="Minimum Anonymity threshold"
             >
-              <InputNumber className="w-full" min={2} />
+              <InputNumber size="large" className="w-full" min={2} />
             </Form.Item>
             <Space className="mb-12" size={12}>
               <p className="text-2xl medium">Offices</p>
@@ -196,6 +197,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                           >
                             <Select
                               showSearch
+                              size="large"
                               style={{ width: 360 }}
                               optionFilterProp="label"
                               placeholder="Select country"
@@ -217,7 +219,10 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                               })}
                             </Select>
                           </Form.Item>
-                          <MinusCircleOutlined onClick={() => remove(name)} />
+                          <MinusCircleOutlined
+                            className="delete-icon"
+                            onClick={() => remove(name)}
+                          />
                         </Space>
                       </Col>
                       <Col span={24}>
@@ -229,7 +234,11 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                             { required: true, message: "Cities are required" },
                           ]}
                         >
-                          <Select mode="tags" placeholder="Enter cities" />
+                          <Select
+                            size="large"
+                            mode="tags"
+                            placeholder="Enter cities"
+                          />
                         </Form.Item>
                       </Col>
                     </Row>
@@ -237,6 +246,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                   <Form.Item>
                     <Button
                       block
+                      size="large"
                       type="dashed"
                       onClick={() => add()}
                       icon={<PlusOutlined />}
@@ -278,7 +288,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
               { required: true, message: "Office selection is required" },
             ]}
           >
-            <Select showSearch optionFilterProp="value">
+            <Select size="large" showSearch optionFilterProp="value">
               {(workspace.offices || []).map((item) => {
                 return (
                   <Select.OptGroup label={item.country} key={item.country_code}>

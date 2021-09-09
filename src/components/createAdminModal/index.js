@@ -36,6 +36,7 @@ const CreateAdminModal = ({ visible, onClose }) => {
 
   return (
     <Modal
+      width={500}
       okText="Proceed"
       cancelText="Skip"
       visible={visible}
@@ -43,8 +44,8 @@ const CreateAdminModal = ({ visible, onClose }) => {
       onCancel={() => onClose()}
       onOk={() => form.submit()}
       title={
-        <Space>
-          Who are the admins of your account?
+        <div className="text-left">
+          <span>Who are the admins of your account?</span>
           <Tooltip
             title={
               <div>
@@ -58,9 +59,9 @@ const CreateAdminModal = ({ visible, onClose }) => {
               </div>
             }
           >
-            <QuestionCircleOutlined />
+            <QuestionCircleOutlined style={{ paddingLeft: "0.8rem" }} />
           </Tooltip>
-        </Space>
+        </div>
       }
     >
       <Form
