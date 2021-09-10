@@ -178,6 +178,8 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
             <Col>
               <Progress
                 type="circle"
+                strokeWidth={10}
+                strokeColor="#7D68EB"
                 format={(percent) => `${percent}%`}
                 percent={roundOff(happinessScore.current_week_score)}
               />
