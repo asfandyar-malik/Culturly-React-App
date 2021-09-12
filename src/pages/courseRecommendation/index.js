@@ -1,4 +1,4 @@
-import cohortCourseImg from "assets/images/cohort-courses-coming-soon.png";
+import cohortCourseImg from "assets/images/cohort-courses.png";
 
 const CourseRecommendation = () => {
   return (

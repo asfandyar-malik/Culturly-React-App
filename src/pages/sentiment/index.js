@@ -1,4 +1,4 @@
-import sentimentImg from "assets/images/sentiment_coming_soon.png";
+import sentimentImg from "assets/images/sentiment.png";
 
 const Sentiment = () => {
   return (
