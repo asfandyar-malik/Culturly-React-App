@@ -1,4 +1,4 @@
-import eventImg from "assets/images/event-recommendation.png";
+import eventImg from "assets/images/event-recommendation-coming-soon.png";
 
 const EventRecommendation = () => {
   return (
