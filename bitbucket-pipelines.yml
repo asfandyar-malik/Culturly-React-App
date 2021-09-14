@@ -56,7 +56,6 @@ pipelines:
       - step:
           name: Deploy to Stage
           deployment: staging
-          #trigger: manual
           clone:
             enabled: false
           script:
@@ -98,7 +97,6 @@ pipelines:
       - step:
           name: Deploy to Production
           deployment: production
-          #trigger: manual
           clone:
             enabled: false
           script:

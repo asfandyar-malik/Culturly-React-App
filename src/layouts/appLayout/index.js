@@ -7,9 +7,9 @@ import { AUTHORIZATION_KEY } from "../../constants";
 import { ROUTES, INDEX_ROUTE, SETTINGS_ROUTE, MEMBERS_ROUTE } from "routes";
 
 import AccountHook from "hooks/account";
-import siderImage from "images/sider.png";
-import headerImage from "images/header.png";
-import culturlyLogo from "images/culturly.jpeg";
+import siderImage from "assets/images/sider.png";
+import headerImage from "assets/images/header.png";
+import culturlyLogo from "assets/images/culturly.jpeg";
 
 import RenderRoutes from "components/renderRoutes";
 
@@ -73,7 +73,7 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
   return (
     <>
       <Layout className="app-layout">
-        <Sider theme="light" width={240} id="ant-layout-sider">
+        <Sider theme="light" width={240}>
           <div className="company-logo">
             <img src={culturlyLogo} alt="logo" />
           </div>

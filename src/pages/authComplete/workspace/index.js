@@ -8,7 +8,7 @@ import { authenticateWorkspaceUsingAuth, getUserDetail } from "actions";
 
 import AccountHook from "hooks/account";
 import connectedImg from "assets/images/connected.svg";
-import notConnectedImg from "assets/images/not_connected.svg";
+import notConnectedImg from "assets/images/connection-error.svg";
 
 import "../style.scss";
 
