@@ -7,9 +7,9 @@ import { AUTHORIZATION_KEY } from "../../constants";
 import { ROUTES, INDEX_ROUTE, SETTINGS_ROUTE, MEMBERS_ROUTE } from "routes";
 
 import AccountHook from "hooks/account";
-import siderImage from "images/sider.png";
-import headerImage from "images/header.png";
-import culturlyLogo from "images/culturly.jpeg";
+import siderImage from "assets/images/sider.png";
+import headerImage from "assets/images/header.png";
+import culturlyLogo from "assets/images/culturly.jpeg";
 
 import RenderRoutes from "components/renderRoutes";
 
@@ -71,62 +71,64 @@ const AppLayout = ({ accountData, setAccountData, routes }) => {
   };
 
   return (
-    <Layout className="app-layout">
-      <Sider theme="light" width={240}>
-        <div className="company-logo">
-          <img src={culturlyLogo} alt="logo" />
-        </div>
-        <Menu theme="light" mode="inline" selectedKeys={[selectedMenu.key]}>
-          {sideBarRoutes
-            .filter((item) => !item.isHidden)
-            .map((item) => {
-              return (
-                <Menu.Item key={item.key} onClick={onMenuItemClick}>
-                  <Space>
-                    {item.icon}
-                    {item.title}
+    <>
+      <Layout className="app-layout">
+        <Sider theme="light" width={240}>
+          <div className="company-logo">
+            <img src={culturlyLogo} alt="logo" />
+          </div>
+          <Menu theme="light" mode="inline" selectedKeys={[selectedMenu.key]}>
+            {sideBarRoutes
+              .filter((item) => !item.isHidden)
+              .map((item) => {
+                return (
+                  <Menu.Item key={item.key} onClick={onMenuItemClick}>
+                    <Space>
+                      {item.icon}
+                      {item.title}
+                    </Space>
+                  </Menu.Item>
+                );
+              })}
+          </Menu>
+          <img className="sider-img" src={siderImage} alt="logo" />
+        </Sider>
+        <Layout>
+          <Header>
+            <Row justify="space-between" align="middle">
+              <Col>
+                <p className="text-5xl bolder uppercase">{selectedMenu?.title}</p>
+              </Col>
+              <Col>
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item onClick={() => history.push(MEMBERS_ROUTE)}>
+                        Management
+                      </Menu.Item>
+                      <Menu.Item onClick={() => history.push(SETTINGS_ROUTE)}>
+                        Settings
+                      </Menu.Item>
+                      <Menu.Item onClick={onLogout}>Logout</Menu.Item>
+                    </Menu>
+                  }
+                >
+                  <Space className="text-xl medium">
+                    <Avatar src={accountData.profile_pic} size="large" />
+                    <p>Hi, {accountData.name}</p>
+                    <DownOutlined />
                   </Space>
-                </Menu.Item>
-              );
-            })}
-        </Menu>
-        <img className="sider-img" src={siderImage} alt="logo" />
-      </Sider>
-      <Layout>
-        <Header>
-          <Row justify="space-between" align="middle">
-            <Col>
-              <p className="text-5xl bold uppercase">{selectedMenu?.title}</p>
-            </Col>
-            <Col>
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item onClick={() => history.push(MEMBERS_ROUTE)}>
-                      Management
-                    </Menu.Item>
-                    <Menu.Item onClick={() => history.push(SETTINGS_ROUTE)}>
-                      Settings
-                    </Menu.Item>
-                    <Menu.Item onClick={onLogout}>Logout</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Space className="text-xl medium">
-                  <Avatar src={accountData.profile_pic} size="large" />
-                  <p>Hi, {accountData.name}</p>
-                  <DownOutlined />
-                </Space>
-              </Dropdown>
-            </Col>
-          </Row>
-          <img className="header-img" src={headerImage} alt="header" />
-        </Header>
-        <Content>
-          <RenderRoutes routes={routes} />
-        </Content>
+                </Dropdown>
+              </Col>
+            </Row>
+            <img className="header-img" src={headerImage} alt="header" />
+          </Header>
+          <Content>
+            <RenderRoutes routes={routes} />
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
+    </>
   );
 };
 

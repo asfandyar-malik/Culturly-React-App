@@ -35,17 +35,33 @@ export const getFormatTimezoneTime = (timeString, tz) => {
 export const getWeeksInMonth = (year, month) => {
   let count = 1;
   const weeks = [];
-  const date = dayjs(`${year}-${month}`).startOf("week");
-  const totalDays = parseInt(date.endOf("month").format("D"));
+  const dayjsDate = dayjs(`${year}-${month}`);
+  let startWeekDate = dayjsDate.clone().startOf("week");
 
-  let endDate = date;
+  const totalDays = parseInt(dayjsDate.endOf("month").format("D"));
+
+  let endDate = dayjsDate;
+  let startDate = dayjsDate;
   let remainingDays = totalDays;
-  let startDate = date.format("d") === "0" ? date.add(1, "days") : date;
+
+  if (startWeekDate.format("M") !== month) {
+    startDate = dayjsDate.clone().startOf("month");
+    startWeekDate = dayjsDate.clone().startOf("month");
+  } else {
+    startDate = startWeekDate;
+  }
+
+  if (startDate.format("d") === "0") {
+    startDate = startDate.add(1, "days");
+  }
 
   while (remainingDays > 0) {
-    let daysToMinus = endDate.endOf("week").add(1, "days").diff(date, "days");
+    let daysToMinus = endDate
+      .endOf("week")
+      .add(1, "days")
+      .diff(startWeekDate, "days");
     remainingDays = totalDays - daysToMinus;
-    endDate = date.add(totalDays - remainingDays, "days");
+    endDate = startWeekDate.add(totalDays - remainingDays, "days");
     weeks.push({
       num: count,
       weekName: `Week ${count}`,
@@ -53,10 +69,9 @@ export const getWeeksInMonth = (year, month) => {
       startDay: startDate.format("D"),
       endDate: endDate.format("YYYY-MM-DD"),
       startDate: startDate.format("YYYY-MM-DD"),
-      format: `Week (${startDate.format("Do MMM")} - ${endDate
-        // .clone()
-        // .subtract(1, "day")
-        .format("Do MMM")})`,
+      format: `Week (${startDate.format("Do MMM")} - ${endDate.format(
+        "Do MMM"
+      )})`,
     });
     count += 1;
     startDate = endDate.add(1, "days");

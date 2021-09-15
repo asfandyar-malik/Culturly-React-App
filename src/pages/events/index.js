@@ -6,6 +6,8 @@ import { getEvents } from "actions";
 import { getEventCover } from "utils";
 import { getEventDetailRoute } from "routes";
 
+import "./style.scss";
+
 const Events = () => {
   const history = useHistory();
   const [events, setEvents] = useState([]);

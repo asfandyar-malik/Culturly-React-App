@@ -1,0 +1,24 @@
+.events-listing {
+    .event-list-card {
+        width: 32rem;
+        border-radius: 6px;
+        .ant-card-cover {
+            border-radius: 6px 6px 0 0;
+            img {
+                height: 20rem;
+                object-fit: cover;
+                border-radius: 6px 6px 0 0;
+            }
+        }
+        .ant-card-body {
+            padding: 1.2rem;
+            .description {
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+            }
+        }
+    }
+}

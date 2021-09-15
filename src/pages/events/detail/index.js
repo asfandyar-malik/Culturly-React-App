@@ -7,6 +7,8 @@ import { CulturlyEventDetail } from "culturly-event-detail";
 import { EVENTS_ROUTE, EVENTS_REQUESTS_ROUTE } from "routes";
 import { getEventDetail, getTimezones, registerForEvent } from "actions";
 
+import "./style.scss";
+
 const EventDetail = () => {
   const params = useParams();
   const history = useHistory();

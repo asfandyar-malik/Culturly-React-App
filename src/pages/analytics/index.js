@@ -1,4 +1,4 @@
-import { Select, Tabs } from "antd";
+import { Form, Select, Tabs } from "antd";
 import { useEffect, useState } from "react";
 
 import { getWorkspaceTeams } from "actions";
@@ -22,21 +22,26 @@ const Analytics = () => {
 
   return (
     <div className="analytics-container max-container">
-      <Select
-        value={selectedTeam}
-        style={{ width: 300 }}
-        placeholder="Select a team"
-        onChange={(value) => setSelectedTeam(value)}
-      >
-        <Select.Option value="">All Department</Select.Option>
-        {teams.map((item) => {
-          return (
-            <Select.Option value={item.id} key={item.id}>
-              {item.name}
-            </Select.Option>
-          );
-        })}
-      </Select>
+      <Form>
+        <Form.Item className="no-margin">
+          <Select
+            size="large"
+            value={selectedTeam}
+            style={{ width: 300 }}
+            placeholder="Select a team"
+            onChange={(value) => setSelectedTeam(value)}
+          >
+            <Select.Option value="">All Department</Select.Option>
+            {teams.map((item) => {
+              return (
+                <Select.Option value={item.id} key={item.id}>
+                  {item.name}
+                </Select.Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+      </Form>
       <div className="mt-20">
         <Tabs defaultActiveKey="happiness">
           <TabPane tab="Happiness" key="happiness">

@@ -9,8 +9,14 @@ import {
   Avatar,
   Row,
   Col,
+  Tooltip,
+  InputNumber,
 } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 import {
   getTimezones,
@@ -50,6 +56,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
       offices: workspace.offices,
       timezone: workspace.timezone,
       is_leaderboard_enabled: workspace.is_leaderboard_enabled,
+      minimum_anonymity_threshold: workspace.minimum_anonymity_threshold,
     });
     profileForm.setFieldsValue({
       member: {
@@ -108,6 +115,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
           <Form.Item label="Timezone" name="timezone">
             <Select
               showSearch
+              size="large"
               disabled={!hasWriteAccess}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -124,13 +132,44 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
           </Form.Item>
           <Form.Item
             valuePropName="checked"
-            label="Enable leaderboard"
+            label={
+              <Space size={12}>
+                <p className="text-2xl medium">Enable leaderboard </p>
+                <Tooltip
+                  title="Enabling the user board will show the users who are most active 
+                with their feedback without compromising on their anonymity. It is an optional feature"
+                >
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </Space>
+            }
             name="is_leaderboard_enabled"
           >
             <Switch disabled={!hasWriteAccess} />
           </Form.Item>
           <If condition={hasWriteAccess}>
-            <p className="text-2xl medium mb-12">Offices</p>
+            <Form.Item
+              name="minimum_anonymity_threshold"
+              label="Minimum Anonymity threshold"
+            >
+              <InputNumber size="large" className="w-full" min={2} />
+            </Form.Item>
+            <Space className="mb-12" size={12}>
+              <p className="text-2xl medium">Offices</p>
+              <Tooltip
+                title={
+                  <div>
+                    If you got multiple (virtual) office locations, you can
+                    select those here. This allows you in the analytic section
+                    to filter based on office locations. Note: Team members have
+                    to select the office they belong in their{" "}
+                    <i>profile section or via Slack</i>.
+                  </div>
+                }
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </Space>
             <Form.List name="offices">
               {(fields, { add, remove }) => (
                 <>
@@ -158,6 +197,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                           >
                             <Select
                               showSearch
+                              size="large"
                               style={{ width: 360 }}
                               optionFilterProp="label"
                               placeholder="Select country"
@@ -179,7 +219,10 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                               })}
                             </Select>
                           </Form.Item>
-                          <MinusCircleOutlined onClick={() => remove(name)} />
+                          <MinusCircleOutlined
+                            className="delete-icon"
+                            onClick={() => remove(name)}
+                          />
                         </Space>
                       </Col>
                       <Col span={24}>
@@ -191,7 +234,11 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                             { required: true, message: "Cities are required" },
                           ]}
                         >
-                          <Select mode="tags" placeholder="Enter cities" />
+                          <Select
+                            size="large"
+                            mode="tags"
+                            placeholder="Enter cities"
+                          />
                         </Form.Item>
                       </Col>
                     </Row>
@@ -199,6 +246,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
                   <Form.Item>
                     <Button
                       block
+                      size="large"
                       type="dashed"
                       onClick={() => add()}
                       icon={<PlusOutlined />}
@@ -240,7 +288,7 @@ const WorkspaceSettings = ({ accountData, setAccountData }) => {
               { required: true, message: "Office selection is required" },
             ]}
           >
-            <Select showSearch optionFilterProp="value">
+            <Select size="large" showSearch optionFilterProp="value">
               {(workspace.offices || []).map((item) => {
                 return (
                   <Select.OptGroup label={item.country} key={item.country_code}>

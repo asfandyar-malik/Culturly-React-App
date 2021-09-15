@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { Button, Card, Form, Space, Tooltip, Input } from "antd";
-
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, Space, Input } from "antd";
 
 import { isEmpty, groupBy } from "_dash";
 import { getFormatTimezoneTime } from "utils";
@@ -24,6 +22,7 @@ const TeamSurveySelectionStep = ({
   useEffect(() => {
     let initalValues = {};
     const teamSurveys = teamDetail.surveys || [];
+
     const surveyGroup = groupBy(surveys, (c) => c.survey_type);
     const pulseSurveys = groupBy(teamSurveys, (c) => c.is_pulse_check)["true"];
 
@@ -49,7 +48,7 @@ const TeamSurveySelectionStep = ({
       }
     }
 
-    surveys.map((item) => {
+    (surveys || []).forEach((item) => {
       const surveyItem = teamSurveys.find((i) => i.survey.id === item.id) || {};
       const surveyTime = getFormatTimezoneTime(
         surveyItem.survey_time || item.survey_time,
@@ -77,7 +76,7 @@ const TeamSurveySelectionStep = ({
     const { pulse, ...happinessValues } = values;
     const pulseSurveys = surveyGroup.pulse;
 
-    Object.keys(happinessValues).map((key) => {
+    Object.keys(happinessValues).forEach((key) => {
       const item = values[key];
       const surveyTime = getWorkspaceUTCTime(item.survey_time);
       surveyArray.push({
@@ -91,7 +90,7 @@ const TeamSurveySelectionStep = ({
       });
     });
 
-    Object.keys(pulseSurveys).map((key) => {
+    Object.keys(pulseSurveys).forEach((key) => {
       const item = pulseSurveys[key];
       const surveyTime = getWorkspaceUTCTime(pulse.survey_time);
       const surveyItem =
@@ -136,14 +135,6 @@ const TeamSurveySelectionStep = ({
                       key={item.id}
                       bordered={false}
                       className="survey-card"
-                      title={
-                        <Tooltip title={item.name}>
-                          <Space size={6}>
-                            <span>{item.name}</span>
-                            <QuestionCircleOutlined />
-                          </Space>
-                        </Tooltip>
-                      }
                     >
                       <SurveyFormItem
                         timezone={timezone}
@@ -170,7 +161,7 @@ const TeamSurveySelectionStep = ({
         );
       })}
       <Form.Item noStyle>
-        <Space size={20} className="mt-20">
+        <Space size={20} className="mt-24">
           <Button
             size="large"
             type="primary"

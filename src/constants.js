@@ -1,5 +1,5 @@
 export const AUTHORIZATION_KEY = "culturly_token";
-export const MIN_ANONYMITY_RESPONSE_COUNT = 2;
+export const MIN_ANONYMITY_RESPONSE_COUNT = 1;
 
 export const SURVEY_DAY_OPTIONS = [
   {
@@ -41,15 +41,15 @@ export const SURVEY_TYPE_DISPLAY_MAPPING = {
 };
 
 export const CATEGORY_GRAPH_COLOR = {
-  all: "#7d68eb",
-  belonging: "#27cdec",
-  engagement: "#fc4c8a",
+  all: "#7721F1",
+  belonging: "#FD625D",
+  engagement: "#FFDE62",
+  feedback: "#727474",
+  recognition: "#1D2F34",
   "well-being": "#25ddcc",
-  feedback: "#57e2b4",
-  "personal-growth": "#82e599",
-  recognition: "#ace680",
-  relationships: "#d5e46c",
+  relationships: "#30CAEC",
   satisfaction: "#ffde62",
+  "personal-growth": "#5BB854",
 };
 
 export const CATEGORY_GRAPH_LABEL = {
@@ -65,15 +65,15 @@ export const CATEGORY_GRAPH_LABEL = {
 };
 
 export const BAR_GRAPH_BACKGROUND_COLORS = {
-  all: "rgba(125, 104, 235, 0.2)",
-  belonging: "rgba(39, 205, 236, 0.2)",
-  engagement: "rgba(252, 76, 138, 0.2)",
-  "well-being": "rgba(37, 221, 204, 0.2)",
-  feedback: "rgba(87, 226, 180, 0.2)",
-  "personal-growth": "rgba(130, 229, 153, 0.2)",
-  recognition: "rgba(213, 228, 108, 0.2)",
-  relationships: "rgba(255, 222, 98, 0.2)",
-  satisfaction: "rgba(255, 222, 98, 0.2)",
+  all: "#7721F1",
+  belonging: "#FD625D",
+  engagement: "#FFDE62",
+  feedback: "#727474",
+  recognition: "#1D2F34",
+  "well-being": "#25ddcc",
+  relationships: "#30CAEC",
+  satisfaction: "#ffde62",
+  "personal-growth": "#5BB854",
 };
 
 export const BAR_GRAPH_BORDER_COLORS = {
@@ -106,9 +106,9 @@ export const LINE_CHART_OPTIONS = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}%`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }%`;
         },
       },
     },
@@ -159,19 +159,11 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}%`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }%`;
         },
       },
-    },
-  },
-  legend: {
-    display: true,
-    position: "bottom",
-    labels: {
-      usePointStyle: true,
-      boxWidth: 8,
     },
   },
   scales: {
@@ -205,12 +197,19 @@ export const MULTIPLE_LINE_CHART_OPTIONS = {
 export const BAR_CHART_OPTION = {
   ...MULTIPLE_LINE_CHART_OPTIONS,
   plugins: {
+    legend: {
+      position: "bottom",
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8,
+      },
+    },
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }`;
         },
       },
     },
@@ -247,9 +246,9 @@ export const LINE_COUNT_CHART_OPTIONS = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          return `${context.dataset.label}: ${parseFloat(
-            context.parsed.y.toFixed(2)
-          )}`;
+          return `${context.dataset.label}: ${
+            context.parsed.y ? parseFloat(context.parsed.y.toFixed(2)) : ""
+          }`;
         },
       },
     },

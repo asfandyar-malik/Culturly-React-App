@@ -9,7 +9,7 @@ import { authenticateUserUsingAuth, getUserDetail } from "actions";
 
 import AccountHook from "hooks/account";
 import connectedImg from "assets/images/connected.svg";
-import notConnectedImg from "assets/images/not_connected.svg";
+import notConnectedImg from "assets/images/connection-error.svg";
 
 import "../style.scss";
 
@@ -34,8 +34,8 @@ const UserOAuthComplete = ({ setAccountData }) => {
         })
         .catch((err) => {
           const { response } = err;
-          setErrorData(response.data);
-          setErrorStatusCode(response.status);
+          setErrorData(response?.data);
+          setErrorStatusCode(response?.status);
           setLoading(false);
         });
     } else {
@@ -70,8 +70,8 @@ const UserOAuthComplete = ({ setAccountData }) => {
                 </p>
               </When>
               <When condition={errorStatusCode === 404}>
-                <p className="text-xl mb-12">
-                  This Slack workspace is not connected with Culturly App, you
+                <p className="text-3xl mb-12 medium">
+                  This slack workspace is not connected with culturly App. you
                   can add it by clicking on
                 </p>
                 <Button

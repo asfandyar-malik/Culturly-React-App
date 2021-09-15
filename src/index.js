@@ -7,6 +7,7 @@ import {
   accountDataReducer,
   initialState as accountData,
 } from "./reducers/accountDataReducer";
+
 import { AccountDataProvider } from "./context/accountData";
 
 ReactDOM.render(

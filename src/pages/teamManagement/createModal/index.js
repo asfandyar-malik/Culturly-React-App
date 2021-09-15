@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Steps } from "antd";
+import { Button, Modal, Space, Steps, Tooltip } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import {
   createWorkspaceTeam,
@@ -28,8 +29,8 @@ const CreateTeamModal = ({
 }) => {
   const timezone = accountData?.workspace?.timezone;
 
-  const [members, setMembers] = useState([]);
   const [managers, setManagers] = useState([]);
+  const [members, setMembers] = useState([]);
   const [saving, setSaving] = useState(false);
   const [teamDetail, setTeamDetail] = useState({});
   const [currentStep, setCurrentStep] = useState(0);
@@ -72,21 +73,75 @@ const CreateTeamModal = ({
 
   return (
     <Modal
-      width={940}
+      width={900}
       footer={null}
       visible={visible}
+      destroyOnClose={true}
       title="Create new team"
       onCancel={() => onClose()}
       className="team-create-modal"
-      destroyOnClose={true}
     >
       <Steps current={currentStep}>
-        <Step title="Team Management" />
-        <Step title="Employee Management" />
-        <Step title="Manager Management" />
-        <Step title="Check-In Management" />
+        <Step
+          title={
+            <Space>
+              Team Management
+              <Tooltip
+                title="Select all teams in your company. You can 
+              add additional teams that are not listed here."
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </Space>
+          }
+        />
+        <Step
+          title={
+            <Space>
+              Employees
+              <Tooltip
+                title="Allocate employees to the team they belong to. In 
+                the analytic section, you can later filter based on indiviual teams."
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </Space>
+          }
+        />
+        <Step
+          title={
+            <Space>
+              Managers
+              <Tooltip
+                title="Allocate managers to the team they are managing. Managers can see 
+                analytics and book activities for their indiviual team."
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </Space>
+          }
+        />
+        <Step
+          title={
+            <Space>
+              Check-In
+              <Tooltip
+                title={
+                  <p>
+                    Manage the timing of the check-ins that are sent to team
+                    members. Culture checks are sent on a weekly basis and
+                    happiness checks are sent on a daily basis. Note: Average
+                    time to answer all checkins in 52s on a <i>weekly basis</i>.
+                  </p>
+                }
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </Space>
+          }
+        />
       </Steps>
-      <div className="mt-24">
+      <div className="steps-content">
         <Choose>
           <When condition={currentStep === 0}>
             <TeamBasicInformationStep
@@ -124,8 +179,8 @@ const CreateTeamModal = ({
             />
           </When>
           <Otherwise>
-            <div className="mar-t-24 text-center">
-              <p className="font-bold text-xl mar-b-12">
+            <div className="mt-24 text-center">
+              <p className="text-3xl mb-12">
                 Team created successfully
               </p>
               <Button onClick={() => onClose()}>Close</Button>

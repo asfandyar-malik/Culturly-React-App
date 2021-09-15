@@ -11,17 +11,20 @@ import {
   Tooltip,
   Badge,
   Collapse,
-  Select,
   Empty,
   Progress,
   Popover,
   Button,
   Checkbox,
+  Radio,
+  Form,
 } from "antd";
 import {
   CaretDownOutlined,
   InfoCircleOutlined,
   QuestionCircleOutlined,
+  BarChartOutlined,
+  LineChartOutlined,
 } from "@ant-design/icons";
 
 import { roundOff } from "_dash";
@@ -29,16 +32,10 @@ import {
   BAR_CHART_OPTION,
   CATEGORY_GRAPH_LABEL,
   CATEGORY_GRAPH_COLOR,
-  BAR_GRAPH_BORDER_COLORS,
   LINE_COUNT_CHART_OPTIONS,
   BAR_GRAPH_BACKGROUND_COLORS,
-  MIN_ANONYMITY_RESPONSE_COUNT,
 } from "../../../constants";
-import {
-  getWeeksInMonth,
-  disabledFutureDate,
-  getMonthsBetweenDates,
-} from "utils";
+import { getWeeksInMonth, disabledFutureDate } from "utils";
 import {
   getCultureScore,
   getCultureGraph,
@@ -46,16 +43,17 @@ import {
   getCultureScorePerCategory,
 } from "actions";
 
-const CultureAnalyticsCard = ({ selectedTeam }) => {
+import AccountHook from "hooks/account";
+
+const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
   const allCultureChartRef = useRef(null);
   const cultureCountChartRef = useRef(null);
 
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [chartType, setChartType] = useState("bar");
+  const [chartType, setChartType] = useState("line");
   const [cultureScore, setCultureScore] = useState({});
   const [cultureItems, setCultureItems] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [cultureGraphFilter, setCultureGraphFilter] = useState([]);
   const [overallcultureScore, setOverallcultureScore] = useState(0);
   const [allCultureGraphData, setAllCultureGraphData] = useState([]);
@@ -68,6 +66,8 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
     useState([]);
 
   const isBarChart = chartType === "bar";
+  const anonymityThreshold =
+    accountData?.workspace?.minimum_anonymity_threshold;
 
   function getRange() {
     let endTs = moment().endOf("month").utc(true).format("X");
@@ -120,7 +120,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         const { data } = response;
         Object.keys(data.categories).forEach((key) => {
           (data.categories[key]?.questions || []).forEach((item) => {
-            if (item.score) {
+            if (typeof item.score !== "undefined") {
               totalResponses += 1;
               totalScore += item.score;
             }
@@ -136,20 +136,18 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
 
   useEffect(() => {
     const { startTs, endTs } = getRange();
-    getCultureGraph(selectedTeam, startTs, endTs, selectedCategory).then(
-      (response) => {
-        const { data } = response;
-        const responseData = data?.categories?.all?.results || [];
-        setAllCultureGraphData(data);
-        setCultureResponseGraphData(responseData);
-        setCultureResponseFilterGraphData(
-          responseData.filter(
-            (item) => item.user_response_count > MIN_ANONYMITY_RESPONSE_COUNT
-          )
-        );
-      }
-    );
-  }, [selectedCategory, cultureGraphMonth, selectedTeam]);
+    getCultureGraph(selectedTeam, startTs, endTs).then((response) => {
+      const { data } = response;
+      const responseData = data?.categories?.all?.results || [];
+      setAllCultureGraphData(data);
+      setCultureResponseGraphData(responseData);
+      setCultureResponseFilterGraphData(
+        responseData.filter(
+          (item) => item.user_response_count >= anonymityThreshold
+        )
+      );
+    });
+  }, [cultureGraphMonth, selectedTeam]);
 
   useEffect(() => {
     const { categories = {} } = allCultureGraphData;
@@ -180,10 +178,12 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 categories[key].results.find(
                   (i) => moment(i.week).format("D") === week.startDay
                 ) || {};
+              labels.add(week.format);
 
-              if (item.avg) {
-                labels.add(week.format);
+              if (item.avg && item.user_response_count >= anonymityThreshold) {
                 dataPoints.push(item.avg);
+              } else {
+                dataPoints.push(NaN);
               }
             });
           }
@@ -192,7 +192,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
         const lineDataset = {
           fill: true,
           data: dataPoints,
-          backgroundColor: "#27cdec02",
+          backgroundColor: "#7D68EB02",
           label: CATEGORY_GRAPH_LABEL[key],
           borderColor: CATEGORY_GRAPH_COLOR[key],
           pointBackgroundColor: CATEGORY_GRAPH_COLOR[key],
@@ -202,9 +202,9 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
           fill: true,
           borderWidth: 1,
           data: dataPoints,
-          barThickness: 15,
+          barThickness: 16,
+          borderColor: "#ffffff",
           label: CATEGORY_GRAPH_LABEL[key],
-          borderColor: BAR_GRAPH_BORDER_COLORS[key],
           backgroundColor: BAR_GRAPH_BACKGROUND_COLORS[key],
         };
 
@@ -254,6 +254,7 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
       const dataPointsUniqueUserCounts = [];
 
       const countChartRef = cultureCountChartRef.current.getContext("2d");
+
       if (cultureGraphMonth) {
         const weeks = getWeeksInMonth(
           cultureGraphMonth.format("YYYY"),
@@ -264,28 +265,14 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
             cultureResponseFilterGraphData.find(
               (i) => moment(i.week).format("D") === week.startDay
             ) || {};
-          if (item.avg) {
-            labels.push(week.format);
+          labels.push(week.format);
+
+          if (item.avg && item.user_response_count >= anonymityThreshold) {
             dataPointsCounts.push(item.response_count || 0);
             dataPointsUniqueUserCounts.push(item.user_response_count || 0);
-          }
-        });
-      } else {
-        const months = getMonthsBetweenDates(
-          moment().subtract(1, "years").startOf("month"),
-          moment().endOf("month")
-        );
-        months.forEach((month) => {
-          const item =
-            cultureResponseFilterGraphData.find(
-              (i) =>
-                moment(i.month).format("MM-YYYY") ===
-                moment(month).format("MM-YYYY")
-            ) || {};
-          if (item.avg) {
-            labels.push(moment(month).format("MMM YYYY"));
-            dataPointsCounts.push(item.response_count || 0);
-            dataPointsUniqueUserCounts.push(item.user_response_count || 0);
+          } else {
+            dataPointsCounts.push(NaN);
+            dataPointsUniqueUserCounts.push(NaN);
           }
         });
       }
@@ -298,22 +285,24 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
             {
               fill: true,
               borderWidth: 1,
-              barThickness: 15,
+              barThickness: 16,
               data: dataPointsCounts,
-              borderColor: "#7d68eb",
+              borderColor: "#ffffff",
               label: "Number of responses",
-              pointBackgroundColor: "#7d68eb",
-              backgroundColor: "rgba(125, 104, 235, 0.4)",
+              pointBackgroundColor: "#7721F1",
+              backgroundColor: `rgba(119, 33, 241, ${
+                isBarChart ? "1" : "0.3"
+              })`,
             },
             {
               fill: true,
               borderWidth: 1,
-              barThickness: 15,
-              borderColor: "#30CAEC",
-              pointBackgroundColor: "#30CAEC",
+              barThickness: 16,
+              borderColor: "#ffffff",
+              pointBackgroundColor: "#FD625D",
               data: dataPointsUniqueUserCounts,
               label: "Number of People answering",
-              backgroundColor: "rgba(48, 202, 236, 0.4)",
+              backgroundColor: `rgba(253, 98, 93, ${isBarChart ? "1" : "0.3"})`,
             },
           ],
         },
@@ -347,12 +336,10 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
     <Row>
       <Col span={24} className="mt-12 culture-col">
         <Card
+          className="header-card"
           title={
-            <Tooltip
-              title="Culture Score is calculated from Weekly Survey checks. Weekly survey checks are sent
-              4 times a month and include 9 questions in total in 8 different Culture categories.  "
-            >
-              <Space>
+            <Tooltip title="Your Culture Score is calculated using the weekly culture check">
+              <Space className="text-xl medium">
                 <span>Culture score</span>
                 <QuestionCircleOutlined />
               </Space>
@@ -363,21 +350,23 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
             <Col>
               <Progress
                 type="circle"
+                strokeWidth={10}
+                strokeColor="#7D68EB"
                 format={(percent) => `${percent}%`}
                 percent={roundOff(cultureScore.current_month_score)}
               />
             </Col>
             <Col>
-              <div className="mb-12">
+              <div className="mb-12 text-xl medium">
                 <Space>
                   <span>How does score compare?</span>
-                  <Tooltip title="You view here your Culture score from previous months">
+                  <Tooltip title="A comparison to your Culture Score of the previous month">
                     <InfoCircleOutlined className="info-icon" />
                   </Tooltip>
                 </Space>
               </div>
-              <Space>
-                <Card>
+              <Space size={16}>
+                <Card className="analytic-card">
                   <p className="text-xl medium">Avg. last month</p>
                   <p className="text-5xl medium">
                     {roundOff(cultureScore.last_month_score)}%
@@ -390,49 +379,26 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
 
         <Card
           className="no-top-border"
+          title={<p className="text-xl medium">All Culture Categories</p>}
           extra={
-            <Space size={16}>
-              <Select
-                style={{ width: 175 }}
-                value={selectedCategory}
-                placeholder="Select a category"
-                onChange={(value) => setSelectedCategory(value)}
-              >
-                <Select.Option value="">All</Select.Option>
-                {categories
-                  .filter((item) => !item.custom)
-                  .map((item) => {
-                    const { slug } = item;
-                    return (
-                      <Select.Option value={slug} key={slug}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
-              </Select>
-              <DatePicker
-                format="MMM"
-                picker="month"
-                allowClear={false}
-                style={{ width: 200 }}
-                value={cultureGraphMonth}
-                disabledDate={disabledFutureDate}
-                onChange={(value) => setcultureGraphMonth(value)}
-              />
-            </Space>
+            <Form>
+              <Form.Item className="no-margin">
+                <DatePicker
+                  size="large"
+                  format="MMM"
+                  picker="month"
+                  style={{ width: 200 }}
+                  value={cultureGraphMonth}
+                  disabledDate={disabledFutureDate}
+                  onChange={(value) => setcultureGraphMonth(value)}
+                />
+              </Form.Item>
+            </Form>
           }
         >
-          <Row justify="space-between">
-            <Col>
-              <Tooltip title="Response rate shows us the frequency of inputted information by team members.">
-                <Space>
-                  <p>All Culture Categories</p>
-                  <QuestionCircleOutlined />
-                </Space>
-              </Tooltip>
-            </Col>
-            <Col>
-              <Space size={15}>
+          <Row justify="end" className="mb-20">
+            <Col span={24} className="text-right">
+              <Space size={16}>
                 <Popover
                   placement="bottom"
                   content={
@@ -471,19 +437,46 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                   }
                   trigger="click"
                 >
-                  <Button>
-                    Select Categories <CaretDownOutlined />
-                  </Button>
+                  <Space>
+                    <Tooltip title="Filter for culture specific categories or see the total average">
+                      <QuestionCircleOutlined />
+                    </Tooltip>
+                    <Button>
+                      Select Categories <CaretDownOutlined />
+                    </Button>
+                  </Space>
                 </Popover>
-                <Select
-                  value={chartType}
-                  disabled={disableGraphDropdown}
-                  suffixIcon={<CaretDownOutlined />}
-                  onChange={(type) => setChartType(type)}
-                >
-                  <Select.Option value="line">Line Graph</Select.Option>
-                  <Select.Option value="bar">Bar Graph</Select.Option>
-                </Select>
+                <Space>
+                  <Radio.Group
+                    optionType="button"
+                    defaultValue="line"
+                    options={[
+                      {
+                        label: (
+                          <Space size={12}>
+                            <LineChartOutlined />
+                            <p>Line Graph</p>
+                          </Space>
+                        ),
+                        value: "line",
+                      },
+                      {
+                        label: (
+                          <Space size={12}>
+                            <BarChartOutlined />
+                            <p>Bar Graph</p>
+                          </Space>
+                        ),
+                        value: "bar",
+                      },
+                    ]}
+                    disabled={disableGraphDropdown}
+                    onChange={(e) => setChartType(e.target.value)}
+                  />
+                  <Tooltip title="Display results in a line chart or bar chart">
+                    <QuestionCircleOutlined />
+                  </Tooltip>
+                </Space>
               </Space>
             </Col>
           </Row>
@@ -504,10 +497,10 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 <div className="empty-container vertical-center">
                   <Choose>
                     <When condition={cultureResponseGraphData.length}>
-                      <Empty description="Not enough data to mantain anonymity" />
+                      <Empty description="Not enough data to mantain anonymity in this time period" />
                     </When>
                     <Otherwise>
-                      <Empty description="No data available to display" />
+                      <Empty description="No data available to display for this time period" />
                     </Otherwise>
                   </Choose>
                 </div>
@@ -516,14 +509,17 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
           </div>
         </Card>
 
-        <Card className="no-top-border">
-          <Tooltip title="Response rate shows us the frequency of inputted information by team members. ">
-            <Space>
-              <span>Response Rate</span>
-              <QuestionCircleOutlined />
-            </Space>
-          </Tooltip>
-
+        <Card
+          className="no-top-border"
+          title={
+            <Tooltip title="The response rate displays how actively team members share responses">
+              <Space className="text-xl medium">
+                <span>Response Rate</span>
+                <QuestionCircleOutlined />
+              </Space>
+            </Tooltip>
+          }
+        >
           <div className="mt-8">
             <Choose>
               <When condition={cultureResponseFilterGraphData.length}>
@@ -533,10 +529,10 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
                 <div className="empty-container vertical-center">
                   <Choose>
                     <When condition={cultureResponseGraphData.length}>
-                      <Empty description="Not enough data to mantain anonymity" />
+                      <Empty description="Not enough data to mantain anonymity in this time period" />
                     </When>
                     <Otherwise>
-                      <Empty description="No data available to display" />
+                      <Empty description="No data available to display for this time period" />
                     </Otherwise>
                   </Choose>
                 </div>
@@ -550,17 +546,18 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
           loading={loading}
           title={
             <Tooltip
-              title="Culturly score is calcuated from the response to Culture Check, which is a 
-              weekly survey used to measure Engagement, Mood, Wellbeing, Collaboration, Impact."
+              title="The Culture Check displays all 32 scientific questions that are sent to each 
+              team member to calculate the culture score. The questions change weekly to guanrantee
+               variation and are repeated monthly to guarantee a scientific data analysis"
             >
-              <Space>
+              <Space className="text-xl medium">
                 <span>Culture score</span>
                 <QuestionCircleOutlined />
               </Space>
             </Tooltip>
           }
         >
-          <Row justify="space-between" className="text-2xl mb-12">
+          <Row justify="space-between" className="text-2xl mb-20">
             <Col className="font-medium">Overall culture score</Col>
             <Col className="font-medium">
               <Badge
@@ -620,4 +617,4 @@ const CultureAnalyticsCard = ({ selectedTeam }) => {
   );
 };
 
-export default CultureAnalyticsCard;
+export default AccountHook(CultureAnalyticsCard);

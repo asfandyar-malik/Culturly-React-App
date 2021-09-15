@@ -15,7 +15,12 @@ import { useLocation } from "react-router";
 import { EllipsisOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { isEmpty } from "_dash";
-import { getWorkspaceTeams, deleteWorkspaceTeam, getSurveys } from "actions";
+import {
+  getSurveys,
+  getWorkspaceTeams,
+  deleteWorkspaceTeam,
+  getCanCreateWorkspaceTeam,
+} from "actions";
 
 import AccountHook from "hooks/account";
 import CreateTeamModal from "./createModal";
@@ -38,6 +43,12 @@ const TeamManagement = ({ accountData }) => {
 
   const isNewInstalled = location.state?.is_new_installed || false;
   const hasWriteAccess = member?.is_admin || member?.is_manager;
+
+  function checkCanCreate() {
+    getCanCreateWorkspaceTeam().then((response) => {
+      setCreateTeam(response.data.can_create_team);
+    });
+  }
 
   useEffect(() => {
     if (!createModalVisible) {
@@ -64,11 +75,11 @@ const TeamManagement = ({ accountData }) => {
         const { data } = response;
         setLoading(false);
         setTeams(data.results);
-        setCreateTeam(data.can_create_team);
       });
       getSurveys().then((response) => {
         setSurveys(response.data);
       });
+      checkCanCreate();
     }
   }, [isLoggedIn]);
 
@@ -84,6 +95,7 @@ const TeamManagement = ({ accountData }) => {
     } else {
       teams = [newTeam, ...teams];
     }
+    checkCanCreate();
     setTeams([...teams]);
   }
 
@@ -91,6 +103,7 @@ const TeamManagement = ({ accountData }) => {
     deleteWorkspaceTeam(team.id).then((response) => {
       const index = teams.findIndex((item) => item.id === team.id);
       if (index > -1) {
+        checkCanCreate();
         teams.splice(index, 1);
         setTeams([...teams]);
         message.success("Team deleted");
@@ -109,13 +122,15 @@ const TeamManagement = ({ accountData }) => {
         <If condition={hasWriteAccess}>
           <Row justify="end">
             <Col>
-              <Button
-                type="primary"
-                disabled={!canCreateTeam}
-                onClick={() => setCreateModalVisible(true)}
-              >
-                Create team
-              </Button>
+              <Tooltip title="Only managers and admins can create team">
+                <Button
+                  type="primary"
+                  disabled={!canCreateTeam}
+                  onClick={() => setCreateModalVisible(true)}
+                >
+                  Create team
+                </Button>
+              </Tooltip>
             </Col>
           </Row>
         </If>
@@ -128,8 +143,8 @@ const TeamManagement = ({ accountData }) => {
               <Col span={6}>Team name</Col>
               <Col span={6}>
                 <Tooltip
-                  title="Members receive Mood Check Survey and Culture check Survey on Slack. 
-              One member can be part of only one Team"
+                  title="An active member receives daily happiness and weekly culture checks. 
+                  A member can only be part of one team."
                 >
                   <Space size={6}>
                     <span>Members</span>
@@ -139,8 +154,8 @@ const TeamManagement = ({ accountData }) => {
               </Col>
               <Col span={6}>
                 <Tooltip
-                  title="Managers have access to create Teams, Edit Surveys, Edit user access, 
-              View Analytics etc"
+                  title="A manager can see analytics for the indiviual team he/she 
+                  is managing. Also, a manager can book activities for the team using Culturly recommendations."
                 >
                   <Space size={6}>
                     <span>Managers</span>

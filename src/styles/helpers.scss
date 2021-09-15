@@ -12,6 +12,14 @@
   text-align: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
@@ -24,6 +32,9 @@
   &.secondary {
     color: $SECONDARY_TEXT_COLOR;
   }
+  &.bolder {
+    font-weight: 900;
+  }
   &.bold {
     font-weight: 700;
   }
@@ -31,49 +42,50 @@
     font-weight: 600;
   }
   &.medium {
-    font-weight: 500;
+    font-weight: 600;
   }
 }
 
 .text-base {
-  @include text-base;
   font-size: 1.2rem;
+  @include text-base;
 }
 
 .text-xl {
-  @include text-base;
   font-size: 1.4rem;
-  line-height: 1.4;
+  line-height: 1.75;
+  @include text-base;
 }
 
 .text-2xl {
-  @include text-base;
   font-size: 1.6rem;
-  line-height: 1.4;
+  line-height: 2;
+  @include text-base;
 }
 
 .text-3xl {
-  @include text-base;
   font-size: 1.8rem;
-  line-height: 1.4;
-  &.bold {
-    font-weight: 700;
+  line-height: 2;
+  @include text-base;
+  &.bolder {
     letter-spacing: 1px;
   }
 }
 
 .text-4xl {
-  @include text-base;
   font-size: 2.4rem;
   line-height: 1.4;
+  @include text-base;
+  &.bolder {
+    letter-spacing: 1px;
+  }
 }
 
 .text-5xl {
-  @include text-base;
   font-size: 3rem;
   line-height: 1;
-  &.bold {
-    font-weight: 700;
+  @include text-base;
+  &.bolder {
     letter-spacing: 1px;
   }
 }
@@ -92,13 +104,13 @@
   max-width: 114rem;
 }
 
-.justify-space-between {
-  justify-content: space-between;
-}
-
 .full-w-img {
   width: 100%;
   height: auto;
+}
+
+.justify-space-between {
+  justify-content: space-between;
 }
 
 @include list-loop(".pt-", "padding-top");
