@@ -52,7 +52,6 @@ const CourseRecommendationComponent = lazy(() =>
   import("pages/courseRecommendation")
 );
 const LandingComponent = lazy(() => import("pages/landing"));
-const MessagingComponent = lazy(() => import("pages/messaging"));
 const AnalyticsComponent = lazy(() => import("pages/analytics"));
 const WorkspaceSettingsComponent = lazy(() => import("pages/settings"));
 const TeamManagementComponent = lazy(() => import("pages/teamManagement"));
@@ -120,19 +119,20 @@ export const LOGGED_IN_ROUTES = [
         path: "/events/",
         name: "event-layout",
         component: EventLayout,
-        roles: ["admin", "manager", "member"],
         routes: [
           {
             exact: true,
             name: "events",
             path: EVENTS_ROUTE,
             component: EventsComponent,
+            roles: ["admin", "manager", "member"],
           },
           {
             exact: true,
             name: "event-detail",
             path: EVENT_DETAIL_ROUTE,
             component: EventDetailComponent,
+            roles: ["admin", "manager", "member"],
           },
         ],
       },
@@ -218,13 +218,6 @@ export const LOGGED_IN_ROUTES = [
             component: EventsRequestsComponent,
             roles: ["admin", "manager", "member"],
           },
-          // {
-          //   exact: true,
-          //   name: "messaging",
-          //   path: MESSAGING_ROUTE,
-          //   component: MessagingComponent,
-          //   roles: ["admin", "manager", "member"],
-          // },
         ],
       },
     ],
@@ -292,13 +285,6 @@ export const ROUTES = [
     path: EVENTS_REQUESTS_ROUTE,
     roles: ["admin", "manager", "member"],
   },
-  // {
-  //   key: "messages",
-  //   title: "Messages",
-  //   path: MESSAGING_ROUTE,
-  //   icon: <MessageOutlined />,
-  //   roles: ["admin", "manager", "member"],
-  // },
   {
     isHidden: true,
     key: "event-feedback",

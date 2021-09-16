@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Space, Button, Card } from "antd";
 
 import { getEvents } from "actions";
-import { getEventCover } from "utils";
 import { getEventDetailRoute } from "routes";
 
 import "./style.scss";
@@ -29,7 +28,7 @@ const Events = () => {
             <Card
               key={event.slug}
               className="event-list-card"
-              cover={<img alt={event.title} src={getEventCover(event)} />}
+              cover={<img alt={event.title} src={event.cover_picture_url} />}
             >
               <p className="text-2xl medium">{event.title}</p>
               <p className="mt-8 description">{event.detail.description}</p>

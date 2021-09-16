@@ -35,26 +35,36 @@ const AppRouter = ({ accountData, setAccountData }) => {
       if (!isEmpty(accountData)) {
         // TODO: refactor this make more scalable
         newRoutes = LOGGED_IN_ROUTES;
-        // let childRoutes = LOGGED_IN_ROUTES[0].routes;
-        // if (member.is_admin) {
-        //   childRoutes = childRoutes.filter((item) =>
-        //     item.roles.includes("admin")
-        //   );
-        // } else if (member.is_manager) {
-        //   childRoutes = childRoutes.filter((item) =>
-        //     item.roles.includes("manager")
-        //   );
-        // } else {
-        //   childRoutes = childRoutes.filter((item) =>
-        //     item.roles.includes("member")
-        //   );
-        // }
-        // newRoutes = [
-        //   {
-        //     ...LOGGED_IN_ROUTES[0],
-        //     routes: childRoutes,
-        //   },
-        // ];
+        let nestedRoutes = LOGGED_IN_ROUTES[0].routes;
+        nestedRoutes.forEach((item) => {
+          let childRoutes = item.routes;
+          if (member.is_admin) {
+            childRoutes = childRoutes.filter((item) =>
+              item.roles.includes("admin")
+            );
+          } else if (member.is_manager) {
+            childRoutes = childRoutes.filter((item) =>
+              item.roles.includes("manager")
+            );
+          } else {
+            childRoutes = childRoutes.filter((item) =>
+              item.roles.includes("member")
+            );
+          }
+          if (!accountData.workspace.is_leaderboard_enabled) {
+            childRoutes = childRoutes.filter(
+              (item) => !item.is_leaderboard_enabled
+            );
+          }
+          item.routes = childRoutes;
+        });
+        console.log(nestedRoutes);
+        newRoutes = [
+          {
+            ...LOGGED_IN_ROUTES[0],
+            routes: nestedRoutes,
+          },
+        ];
       } else {
         newRoutes = NON_LOGIN_ROUTES;
       }
