@@ -58,7 +58,6 @@ const AppRouter = ({ accountData, setAccountData }) => {
           }
           item.routes = childRoutes;
         });
-        console.log(nestedRoutes);
         newRoutes = [
           {
             ...LOGGED_IN_ROUTES[0],
