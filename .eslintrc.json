@@ -1,6 +1,8 @@
 {
   "rules": {
-    "react/jsx-no-undef": [2, { "allowGlobals": true }]
+    "react/jsx-no-undef": [2, { "allowGlobals": true }],
+    "react-hooks/exhaustive-deps": "off",
+    "no-template-curly-in-string": "off"
   },
   "plugins": ["react", "react-hooks", "jsx-control-statements"],
   "extends": ["react-app", "plugin:jsx-control-statements/recommended"]

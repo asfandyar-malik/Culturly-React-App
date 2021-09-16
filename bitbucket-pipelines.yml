@@ -33,7 +33,7 @@ pipelines:
           caches:
             - node
   branches:
-    creator-portal:
+    stage:
       - parallel:
         - step:
             name: Build and Test
