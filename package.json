@@ -11,7 +11,7 @@
     "babel-plugin-import": "^1.13.3",
     "babel-plugin-jsx-control-statements": "^4.1.0",
     "chart.js": "^3.3.0",
-    "culturly-event-detail": "^0.3.5",
+    "culturly-event-detail": "^0.3.7",
     "customize-cra": "^1.0.0",
     "dayjs": "^1.10.6",
     "eslint-plugin-jsx-control-statements": "^2.2.1",
