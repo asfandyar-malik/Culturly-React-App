@@ -272,16 +272,18 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-          <Space
-            size={4}
-            className="text-xl secondary w-full justify-center mt-20"
-          >
-            <EyeOutlined />
-            <p>
-              Data is only shown if sample size is large enough to gurantee
-              anonymity
-            </p>
-          </Space>
+          <If condition={happinessFilterGraphData.length}>
+            <Space
+              size={4}
+              className="text-xl secondary w-full justify-center mt-20"
+            >
+              <EyeOutlined />
+              <p>
+                Data is only shown if sample size is large enough to gurantee
+                anonymity
+              </p>
+            </Space>
+          </If>
         </Card>
         <Card
           className="no-top-border"
@@ -313,16 +315,18 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-          <Space
-            size={4}
-            className="text-xl secondary w-full justify-center mt-20"
-          >
-            <EyeOutlined />
-            <p>
-              Data is only shown if sample size is large enough to gurantee
-              anonymity
-            </p>
-          </Space>
+          <If condition={happinessFilterGraphData.length}>
+            <Space
+              size={4}
+              className="text-xl secondary w-full justify-center mt-20"
+            >
+              <EyeOutlined />
+              <p>
+                Data is only shown if sample size is large enough to gurantee
+                anonymity
+              </p>
+            </Space>
+          </If>
         </Card>
       </Col>
     </Row>
