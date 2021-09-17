@@ -20,11 +20,12 @@ import {
   Form,
 } from "antd";
 import {
+  EyeOutlined,
+  BarChartOutlined,
   CaretDownOutlined,
+  LineChartOutlined,
   InfoCircleOutlined,
   QuestionCircleOutlined,
-  BarChartOutlined,
-  LineChartOutlined,
 } from "@ant-design/icons";
 
 import { roundOff } from "_dash";
@@ -507,6 +508,18 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
+          <If condition={!cultureResponseGraphData.length}>
+            <Space
+              size={4}
+              className="text-xl secondary w-full justify-center mt-20"
+            >
+              <EyeOutlined />
+              <p>
+                Data is only shown if sample size is large enough to gurantee
+                anonymity
+              </p>
+            </Space>
+          </If>
         </Card>
 
         <Card
@@ -539,6 +552,18 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
+          <If condition={!cultureResponseGraphData.length}>
+            <Space
+              size={4}
+              className="text-xl secondary w-full justify-center mt-20"
+            >
+              <EyeOutlined />
+              <p>
+                Data is only shown if sample size is large enough to gurantee
+                anonymity
+              </p>
+            </Space>
+          </If>
         </Card>
 
         <Card

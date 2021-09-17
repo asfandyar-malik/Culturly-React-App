@@ -113,6 +113,10 @@
   justify-content: space-between;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
 @include list-loop(".pt-", "padding-top");
 @include list-loop(".mt-", "margin-top");
 @include list-loop(".pb-", "padding-bottom");

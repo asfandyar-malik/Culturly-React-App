@@ -12,7 +12,11 @@ import {
   Empty,
   Form,
 } from "antd";
-import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  InfoCircleOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 import {
   LINE_CHART_OPTIONS,
@@ -268,6 +272,16 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
+          <Space
+            size={4}
+            className="text-xl secondary w-full justify-center mt-20"
+          >
+            <EyeOutlined />
+            <p>
+              Data is only shown if sample size is large enough to gurantee
+              anonymity
+            </p>
+          </Space>
         </Card>
         <Card
           className="no-top-border"
@@ -299,6 +313,16 @@ const HappinessAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
+          <Space
+            size={4}
+            className="text-xl secondary w-full justify-center mt-20"
+          >
+            <EyeOutlined />
+            <p>
+              Data is only shown if sample size is large enough to gurantee
+              anonymity
+            </p>
+          </Space>
         </Card>
       </Col>
     </Row>
