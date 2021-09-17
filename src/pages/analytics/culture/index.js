@@ -508,7 +508,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-          <If condition={!cultureResponseGraphData.length}>
+          <If condition={cultureResponseGraphData.length}>
             <Space
               size={4}
               className="text-xl secondary w-full justify-center mt-20"
@@ -552,7 +552,7 @@ const CultureAnalyticsCard = ({ accountData, selectedTeam }) => {
               </Otherwise>
             </Choose>
           </div>
-          <If condition={!cultureResponseGraphData.length}>
+          <If condition={cultureResponseGraphData.length}>
             <Space
               size={4}
               className="text-xl secondary w-full justify-center mt-20"
