@@ -4,8 +4,13 @@ import { useHistory, useParams } from "react-router-dom";
 
 import { CulturlyEventDetail } from "culturly-event-detail";
 
-import { EVENTS_ROUTE, EVENTS_REQUESTS_ROUTE } from "routes";
-import { getEventDetail, getTimezones, registerForEvent } from "actions";
+import { EVENTS_ROUTE, EVENTS_REQUESTS_ROUTE, MESSAGING_ROUTE } from "routes";
+import {
+  getTimezones,
+  getEventDetail,
+  registerForEvent,
+  contactEventHost,
+} from "actions";
 
 import "./style.scss";
 
@@ -14,7 +19,9 @@ const EventDetail = () => {
   const history = useHistory();
   const { eventSlug } = params;
 
+  const [saving, setSaving] = useState(false);
   const [timezones, setTimezones] = useState([]);
+  const [contacting, setContacting] = useState(false);
   const [eventDetail, setEventDetail] = useState({});
 
   useEffect(() => {
@@ -31,7 +38,9 @@ const EventDetail = () => {
   }, [eventSlug]);
 
   function handleRegister(payload) {
+    setSaving(true);
     registerForEvent(eventSlug, payload).then((response) => {
+      setSaving(false);
       Modal.info({
         title: "Booking Request Sent!",
         content: (
@@ -49,13 +58,31 @@ const EventDetail = () => {
     });
   }
 
+  function handleContactProvider() {
+    setContacting(true);
+    contactEventHost(eventDetail.slug)
+      .then((response) => {
+        setContacting(false);
+        history.push({
+          pathname: MESSAGING_ROUTE,
+          state: { channel_id: response.data.channel_id },
+        });
+      })
+      .catch((err) => {
+        setContacting(false);
+      });
+  }
+
   return (
     <>
       <CulturlyEventDetail
         canRegister
+        submitting={saving}
         timezones={timezones}
+        contacting={contacting}
         eventDetail={eventDetail}
         onBack={() => history.push(EVENTS_ROUTE)}
+        onContactHost={() => handleContactProvider()}
         onRegister={(formData) => handleRegister(formData)}
       />
     </>

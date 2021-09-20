@@ -20,18 +20,19 @@ export const SLACK_WORKSPACE_OAUTH_COMPLETE_ROUTE = "/auth-workspace/complete/";
 
 export const INDEX_ROUTE = "/";
 export const EVENTS_ROUTE = "/events/";
+export const COURSE_ROUTE = "/course/";
 export const MEMBERS_ROUTE = "/members/";
-export const LEADERBOARD_ROUTE = "/leaderboard/";
 export const SETTINGS_ROUTE = "/settings/";
-export const MESSAGING_ROUTE = "/messaging/";
 export const ANALYTICS_ROUTE = "/analytics/";
 export const EVENT_POLL_ROUTE = "/event-poll/";
+export const LEADERBOARD_ROUTE = "/leaderboard/";
+export const SENTIMENT_ROUTE = "/sentiment-score/";
 export const EVENT_FEEDBACK_ROUTE = "/event-feedback/";
 export const EVENT_DETAIL_ROUTE = "/events/:eventSlug/";
 export const EVENTS_REQUESTS_ROUTE = "/events-requests/";
 export const EVENT_RECOMMENDATION_ROUTE = "/event-recommendation/";
-export const COURSE_ROUTE = "/course/";
-export const SENTIMENT_ROUTE = "/sentiment-score/";
+
+export const MESSAGING_ROUTE = "/messaging/";
 
 const UserOAuthCompleteComponent = lazy(() =>
   import("pages/authComplete/user")
@@ -52,12 +53,13 @@ const CourseRecommendationComponent = lazy(() =>
   import("pages/courseRecommendation")
 );
 const LandingComponent = lazy(() => import("pages/landing"));
+const MessagingComponent = lazy(() => import("pages/messaging"));
+const SentimentComponent = lazy(() => import("pages/sentiment"));
 const AnalyticsComponent = lazy(() => import("pages/analytics"));
+const LeaderboardComponent = lazy(() => import("pages/leaderboard"));
 const WorkspaceSettingsComponent = lazy(() => import("pages/settings"));
 const TeamManagementComponent = lazy(() => import("pages/teamManagement"));
 const MemberManagementComponent = lazy(() => import("pages/memberManagement"));
-const LeaderboardComponent = lazy(() => import("pages/leaderboard"));
-const SentimentComponent = lazy(() => import("pages/sentiment"));
 
 export const getEventDetailRoute = (eventSlug) => {
   return EVENT_DETAIL_ROUTE.replace(":eventSlug", eventSlug);
@@ -218,6 +220,13 @@ export const LOGGED_IN_ROUTES = [
             path: EVENTS_REQUESTS_ROUTE,
             component: EventsRequestsComponent,
             roles: ["admin", "manager", "member"],
+          },
+          {
+            exact: true,
+            name: "messaging",
+            path: MESSAGING_ROUTE,
+            component: MessagingComponent,
+            roles: ["admin", "manager"],
           },
         ],
       },

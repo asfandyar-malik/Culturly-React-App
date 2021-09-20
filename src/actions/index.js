@@ -234,13 +234,19 @@ export const getEventDetail = (slug) => {
   return instance.get(endpoints.EVENT_DETAIL_API_PATH.replace("{}", slug));
 };
 
-export const getUserBookings = () => {
-  return instance.get(endpoints.USER_BOOKINGS_API_PATH);
+export const getEventBookings = () => {
+  return instance.get(endpoints.EVENT_BOOKINGS_API_PATH);
 };
 
 export const registerForEvent = (slug, payload) => {
   const path = endpoints.EVENT_REGISTER_API_PATH.replace("{}", slug);
   return instance.post(path, payload);
+};
+
+export const contactEventHost = (slug) => {
+  return instance.post(
+    endpoints.EVENT_CONTACT_HOST_API_PATH.replace("{}", slug)
+  );
 };
 
 export const getChannels = () => {

@@ -59,8 +59,9 @@ export const SURVEY_QUESTION_CATEGORIES_API_PATH =
 
 export const EVENTS_BASE_API_PATH = "events/";
 export const EVENT_DETAIL_API_PATH = `${EVENTS_BASE_API_PATH}{}/`;
-export const EVENT_REGISTER_API_PATH = `${EVENTS_BASE_API_PATH}{}/register/`;
-export const USER_BOOKINGS_API_PATH = `${EVENTS_BASE_API_PATH}user-bookings/`;
+export const EVENT_BOOKINGS_API_PATH = `${EVENTS_BASE_API_PATH}bookings/`;
+export const EVENT_REGISTER_API_PATH = `${EVENT_DETAIL_API_PATH}register/`;
+export const EVENT_CONTACT_HOST_API_PATH = `${EVENT_DETAIL_API_PATH}contact_host/`;
 
 export const CHANNEL_BASE_API_PATH = "channels/";
 export const CHANNEL_DETAIL_API_PATH = `${CHANNEL_BASE_API_PATH}{}/`;
