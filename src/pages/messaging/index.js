@@ -50,7 +50,7 @@ const Messaging = () => {
   const [form] = Form.useForm();
   const messaageElRef = useRef(null);
 
-  const locationChannelId = location.state.channel_id;
+  const locationChannelId = location.state?.channel_id;
 
   const [hasMore, setHasMore] = useState(true);
   const [channels, setChannels] = useState([]);
