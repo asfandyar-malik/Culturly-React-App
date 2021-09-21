@@ -29,20 +29,10 @@ const EventLayout = ({ routes, accountData }) => {
         <div>
           <Space>
             <img src={culturlyLogo} alt="Logo" />
-            <ul className="menu">
-              <li>Venues</li>
-              <li>Blogs</li>
-              <li>Deals</li>
-              <li>Testimonials</li>
-            </ul>
           </Space>
         </div>
         <div className="extra">
           <Space size={32}>
-            <div>
-              <p className="text-xl bold">+91 8852729162</p>
-              <p className="text-base secondary">Let us help you decide</p>
-            </div>
             <Choose>
               <When condition={isLoggedIn}>
                 <Space>
