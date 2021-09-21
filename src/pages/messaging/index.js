@@ -169,7 +169,9 @@ const Messaging = () => {
                       }`}
                     >
                       <Space>
-                        <Avatar src={host.profile.profile_pic_url} />
+                        <Avatar src={host.profile?.profile_pic_url}>
+                          {host.initials}
+                        </Avatar>
                         <div>
                           <p className="text-xl bold">{`${host.first_name} ${host.last_name}`}</p>
                           <p className="text-base secondary recent-message">
@@ -199,7 +201,9 @@ const Messaging = () => {
                     <Space>
                       <Avatar
                         src={selectedChannel.host?.profile?.profile_pic_url}
-                      />
+                      >
+                        {selectedChannel.host?.initials}
+                      </Avatar>
                       <p className="text-2xl medium">{`${selectedChannel.host?.first_name} ${selectedChannel.host?.last_name}`}</p>
                     </Space>
                   </div>

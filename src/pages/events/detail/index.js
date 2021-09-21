@@ -1,9 +1,10 @@
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 import { CulturlyEventDetail } from "culturly-event-detail";
 
+import { isEmpty } from "_dash";
 import { EVENTS_ROUTE, EVENTS_REQUESTS_ROUTE, MESSAGING_ROUTE } from "routes";
 import {
   getTimezones,
@@ -12,12 +13,16 @@ import {
   contactEventHost,
 } from "actions";
 
+import AccountHook from "hooks/account";
+
 import "./style.scss";
 
-const EventDetail = () => {
+const EventDetail = ({ accountData }) => {
   const params = useParams();
   const history = useHistory();
   const { eventSlug } = params;
+
+  const isLoggedIn = !isEmpty(accountData);
 
   const [saving, setSaving] = useState(false);
   const [timezones, setTimezones] = useState([]);
@@ -26,10 +31,15 @@ const EventDetail = () => {
 
   useEffect(() => {
     if (eventSlug) {
-      getEventDetail(eventSlug).then((response) => {
-        const { data } = response;
-        setEventDetail(data);
-      });
+      getEventDetail(eventSlug)
+        .then((response) => {
+          const { data } = response;
+          setEventDetail(data);
+        })
+        .catch((err) => {
+          message.error("Event not exists, redirecting ...");
+          history.push(EVENTS_ROUTE);
+        });
       getTimezones().then((response) => {
         setTimezones(response.data);
       });
@@ -38,24 +48,33 @@ const EventDetail = () => {
   }, [eventSlug]);
 
   function handleRegister(payload) {
-    setSaving(true);
-    registerForEvent(eventSlug, payload).then((response) => {
-      setSaving(false);
-      Modal.info({
-        title: "Booking Request Sent!",
-        content: (
-          <div>
-            <p>
-              You can expect to hear back about your request within 1 business
-              day.
-            </p>
-          </div>
-        ),
-        onOk() {
-          history.push(EVENTS_REQUESTS_ROUTE);
-        },
-      });
-    });
+    if (isLoggedIn) {
+      setSaving(true);
+      registerForEvent(eventSlug, payload)
+        .then((response) => {
+          setSaving(false);
+          Modal.info({
+            title: "Booking Request Sent!",
+            content: (
+              <div>
+                <p>
+                  You can expect to hear back about your request within 1
+                  business day.
+                </p>
+              </div>
+            ),
+            onOk() {
+              history.push(EVENTS_REQUESTS_ROUTE);
+            },
+          });
+        })
+        .catch((err) => {
+          setSaving(false);
+          message.error("Something error happened! please try again later");
+        });
+    } else {
+      message.error("Login required to register for an event");
+    }
   }
 
   function handleContactProvider() {
@@ -89,4 +108,4 @@ const EventDetail = () => {
   );
 };
 
-export default EventDetail;
+export default AccountHook(EventDetail);
