@@ -83,13 +83,17 @@ const Messaging = () => {
     }
   }
 
-  function updateMessages(messages) {
-    const nestedArrays = Object.values(channelMessages);
-    const allMessages = [].concat.apply([], nestedArrays);
-    const newMessages = messages.filter(
-      (o) => !allMessages.some((i) => i.message_id === o.message_id)
-    );
-    setChannelMessages(groupByDate([...allMessages, ...newMessages]));
+  function updateMessages(messages, page, newMessage = false) {
+    if (page === 1 && !newMessage) {
+      setChannelMessages(groupByDate([...messages]));
+    } else {
+      const nestedArrays = Object.values(channelMessages);
+      const allMessages = [].concat.apply([], nestedArrays);
+      const newMessages = messages.filter(
+        (o) => !allMessages.some((i) => i.message_id === o.message_id)
+      );
+      setChannelMessages(groupByDate([...allMessages, ...newMessages]));
+    }
   }
 
   function getMessages(page, firstLoad = true) {
@@ -106,7 +110,7 @@ const Messaging = () => {
         if (hasMore) {
           setHasMore(!!response.data.next);
         }
-        updateMessages(results);
+        updateMessages(results, page);
         if (firstLoad && page === 1) {
           scrollToBottom();
         }
@@ -116,7 +120,6 @@ const Messaging = () => {
 
   useEffect(() => {
     if (!isEmpty(selectedChannel)) {
-      setChannelMessages({});
       getMessages(1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,7 +138,7 @@ const Messaging = () => {
       selectedChannel.host.user_id,
       payload
     ).then((response) => {
-      updateMessages([response.data]);
+      updateMessages([response.data], currentPage, true);
       form.resetFields();
       scrollToBottom();
     });
