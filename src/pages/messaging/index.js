@@ -116,6 +116,7 @@ const Messaging = () => {
 
   useEffect(() => {
     if (!isEmpty(selectedChannel)) {
+      setChannelMessages({});
       getMessages(1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
