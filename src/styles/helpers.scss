@@ -90,6 +90,17 @@
   }
 }
 
+.text-link {
+  line-height: 1.3;
+  color: $PRIMARY_COLOR;
+  transition: 0.1s color;
+  border-bottom: 1px solid;
+  &:hover {
+    transition: 0.1s color;
+    color: $PRIMARY_TEXT_COLOR;
+  }
+}
+
 .vertical-center {
   display: flex;
   align-items: center;
