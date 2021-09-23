@@ -226,8 +226,14 @@ export const getEventRecommendationCateogries = () => {
   return instance.get(endpoints.EVENT_RECOMMENDATION_CATEGORIES_API_PATH);
 };
 
-export const getEvents = () => {
-  return instance.get(endpoints.EVENTS_BASE_API_PATH);
+export const getEvents = (queryString) => {
+  return instance.get(
+    endpoints.EVENTS_BASE_API_PATH.concat("?", queryString || "")
+  );
+};
+
+export const getEventCategories = () => {
+  return instance.get(endpoints.EVENT_CATEGORIES_API_PATH);
 };
 
 export const getEventDetail = (slug) => {
