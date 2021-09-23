@@ -59,7 +59,7 @@ const Events = () => {
   return (
     <div className="events-listing">
       <If condition={eventCategories.length > 1}>
-        <div className="mb-24 categories-filter">
+        <div className="mb-16 categories-filter">
           <p className="text-2xl semi-bold mb-4">Filter by categories</p>
           <Tag
             key="all"
