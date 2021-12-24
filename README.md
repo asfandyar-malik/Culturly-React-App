@@ -1,4 +1,4 @@
-# Culturly Webapplication Frontend
+# Culturly WebApp Frontend
 
 This is the frontend code for Culturly Web Application. 
 
